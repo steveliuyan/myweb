@@ -840,20 +840,42 @@
                 document.body.style.overflow = '';
             });
             
-            // 点击菜单项关闭移动菜单（排除二级菜单项）
+           // 点击菜单项关闭移动菜单（排除二级菜单项）
             const navItems = document.querySelectorAll('nav a');
             navItems.forEach(item => {
-            item.addEventListener('click', function(event) {
-           // 如果点击的是二级菜单中的链接，则不关闭菜单
-           if (this.closest('.submenu')) {
-               return;
-           }
-           if (window.innerWidth <= 768) {
-               mainNav.classList.remove('active');
-              document.body.style.overflow = '';
-           }
-     });
- });
+                item.addEventListener('click', function(e) {
+                    // 如果是二级菜单项，不关闭菜单
+                    if (this.closest('.submenu')) {
+                        return;
+                    }
+                    
+                    if (window.innerWidth <= 768) {
+                        mainNav.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // 移动端二级菜单展开控制
+            const hasSubmenuItems = document.querySelectorAll('.has-submenu > a');
+            hasSubmenuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        const parent = this.parentElement;
+                        
+                        // 关闭其他二级菜单
+                        document.querySelectorAll('.has-submenu').forEach(el => {
+                            if (el !== parent) {
+                                el.classList.remove('active');
+                            }
+                        });
+                        
+                        // 切换当前二级菜单
+                        parent.classList.toggle('active');
+                    }
+                });
+            });
             
             // 技能进度条动画
             const skillBars = document.querySelectorAll('.skill-progress');
