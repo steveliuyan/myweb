@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人主页 - 清新蓝专业版</title>
+    <title>工作经历 - 个人主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
 
         body {
@@ -29,7 +29,7 @@
             top: 0;
             left: 0;
             z-index: 0;
-            opacity: 0.9;
+            opacity: 0.7;
         }
 
         .container {
@@ -51,7 +51,7 @@
         }
 
         .logo {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             -webkit-background-clip: text;
@@ -130,6 +130,13 @@
             margin-right: 8px;
         }
 
+        /* 当前页面高亮 */
+        nav a.active {
+            background: rgba(79, 172, 254, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.4);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
+        }
+
         /* 二级菜单 */
         .submenu {
             display: none;
@@ -144,12 +151,14 @@
             z-index: 100;
             border: 1px solid rgba(79, 172, 254, 0.3);
             transform: translateY(10px);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            opacity: 0;
         }
 
         .has-submenu:hover .submenu {
             display: block;
             transform: translateY(0);
+            opacity: 1;
         }
 
         .submenu li {
@@ -171,236 +180,275 @@
             box-shadow: none;
         }
 
-        /* 主内容区域 */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 40px 0;
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
         }
 
-        /* 个人信息卡片 */
-        .profile-card {
+        .page-title h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .page-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+
+        /* 工作经历内容 */
+        .experience-content {
+            max-width: 900px;
+            margin: 0 auto;
             background: rgba(255, 255, 255, 0.92);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(79, 172, 254, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-            border: 1px solid rgba(79, 172, 254, 0.5);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        /* 头像区域 */
-        .profile-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            border: 3px solid #4facfe;
-            object-fit: cover;
-            margin-right: 25px;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.8rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+            position: relative;
             overflow: hidden;
         }
 
-        .profile-img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+        .experience-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
         }
 
-        .profile-info h1 {
-            font-size: 2.4rem;
-            margin-bottom: 8px;
+        /* 时间线容器 */
+        .timeline-container {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        /* 时间线中心线 */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        /* 工作经历卡片 */
+        .experience-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            width: calc(50% - 40px);
+            margin-bottom: 60px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            transition: all 0.4s ease;
+            z-index: 2;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
+            border: 1px solid rgba(79, 172, 254, 0.4);
+        }
+
+        /* 左侧卡片 */
+        .left {
+            left: 0;
+        }
+
+        /* 右侧卡片 */
+        .right {
+            left: calc(50% + 40px);
+        }
+
+        /* 左侧卡片箭头 */
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 30px;
+            width: 0;
+            z-index: 1;
+            right: -15px;
+            border: medium solid rgba(255, 255, 255, 0.95);
+            border-width: 10px 0 10px 15px;
+            border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+        }
+
+        /* 右侧卡片箭头 */
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 30px;
+            width: 0;
+            z-index: 1;
+            left: -15px;
+            border: medium solid rgba(255, 255, 255, 0.95);
+            border-width: 10px 15px 10px 0;
+            border-color: transparent rgba(255, 255, 255, 0.95) transparent transparent;
+        }
+
+        /* 时间点 */
+        .time-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            border: 3px solid white;
+            border-radius: 50%;
+            top: 30px;
+            z-index: 2;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .profile-info h2 {
-            font-size: 1.3rem;
-            font-weight: 400;
-            color: #666;
+        .left .time-point {
+            right: -42px;
         }
 
-        /* 联系信息 */
-        .contact-info {
-            margin-top: 25px;
+        .right .time-point {
+            left: -42px;
         }
 
-        .contact-item {
+        .experience-card:hover .time-point {
+            transform: scale(1.3);
+            box-shadow: 0 0 0 5px rgba(79, 172, 254, 0.5);
+        }
+
+        /* 工作内容 */
+        .job-header {
             display: flex;
             align-items: center;
-            margin-bottom: 18px;
-            padding: 12px;
-            background: rgba(79, 172, 254, 0.05);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(79, 172, 254, 0.1);
+            margin-bottom: 15px;
         }
 
-        .contact-item:hover {
-            background: rgba(79, 172, 254, 0.1);
-            transform: translateY(-5px);
-            border: 1px solid rgba(79, 172, 254, 0.3);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
-        }
-
-        .contact-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
+        .company-icon {
+            width: 50px;
+            height: 50px;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 15px;
-            font-size: 1.3rem;
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.3s ease;
+            font-size: 1.5rem;
         }
 
-        .contact-item:hover .contact-icon {
-            transform: scale(1.1) rotate(10deg);
+        .job-info h2 {
+            font-size: 1.5rem;
+            color: #4facfe;
+            margin-bottom: 5px;
         }
 
-        /* 二维码区域 */
-        .qrcode-section {
+        .job-info h3 {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .job-date {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(79, 172, 254, 0.1);
+            color: #4facfe;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .job-description {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .job-skills {
+            margin-top: 15px;
+        }
+
+        .job-skills h4 {
+            font-size: 1.1rem;
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        .skills-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px;
-            margin-top: 35px;
+            gap: 10px;
         }
 
-        .qrcode-item {
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 12px;
-            padding: 18px;
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-            border: 1px solid rgba(79, 172, 254, 0.2);
-            transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.1);
-        }
-
-        .qrcode-item::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            background: linear-gradient(to top, rgba(79, 172, 254, 0.6), rgba(0, 242, 254, 0.6));
-            z-index: 1;
-            transition: height 0.5s ease;
-            border-radius: 12px;
-        }
-
-        .qrcode-item:hover::before {
-            height: 100%;
-        }
-
-        .qrcode-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 25px rgba(79, 172, 254, 0.3);
-            border: 1px solid rgba(79, 172, 254, 0.5);
-        }
-
-        .qrcode-placeholder {
-            width: 130px;
-            height: 130px;
+        .skill-tag {
             background: rgba(79, 172, 254, 0.1);
-            margin: 0 auto 12px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.8rem;
             color: #4facfe;
-            border: 1px dashed rgba(79, 172, 254, 0.3);
-            position: relative;
-            z-index: 2;
-            transition: all 0.5s ease;
-            overflow: hidden;
-        }
-
-        .qrcode-item:hover .qrcode-placeholder {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
-            color: #00f2fe;
-        }
-
-        .qrcode-item p {
-            position: relative;
-            z-index: 2;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
-            font-weight: 500;
-            font-size: 1.1rem;
-            color: #555;
+            border: 1px solid rgba(79, 172, 254, 0.2);
         }
 
-        .qrcode-item:hover p {
-            color: #fff;
-            font-weight: bold;
-            letter-spacing: 0.5px;
+        .skill-tag:hover {
+            background: rgba(79, 172, 254, 0.2);
+            transform: translateY(-3px);
         }
 
-        /* 技能部分 */
-        .skills-section {
+        /* 预留位置样式 */
+        .placeholder-section {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
             margin-top: 30px;
+            border: 2px dashed rgba(79, 172, 254, 0.3);
         }
 
-        .skill {
-            margin-bottom: 18px;
+        .placeholder-section i {
+            font-size: 3rem;
+            color: #4facfe;
+            margin-bottom: 20px;
         }
 
-        .skill-title {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
+        .placeholder-section h3 {
+            font-size: 1.5rem;
+            color: #4facfe;
+            margin-bottom: 15px;
+        }
+
+        .placeholder-section p {
             font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
-        .skill-bar {
-            height: 12px;
-            background: rgba(79, 172, 254, 0.1);
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid rgba(79, 172, 254, 0.1);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            border-radius: 6px;
-            width: 0;
-            transition: width 1.5s ease-in-out;
-        }
-
-        /* 页脚 */
+        /* 页脚 - 社交媒体与主页完全一致 */
         footer {
             text-align: center;
             padding: 25px;
@@ -441,8 +489,23 @@
 
         /* 响应式设计 */
         @media (max-width: 900px) {
-            .main-content {
-                grid-template-columns: 1fr;
+            .timeline-container::after {
+                left: 31px;
+            }
+            
+            .experience-card {
+                width: calc(100% - 80px);
+                margin-left: 80px;
+            }
+            
+            .left::before, .right::before {
+                left: -15px;
+                border-width: 10px 15px 10px 0;
+                border-color: transparent rgba(255, 255, 255, 0.95) transparent transparent;
+            }
+            
+            .left .time-point, .right .time-point {
+                left: -42px;
             }
             
             nav ul {
@@ -500,23 +563,12 @@
                 transform: rotate(90deg);
             }
             
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
+            .page-title h1 {
+                font-size: 2rem;
             }
             
-            .profile-img {
-                margin: 0 auto 20px;
-            }
-            
-            .qrcode-section {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .qrcode-item {
-                width: 80%;
-                max-width: 250px;
+            .experience-content {
+                padding: 20px;
             }
         }
 
@@ -525,7 +577,7 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         .fade-in {
             animation: fadeIn 0.8s ease forwards;
             opacity: 0;
@@ -545,7 +597,7 @@
         <!-- 头部导航 -->
         <header>
             <div class="logo fade-in">
-                <i class="fas fa-user-astronaut"></i>个人空间
+                <i class="fas fa-briefcase"></i>工作经历
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
@@ -559,190 +611,130 @@
                         <ul class="submenu">
                             <li><a href="personal_info.html"><i class="fas fa-id-card"></i>基本信息</a></li>
                             <li><a href="education.html"><i class="fas fa-graduation-cap"></i>教育背景</a></li>
-                            <li><a href="experience.html"><i class="fas fa-briefcase"></i>工作经历</a></li>
+                            <li><a href="experience.html" class="active"><i class="fas fa-briefcase"></i>工作经历</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu fade-in delay-3">
-                        <a href="#"><i class="fas fa-project-diagram"></i>我的项目 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#"><i class="fas fa-project-diagram"></i>设计项目 <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
                             <li><a href="product_design.html"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
                             <li><a href="ui_design.html"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
                             <li><a href="industrial_design.html"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
                         </ul>
                     </li>
-                    <li class="fade-in delay-4"><a href="portfolio.html"><i class="fas fa-images"></i>作品集</a></li>
-                    <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-images"></i>作品集</a></li>
+                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-envelope"></i>联系我</a></li>
                 </ul>
             </nav>
         </header>
         
-        <!-- 主内容区域 -->
-        <div class="main-content">
-            <!-- 个人信息卡片 -->
-            <div class="profile-card fade-in">
-                <div class="profile-header">
-                    <div class="profile-img">
-                        <i class="fas fa-user"></i>
+        <!-- 页面标题 -->
+        <div class="page-title fade-in">
+            <h1><i class="fas fa-suitcase"></i> 我的工作经历</h1>
+        </div>
+        
+        <!-- 工作经历内容 -->
+        <div class="experience-content fade-in delay-1">
+            <div class="timeline-container">
+                <!-- 当前工作经历 -->
+                <div class="experience-card left fade-in">
+                    <div class="time-point"></div>
+                    <div class="job-header">
+                        <div class="company-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div class="job-info">
+                            <h2>珠海锋行体育有限公司</h2>
+                            <h3>活动摄影师（兼职）</h3>
+                        </div>
                     </div>
-                    <div class="profile-info">
-                        <h1>张明</h1>
-                        <h2>高级全栈开发工程师</h2>
+                    <div class="job-date">2022年3月 - 至今</div>
+                    <div class="job-description">
+                        <p>在珠海锋行体育有限公司担任兼职活动摄影师，主要负责各类体育赛事和活动的摄影工作。通过镜头捕捉精彩瞬间，为活动提供高质量的视觉记录。</p>
+                        <p>工作内容包括：赛事现场拍摄、运动员特写、活动花絮记录、后期照片筛选与基础处理。通过这份工作，我提升了快速抓拍能力和对运动瞬间的预判能力。</p>
+                    </div>
+                    <div class="job-skills">
+                        <h4>工作技能：</h4>
+                        <div class="skills-tags">
+                            <div class="skill-tag">体育摄影</div>
+                            <div class="skill-tag">活动记录</div>
+                            <div class="skill-tag">照片后期</div>
+                            <div class="skill-tag">快速抓拍</div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="contact-info">
-                    <!-- 电话链接 -->
-                    <a href="tel:13888888888" class="contact-item" style="text-decoration: none; color: inherit;">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone-alt"></i>
+                <!-- 预留工作经历位置1 -->
+                <!-- 复制以下代码块添加新工作经历 -->
+                <!-- 
+                <div class="experience-card right fade-in delay-2">
+                    <div class="time-point"></div>
+                    <div class="job-header">
+                        <div class="company-icon">
+                            <i class="fas fa-building"></i>
                         </div>
-                        <div>
-                            <h3>联系电话</h3>
-                            <p>138-8888-8888</p>
-                        </div>
-                    </a>
-                    
-                    <!-- 微信 -->
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-weixin"></i>
-                        </div>
-                        <div>
-                            <h3>微信</h3>
-                            <p>ZhangMing-Tech</p>
+                        <div class="job-info">
+                            <h2>公司名称</h2>
+                            <h3>职位名称</h3>
                         </div>
                     </div>
-                    
-                    <!-- QQ -->
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-qq"></i>
-                        </div>
-                        <div>
-                            <h3>QQ</h3>
-                            <p>88888888</p>
-                        </div>
+                    <div class="job-date">工作时间段</div>
+                    <div class="job-description">
+                        <p>工作内容描述...</p>
+                        <p>工作成果与收获...</p>
                     </div>
-                    
-                    <!-- 邮箱链接 -->
-                    <a href="mailto:zhangming@example.com" class="contact-item" style="text-decoration: none; color: inherit;">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h3>电子邮箱</h3>
-                            <p>zhangming@example.com</p>
-                        </div>
-                    </a>
-                    
-                    <!-- 二维码区域 -->
-                    <div class="qrcode-section">
-                        <!-- 微信二维码 -->
-                        <div class="qrcode-item">
-                            <div class="qrcode-placeholder">
-                                <i class="fab fa-weixin"></i>
-                            </div>
-                            <p>微信二维码</p>
-                        </div>
-                        
-                        <!-- QQ二维码 -->
-                        <div class="qrcode-item">
-                            <div class="qrcode-placeholder">
-                                <i class="fab fa-qq"></i>
-                            </div>
-                            <p>QQ二维码</p>
+                    <div class="job-skills">
+                        <h4>工作技能：</h4>
+                        <div class="skills-tags">
+                            <div class="skill-tag">技能1</div>
+                            <div class="skill-tag">技能2</div>
+                            <div class="skill-tag">技能3</div>
                         </div>
                     </div>
                 </div>
+                -->
+                
+                <!-- 预留工作经历位置2 -->
+                <!-- 复制以下代码块添加新工作经历 -->
+                <!-- 
+                <div class="experience-card left fade-in delay-3">
+                    <div class="time-point"></div>
+                    <div class="job-header">
+                        <div class="company-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="job-info">
+                            <h2>公司名称</h2>
+                            <h3>职位名称</h3>
+                        </div>
+                    </div>
+                    <div class="job-date">工作时间段</div>
+                    <div class="job-description">
+                        <p>工作内容描述...</p>
+                        <p>工作成果与收获...</p>
+                    </div>
+                    <div class="job-skills">
+                        <h4>工作技能：</h4>
+                        <div class="skills-tags">
+                            <div class="skill-tag">技能1</div>
+                            <div class="skill-tag">技能2</div>
+                            <div class="skill-tag">技能3</div>
+                        </div>
+                    </div>
+                </div>
+                -->
             </div>
             
-            <!-- 技能部分 -->
-            <div class="profile-card fade-in delay-1">
-                <h2 style="font-size: 1.8rem;"><i class="fas fa-laptop-code"></i> 专业技能</h2>
-                
-                <div class="skills-section">
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>HTML5/CSS3</span>
-                            <span>95%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="95"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>JavaScript</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="90"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>React/Vue</span>
-                            <span>88%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="88"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>Node.js</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="85"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>UI/UX设计</span>
-                            <span>82%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="82"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <h2 style="margin-top: 35px; font-size: 1.8rem;"><i class="fas fa-heart"></i> 关于我</h2>
-                <p style="margin-top: 18px; line-height: 1.7;">
-                    我是一名充满激情的全栈开发工程师，拥有8年行业经验。专注于创建高性能、用户友好的Web应用。
-                    热爱学习新技术，喜欢解决复杂问题，追求代码的优雅和高效。
-                </p>
-                <p style="margin-top: 18px; line-height: 1.7;">
-                    业余时间喜欢参与开源项目、撰写技术博客，并热衷于参加各类技术交流活动。
-                    我相信技术改变世界，希望通过我的工作让互联网变得更加美好。
-                </p>
-                
-                <div style="margin-top: 30px; text-align: center;">
-                    <a href="resume.pdf" download="张明-简历.pdf" style="text-decoration: none;">
-                        <button style="background: linear-gradient(45deg, #4facfe, #00f2fe); 
-                                    border: none; 
-                                    padding: 14px 40px; 
-                                    border-radius: 30px; 
-                                    color: white; 
-                                    font-size: 1.1rem; 
-                                    font-weight: 500;
-                                    cursor: pointer;
-                                    transition: all 0.3s ease;
-                                    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);">
-                            <i class="fas fa-download"></i> 下载完整简历
-                        </button>
-                    </a>
-                </div>
+            <!-- 预留位置说明 -->
+            <div class="placeholder-section fade-in delay-2">
+                <i class="fas fa-plus-circle"></i>
+                <h3>更多工作经历位置预留</h3>
+                <p>此处预留了位置用于添加未来的工作经历。当您有新的工作经历时，只需复制上方注释中的代码模板，取消注释并根据实际情况填写内容即可添加新的工作经历卡片。</p>
             </div>
         </div>
         
-        <!-- 页脚 -->
-        <footer class="fade-in delay-2">
+        <!-- 页脚 - 社交媒体与主页完全一致 -->
+        <footer class="fade-in delay-3">
             <p>© 2023 个人主页 | 设计开发: 张明</p>
             <div class="social-links">
                 <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
@@ -755,11 +747,11 @@
     </div>
 
     <script>
-        // 增强粒子背景配置
+        // 粒子背景配置
         particlesJS("particles-js", {
             particles: {
                 number: { 
-                    value: 120, 
+                    value: 80, 
                     density: { 
                         enable: true, 
                         value_area: 800 
@@ -772,23 +764,23 @@
                     type: "circle" 
                 },
                 opacity: { 
-                    value: 0.8, 
+                    value: 0.5, 
                     random: true 
                 },
                 size: { 
-                    value: 6, 
+                    value: 4, 
                     random: true 
                 },
                 line_linked: {
                     enable: true,
                     distance: 150,
                     color: "#4facfe",
-                    opacity: 0.5,
-                    width: 2
+                    opacity: 0.3,
+                    width: 1
                 },
                 move: {
                     enable: true,
-                    speed: 1,
+                    speed: 1.5,
                     direction: "none",
                     random: true,
                     straight: false,
@@ -813,7 +805,7 @@
                     grab: { 
                         distance: 140, 
                         line_linked: { 
-                            opacity: 0.8  
+                            opacity: 0.5  
                         } 
                     },
                     push: { 
@@ -849,15 +841,6 @@
                         document.body.style.overflow = '';
                     }
                 });
-            });
-            
-            // 技能进度条动画
-            const skillBars = document.querySelectorAll('.skill-progress');
-            skillBars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
-                setTimeout(() => {
-                    bar.style.width = width + '%';
-                }, 500);
             });
             
             // 自动应用淡入效果

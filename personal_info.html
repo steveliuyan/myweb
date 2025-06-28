@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人主页 - 清新蓝专业版</title>
+    <title>基本信息 - 张明的个人主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
@@ -130,6 +130,13 @@
             margin-right: 8px;
         }
 
+        /* 当前页面高亮 */
+        nav a.active {
+            background: rgba(79, 172, 254, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.4);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
+        }
+
         /* 二级菜单 */
         .submenu {
             display: none;
@@ -144,12 +151,14 @@
             z-index: 100;
             border: 1px solid rgba(79, 172, 254, 0.3);
             transform: translateY(10px);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            opacity: 0;
         }
 
         .has-submenu:hover .submenu {
             display: block;
             transform: translateY(0);
+            opacity: 1;
         }
 
         .submenu li {
@@ -171,233 +180,176 @@
             box-shadow: none;
         }
 
-        /* 主内容区域 */
-        .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 40px 0;
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            position: relative;
+            perspective: 1000px;
         }
 
-        /* 个人信息卡片 */
-        .profile-card {
+        .page-title h1 {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding: 0 20px;
+            transform: rotateX(10deg);
+            transition: all 0.5s ease;
+        }
+
+        .page-title:hover h1 {
+            transform: rotateX(0) scale(1.05);
+        }
+
+        .page-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border-radius: 2px;
+            transition: all 0.5s ease;
+        }
+
+        .page-title:hover::after {
+            width: 120px;
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+        }
+
+        /* 基本信息卡片 */
+        .info-card {
             background: rgba(255, 255, 255, 0.92);
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(79, 172, 254, 0.3);
             transition: all 0.3s ease;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .profile-card:hover {
+        .info-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             border: 1px solid rgba(79, 172, 254, 0.5);
         }
 
-        .profile-header {
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .info-item {
             display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        /* 头像区域 */
-        .profile-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            border: 3px solid #4facfe;
-            object-fit: cover;
-            margin-right: 25px;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.8rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
-            overflow: hidden;
-        }
-
-        .profile-img:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
-        }
-
-        .profile-info h1 {
-            font-size: 2.4rem;
-            margin-bottom: 8px;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .profile-info h2 {
-            font-size: 1.3rem;
-            font-weight: 400;
-            color: #666;
-        }
-
-        /* 联系信息 */
-        .contact-info {
-            margin-top: 25px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 18px;
-            padding: 12px;
+            align-items: flex-start;
+            padding: 20px;
             background: rgba(79, 172, 254, 0.05);
-            border-radius: 10px;
+            border-radius: 12px;
             transition: all 0.3s ease;
             border: 1px solid rgba(79, 172, 254, 0.1);
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        .contact-item:hover {
+        .info-item:hover {
             background: rgba(79, 172, 254, 0.1);
             transform: translateY(-5px);
             border: 1px solid rgba(79, 172, 254, 0.3);
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
         }
 
-        .contact-icon {
-            width: 45px;
-            height: 45px;
+        .info-icon {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
-            font-size: 1.3rem;
+            margin-right: 20px;
+            font-size: 1.5rem;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
             transition: transform 0.3s ease;
         }
 
-        .contact-item:hover .contact-icon {
+        .info-item:hover .info-icon {
             transform: scale(1.1) rotate(10deg);
         }
 
-        /* 二维码区域 */
-        .qrcode-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            margin-top: 35px;
-        }
-
-        .qrcode-item {
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 12px;
-            padding: 18px;
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-            border: 1px solid rgba(79, 172, 254, 0.2);
-            transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.1);
-        }
-
-        .qrcode-item::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            background: linear-gradient(to top, rgba(79, 172, 254, 0.6), rgba(0, 242, 254, 0.6));
-            z-index: 1;
-            transition: height 0.5s ease;
-            border-radius: 12px;
-        }
-
-        .qrcode-item:hover::before {
-            height: 100%;
-        }
-
-        .qrcode-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 25px rgba(79, 172, 254, 0.3);
-            border: 1px solid rgba(79, 172, 254, 0.5);
-        }
-
-        .qrcode-placeholder {
-            width: 130px;
-            height: 130px;
-            background: rgba(79, 172, 254, 0.1);
-            margin: 0 auto 12px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.8rem;
+        .info-content h3 {
+            font-size: 1.2rem;
             color: #4facfe;
-            border: 1px dashed rgba(79, 172, 254, 0.3);
-            position: relative;
-            z-index: 2;
-            transition: all 0.5s ease;
-            overflow: hidden;
+            margin-bottom: 8px;
         }
 
-        .qrcode-item:hover .qrcode-placeholder {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
-            color: #00f2fe;
-        }
-
-        .qrcode-item p {
-            position: relative;
-            z-index: 2;
-            transition: all 0.3s ease;
-            font-weight: 500;
+        .info-content p {
             font-size: 1.1rem;
             color: #555;
+            line-height: 1.6;
         }
 
-        .qrcode-item:hover p {
-            color: #fff;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-
-        /* 技能部分 */
-        .skills-section {
-            margin-top: 30px;
-        }
-
-        .skill {
-            margin-bottom: 18px;
-        }
-
-        .skill-title {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        .skill-bar {
-            height: 12px;
-            background: rgba(79, 172, 254, 0.1);
-            border-radius: 6px;
+        /* 个人简介区域 */
+        .bio-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 1s ease-out;
+            position: relative;
             overflow: hidden;
-            border: 1px solid rgba(79, 172, 254, 0.1);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .skill-progress {
+        .bio-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
             height: 100%;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            border-radius: 6px;
-            width: 0;
-            transition: width 1.5s ease-in-out;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+            transition: width 0.5s ease;
+        }
+
+        .bio-section:hover::before {
+            width: 8px;
+        }
+
+        .bio-section h2 {
+            font-size: 1.8rem;
+            color: #4facfe;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(79, 172, 254, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .bio-section:hover h2 {
+            letter-spacing: 0.5px;
+            color: #00a6ff;
+        }
+
+        .bio-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .bio-section:hover p {
+            color: #333;
         }
 
         /* 页脚 */
@@ -411,6 +363,7 @@
             background: rgba(255, 255, 255, 0.8);
             border-radius: 15px;
             backdrop-filter: blur(5px);
+            animation: fadeInUp 1.2s ease-out;
         }
 
         .social-links {
@@ -441,7 +394,7 @@
 
         /* 响应式设计 */
         @media (max-width: 900px) {
-            .main-content {
+            .info-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -500,23 +453,12 @@
                 transform: rotate(90deg);
             }
             
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
+            .page-title h1 {
+                font-size: 2.2rem;
             }
             
-            .profile-img {
-                margin: 0 auto 20px;
-            }
-            
-            .qrcode-section {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .qrcode-item {
-                width: 80%;
-                max-width: 250px;
+            .info-card {
+                padding: 25px;
             }
         }
 
@@ -524,6 +466,29 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         .fade-in {
@@ -555,9 +520,9 @@
                 <ul>
                     <li class="fade-in delay-1"><a href="index.html"><i class="fas fa-home"></i>首页</a></li>
                     <li class="has-submenu fade-in delay-2">
-                        <a href="#"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="active"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                            <li><a href="personal_info.html"><i class="fas fa-id-card"></i>基本信息</a></li>
+                            <li><a href="personal_info.html" class="active"><i class="fas fa-id-card"></i>基本信息</a></li>
                             <li><a href="education.html"><i class="fas fa-graduation-cap"></i>教育背景</a></li>
                             <li><a href="experience.html"><i class="fas fa-briefcase"></i>工作经历</a></li>
                         </ul>
@@ -565,184 +530,98 @@
                     <li class="has-submenu fade-in delay-3">
                         <a href="#"><i class="fas fa-project-diagram"></i>我的项目 <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                            <li><a href="product_design.html"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
+                             <li><a href="product_design.html"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
                             <li><a href="ui_design.html"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
                             <li><a href="industrial_design.html"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
                         </ul>
                     </li>
-                    <li class="fade-in delay-4"><a href="portfolio.html"><i class="fas fa-images"></i>作品集</a></li>
-                    <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-images"></i>作品集</a></li>
+                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-envelope"></i>联系我</a></li>
                 </ul>
             </nav>
         </header>
         
-        <!-- 主内容区域 -->
-        <div class="main-content">
-            <!-- 个人信息卡片 -->
-            <div class="profile-card fade-in">
-                <div class="profile-header">
-                    <div class="profile-img">
+        <!-- 页面标题 -->
+        <div class="page-title fade-in">
+            <h1><i class="fas fa-id-card"></i> 基本信息</h1>
+        </div>
+        
+        <!-- 基本信息卡片 -->
+        <div class="info-card fade-in delay-1">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-icon">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div class="profile-info">
-                        <h1>张明</h1>
-                        <h2>高级全栈开发工程师</h2>
+                    <div class="info-content">
+                        <h3>姓名</h3>
+                        <p>张明</p>
                     </div>
                 </div>
                 
-                <div class="contact-info">
-                    <!-- 电话链接 -->
-                    <a href="tel:13888888888" class="contact-item" style="text-decoration: none; color: inherit;">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone-alt"></i>
-                        </div>
-                        <div>
-                            <h3>联系电话</h3>
-                            <p>138-8888-8888</p>
-                        </div>
-                    </a>
-                    
-                    <!-- 微信 -->
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-weixin"></i>
-                        </div>
-                        <div>
-                            <h3>微信</h3>
-                            <p>ZhangMing-Tech</p>
-                        </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-birthday-cake"></i>
                     </div>
-                    
-                    <!-- QQ -->
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-qq"></i>
-                        </div>
-                        <div>
-                            <h3>QQ</h3>
-                            <p>88888888</p>
-                        </div>
+                    <div class="info-content">
+                        <h3>年龄</h3>
+                        <p>32岁</p>
                     </div>
-                    
-                    <!-- 邮箱链接 -->
-                    <a href="mailto:zhangming@example.com" class="contact-item" style="text-decoration: none; color: inherit;">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h3>电子邮箱</h3>
-                            <p>zhangming@example.com</p>
-                        </div>
-                    </a>
-                    
-                    <!-- 二维码区域 -->
-                    <div class="qrcode-section">
-                        <!-- 微信二维码 -->
-                        <div class="qrcode-item">
-                            <div class="qrcode-placeholder">
-                                <i class="fab fa-weixin"></i>
-                            </div>
-                            <p>微信二维码</p>
-                        </div>
-                        
-                        <!-- QQ二维码 -->
-                        <div class="qrcode-item">
-                            <div class="qrcode-placeholder">
-                                <i class="fab fa-qq"></i>
-                            </div>
-                            <p>QQ二维码</p>
-                        </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>所在地</h3>
+                        <p>北京市海淀区</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>职业</h3>
+                        <p>高级全栈开发工程师</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>公司</h3>
+                        <p>科技创新有限公司</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>语言</h3>
+                        <p>中文（母语）、英语（流利）</p>
                     </div>
                 </div>
             </div>
             
-            <!-- 技能部分 -->
-            <div class="profile-card fade-in delay-1">
-                <h2 style="font-size: 1.8rem;"><i class="fas fa-laptop-code"></i> 专业技能</h2>
-                
-                <div class="skills-section">
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>HTML5/CSS3</span>
-                            <span>95%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="95"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>JavaScript</span>
-                            <span>90%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="90"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>React/Vue</span>
-                            <span>88%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="88"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>Node.js</span>
-                            <span>85%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="85"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>UI/UX设计</span>
-                            <span>82%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="82"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <h2 style="margin-top: 35px; font-size: 1.8rem;"><i class="fas fa-heart"></i> 关于我</h2>
-                <p style="margin-top: 18px; line-height: 1.7;">
-                    我是一名充满激情的全栈开发工程师，拥有8年行业经验。专注于创建高性能、用户友好的Web应用。
-                    热爱学习新技术，喜欢解决复杂问题，追求代码的优雅和高效。
-                </p>
-                <p style="margin-top: 18px; line-height: 1.7;">
-                    业余时间喜欢参与开源项目、撰写技术博客，并热衷于参加各类技术交流活动。
-                    我相信技术改变世界，希望通过我的工作让互联网变得更加美好。
-                </p>
-                
-                <div style="margin-top: 30px; text-align: center;">
-                    <a href="resume.pdf" download="张明-简历.pdf" style="text-decoration: none;">
-                        <button style="background: linear-gradient(45deg, #4facfe, #00f2fe); 
-                                    border: none; 
-                                    padding: 14px 40px; 
-                                    border-radius: 30px; 
-                                    color: white; 
-                                    font-size: 1.1rem; 
-                                    font-weight: 500;
-                                    cursor: pointer;
-                                    transition: all 0.3s ease;
-                                    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);">
-                            <i class="fas fa-download"></i> 下载完整简历
-                        </button>
-                    </a>
-                </div>
+            <!-- 个人简介 -->
+            <div class="bio-section fade-in delay-2">
+                <h2><i class="fas fa-user-circle"></i> 个人简介</h2>
+                <p>我是一名拥有8年经验的高级全栈开发工程师，专注于创建高性能、用户友好的Web应用。在科技创新有限公司担任技术主管，负责领导开发团队实现产品创新和技术突破。</p>
+                <p>我的技术专长涵盖前端框架（React、Vue）和后端技术（Node.js、Python），同时具备优秀的UI/UX设计能力。擅长解决复杂技术问题，优化系统性能，并确保代码质量和可维护性。</p>
+                <p>在职业生涯中，我成功主导了多个大型项目，包括电商平台重构、企业级管理系统开发以及移动应用后端架构设计。这些项目不仅提升了用户体验，也为公司带来了显著的业务增长。</p>
+                <p>我始终保持着对新技术的好奇心和学习的热情，积极参与技术社区，定期在技术博客分享开发经验。我相信通过技术创新可以解决实际问题，创造更大的社会价值。</p>
             </div>
         </div>
         
         <!-- 页脚 -->
-        <footer class="fade-in delay-2">
+        <footer class="fade-in delay-3">
             <p>© 2023 个人主页 | 设计开发: 张明</p>
             <div class="social-links">
                 <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
@@ -851,13 +730,26 @@
                 });
             });
             
-            // 技能进度条动画
-            const skillBars = document.querySelectorAll('.skill-progress');
-            skillBars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
-                setTimeout(() => {
-                    bar.style.width = width + '%';
-                }, 500);
+            // 二级菜单触摸支持
+            const hasSubmenu = document.querySelectorAll('.has-submenu');
+            hasSubmenu.forEach(item => {
+                item.addEventListener('touchstart', function(e) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        const submenu = this.querySelector('.submenu');
+                        const isActive = submenu.style.display === 'block';
+                        
+                        // 关闭所有子菜单
+                        document.querySelectorAll('.submenu').forEach(sm => {
+                            sm.style.display = 'none';
+                        });
+                        
+                        // 切换当前子菜单
+                        if (!isActive) {
+                            submenu.style.display = 'block';
+                        }
+                    }
+                });
             });
             
             // 自动应用淡入效果
