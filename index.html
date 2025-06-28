@@ -840,16 +840,20 @@
                 document.body.style.overflow = '';
             });
             
-            // 点击菜单项关闭移动菜单
+            // 点击菜单项关闭移动菜单（排除二级菜单项）
             const navItems = document.querySelectorAll('nav a');
             navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        mainNav.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
-            });
+            item.addEventListener('click', function(event) {
+           // 如果点击的是二级菜单中的链接，则不关闭菜单
+           if (this.closest('.submenu')) {
+               return;
+           }
+           if (window.innerWidth <= 768) {
+               mainNav.classList.remove('active');
+              document.body.style.overflow = '';
+           }
+     });
+ });
             
             // 技能进度条动画
             const skillBars = document.querySelectorAll('.skill-progress');
