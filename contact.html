@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>工作经历 - 刘焱的个人主页</title>
+    <title>联系我 - 刘焱的个人主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
@@ -40,7 +41,41 @@
             z-index: 10;
         }
 
-        /* 头部样式 */
+        /* 管理员入口按钮样式 */
+        .admin-entry {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .admin-button {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            text-decoration: none; /* 添加此项确保没有下划线 */
+        }
+
+        .admin-button:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 其他原有样式保持不变 */
         header {
             display: flex;
             justify-content: space-between;
@@ -69,7 +104,6 @@
             margin-right: 10px;
         }
 
-        /* 导航菜单 */
         .menu-toggle {
             display: none;
             font-size: 1.8rem;
@@ -130,7 +164,6 @@
             margin-right: 8px;
         }
 
-        /* 当前激活菜单项 */
         nav a.active {
             background: rgba(79, 172, 254, 0.2);
             border: 1px solid rgba(79, 172, 254, 0.5);
@@ -138,7 +171,6 @@
             box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
         }
 
-        /* 二级菜单 */
         .submenu {
             display: none;
             position: absolute;
@@ -188,7 +220,6 @@
             border: 1px solid rgba(79, 172, 254, 0.2);
         }
 
-        /* 添加箭头旋转效果 */
         .submenu-toggle i.fa-chevron-down {
             transition: transform 0.3s ease;
             margin-left: 8px;
@@ -199,7 +230,6 @@
             transform: rotate(180deg);
         }
 
-        /* 页面标题 */
         .page-header {
             text-align: center;
             margin: 40px 0 30px;
@@ -223,202 +253,196 @@
             line-height: 1.7;
         }
 
-        /* 工作经历时间线 */
-        .timeline-container {
-            position: relative;
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 0 20px;
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px auto;
+            max-width: 1000px;
         }
 
-        .timeline-line {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: rgba(79, 172, 254, 0.3);
-            left: 50%;
-            margin-left: -2px;
-            border-radius: 2px;
-            z-index: 1;
-        }
-
-        .timeline-item {
-            margin-bottom: 60px;
-            position: relative;
-            width: 100%;
-            display: flex;
-            justify-content: flex-start;
-            padding-left: 50%;
-        }
-
-        .timeline-item:nth-child(even) {
-            justify-content: flex-end;
-            padding-left: 0;
-            padding-right: 50%;
-        }
-
-        .timeline-content {
+        .contact-info-card {
             background: rgba(255, 255, 255, 0.92);
-            border-radius: 15px;
-            padding: 30px;
+            border-radius: 20px;
+            padding: 35px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(79, 172, 254, 0.3);
             transition: all 0.3s ease;
-            position: relative;
-            width: 90%;
-            max-width: 400px;
         }
 
-        .timeline-content:hover {
+        .contact-info-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             border: 1px solid rgba(79, 172, 254, 0.5);
         }
 
-        .timeline-dot {
-            position: absolute;
-            top: 30px;
-            left: 50%;
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            border-radius: 50%;
-            margin-left: -11px;
-            z-index: 2;
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.5);
-        }
-
-        .timeline-date {
-            position: absolute;
-            top: 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
+        .contact-info-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
             color: #4facfe;
-            width: 100px;
-            text-align: center;
-            background: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            z-index: 2;
-        }
-
-        .timeline-item .timeline-date {
-            left: calc(50% - 120px);
-        }
-
-        .timeline-item:nth-child(even) .timeline-date {
-            left: auto;
-            right: calc(50% - 120px);
-        }
-
-        .company-info {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
         }
 
-        .company-logo {
-            width: 70px;
-            height: 70px;
+        .contact-info-card h2 i {
+            margin-right: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(79, 172, 254, 0.05);
             border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(79, 172, 254, 0.1);
+        }
+
+        .contact-item:hover {
+            background: rgba(79, 172, 254, 0.1);
+            transform: translateY(-5px);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-right: 20px;
+            font-size: 1.4rem;
             color: white;
-            font-size: 1.8rem;
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
         }
 
-        .company-details h2 {
-            font-size: 1.8rem;
+        .contact-item:hover .contact-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .contact-details h3 {
+            font-size: 1.2rem;
             margin-bottom: 5px;
             color: #333;
         }
 
-        .company-details h3 {
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: #4facfe;
-            margin-bottom: 8px;
+        .contact-details p {
+            font-size: 1.1rem;
+            color: #555;
         }
 
-        .company-details .period {
-            font-size: 1rem;
-            color: #666;
-            background: rgba(79, 172, 254, 0.1);
-            padding: 3px 10px;
-            border-radius: 15px;
-            display: inline-block;
+        .contact-form-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .responsibilities {
-            margin-top: 20px;
+        .contact-form-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.5);
         }
 
-        .responsibilities h4 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+        .contact-form-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
             color: #4facfe;
             display: flex;
             align-items: center;
         }
 
-        .responsibilities h4 i {
-            margin-right: 10px;
+        .contact-form-card h2 i {
+            margin-right: 12px;
         }
 
-        .responsibilities ul {
-            padding-left: 30px;
+        .form-group {
+            margin-bottom: 25px;
         }
 
-        .responsibilities li {
-            margin-bottom: 12px;
-            line-height: 1.6;
-            position: relative;
-        }
-
-        .responsibilities li::before {
-            content: '';
-            position: absolute;
-            left: -20px;
-            top: 10px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #4facfe;
-        }
-
-        /* 未来经历占位符 */
-        .future-experience {
-            text-align: center;
-            margin: 80px 0 40px;
-            padding: 40px;
-            border: 2px dashed rgba(79, 172, 254, 0.3);
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.6);
-        }
-
-        .future-experience h2 {
-            font-size: 2rem;
-            color: #4facfe;
-            margin-bottom: 20px;
-        }
-
-        .future-experience p {
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #555;
             font-size: 1.1rem;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.7;
         }
 
-        /* 页脚 */
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            color: white;
+            padding: 15px 45px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto 0;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.6);
+        }
+
+        .form-status {
+            text-align: center;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .form-status.success {
+            background: rgba(76, 175, 80, 0.15);
+            color: #2e7d32;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            display: block;
+        }
+        
+        .form-status.error {
+            background: rgba(244, 67, 54, 0.15);
+            color: #c62828;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            display: block;
+        }
+
         footer {
             text-align: center;
             padding: 25px;
@@ -457,27 +481,9 @@
             box-shadow: 0 8px 20px rgba(79, 172, 254, 0.5);
         }
 
-        /* 响应式设计 */
         @media (max-width: 900px) {
-            .timeline-item,
-            .timeline-item:nth-child(even) {
-                justify-content: flex-start;
-                padding-left: 70px;
-                padding-right: 0;
-            }
-            
-            .timeline-line {
-                left: 40px;
-            }
-            
-            .timeline-dot {
-                left: 40px;
-            }
-            
-            .timeline-date {
-                left: 80px !important;
-                right: auto !important;
-                top: 10px;
+            .contact-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -524,7 +530,6 @@
                 transform: rotate(90deg);
             }
 
-            /* 移动端二级菜单样式 */
             .submenu {
                 position: static;
                 display: none;
@@ -541,13 +546,24 @@
                 max-height: 500px;
             }
 
-            /* 箭头样式 */
             .submenu-toggle i.fas.fa-chevron-down {
                 transition: transform 0.3s ease;
             }
 
             .has-submenu.active .submenu-toggle i.fas.fa-chevron-down {
                 transform: rotate(180deg);
+            }
+            
+            /* 移动端调整管理员按钮位置 */
+            .admin-entry {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .admin-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
             }
         }
 
@@ -564,34 +580,22 @@
                 font-size: 1.2rem;
             }
             
-            .company-info {
-                flex-direction: column;
-                text-align: center;
+            .contact-info-card, .contact-form-card {
+                padding: 25px;
             }
             
-            .company-logo {
-                margin: 0 auto 15px;
+            .admin-entry {
+                bottom: 15px;
+                right: 15px;
             }
             
-            .timeline-item,
-            .timeline-item:nth-child(even) {
-                padding-left: 50px;
-            }
-            
-            .timeline-line {
-                left: 25px;
-            }
-            
-            .timeline-dot {
-                left: 25px;
-            }
-            
-            .timeline-date {
-                left: 50px !important;
+            .admin-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.4rem;
             }
         }
 
-        /* 动画效果 */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -624,8 +628,7 @@
         .delay-4 {
             animation-delay: 0.8s;
         }
-        
-        /* 新增开发提示模态框样式 */
+
         .dev-modal {
             display: none;
             position: fixed;
@@ -700,11 +703,9 @@
             0% {
                 transform: scale(1);
             }
-
             50% {
                 transform: scale(1.1);
             }
-
             100% {
                 transform: scale(1);
             }
@@ -715,14 +716,14 @@
     <!-- 粒子背景 -->
     <div id="particles-js"></div>
     
-    <!-- 新增开发提示模态框 -->
+    <!-- 开发提示模态框 -->
     <div id="devModal" class="dev-modal">
         <div class="dev-modal-content">
             <div class="dev-modal-icon">
                 <i class="fas fa-tools"></i>
             </div>
             <h2>页面开发中</h2>
-            <p>这个页面正在积极开发中，我正在努力为您打造更好的体验。请以后再来看看吧！</p>
+            <p>这个页面正在积极开发中，我们正在努力为您打造更好的体验。请稍后再来看看吧！</p>
             <button class="dev-modal-button" id="closeDevModal">好的，我知道了</button>
         </div>
     </div>
@@ -745,7 +746,7 @@
                         <ul class="submenu">
                             <li><a href="personal_info.html"><i class="fas fa-id-card"></i>基本信息</a></li>
                             <li><a href="education.html"><i class="fas fa-graduation-cap"></i>教育背景</a></li>
-                            <li><a href="experience.html" class="active"><i class="fas fa-briefcase"></i>工作经历</a></li>
+                            <li><a href="experience.html"><i class="fas fa-briefcase"></i>工作经历</a></li>
                         </ul>
                     </li>
                     <li class="has-submenu fade-in delay-3">
@@ -757,132 +758,115 @@
                         </ul>
                     </li>
                     <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a></li>
-                    <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="fade-in delay-4"><a href="contact.html" class="active"><i class="fas fa-envelope"></i>联系我</a></li>
                 </ul>
             </nav>
         </header>
 
         <!-- 页面标题 -->
         <div class="page-header fade-in">
-            <h1>工作经历</h1>
-            <p>专注于羽毛球赛事摄影，捕捉精彩瞬间，记录运动之美</p>
+            <h1>联系我</h1>
+            <p>无论您有任何问题、建议或合作意向，都欢迎随时与我联系。我会尽快回复您的消息。</p>
         </div>
 
-        <!-- 工作经历时间线 -->
-        <div class="timeline-container">
-            <div class="timeline-line"></div>
-            
-            <!-- 当前工作经历 -->
-            <div class="timeline-item fade-in delay-1">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">2024 - 至今</div>
-                <div class="timeline-content">
-                    <div class="company-info">
-                        <div class="company-logo">
-                            <i class="fas fa-table-tennis"></i>
-                        </div>
-                        <div class="company-details">
-                            <h2>珠海锋行体育有限公司</h2>
-                            <h3>兼职赛事摄影师</h3>
-                            <span class="period">2024年1月 - 至今</span>
-                        </div>
+        <!-- 联系内容区域 -->
+        <div class="contact-container">
+            <!-- 联系信息卡片 -->
+            <div class="contact-info-card fade-in delay-1">
+                <h2><i class="fas fa-address-card"></i> 联系信息</h2>
+                
+                <!-- 电话 -->
+                <a href="tel:13268907139" class="contact-item" style="text-decoration: none; color: inherit;">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
                     </div>
-                    
-                    <div class="responsibilities">
-                        <h4><i class="fas fa-tasks"></i> 主要职责</h4>
-                        <ul>
-                            <li>负责羽毛球赛事现场摄影工作</li>
-                            <li>捕捉比赛精彩瞬间和运动员特写</li>
-                            <li>使用专业设备进行高质量拍摄</li>
-                            <li>后期处理照片并整理归档</li>
-                        </ul>
+                    <div class="contact-details">
+                        <h3>电话</h3>
+                        <p>132-6890-7139</p>
+                    </div>
+                </a>
+                
+                <!-- 邮箱 -->
+                <a href="mailto:2021250388@qq.com" class="contact-item" style="text-decoration: none; color: inherit;">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>邮箱</h3>
+                        <p>2021250388@qq.com</p>
+                    </div>
+                </a>
+                
+                <!-- 微信 -->
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fab fa-weixin"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>微信</h3>
+                        <p>yan13268907139</p>
+                    </div>
+                </div>
+                
+                <!-- QQ -->
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fab fa-qq"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>QQ</h3>
+                        <p>2021250388</p>
+                    </div>
+                </div>
+                
+                <!-- 地址 -->
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>地址</h3>
+                        <p>广东省珠海市香洲区</p>
                     </div>
                 </div>
             </div>
             
-            <!-- 预留未来经历位置 1 -->
-			<!--
-            <div class="timeline-item fade-in delay-2">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">未来日期</div>
-                <div class="timeline-content">
-                    <div class="company-info">
-                        <div class="company-logo">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <div class="company-details">
-                            <h2>未来公司名称</h2>
-                            <h3>未来职位</h3>
-                            <span class="period">未来时间段</span>
-                        </div>
+            <!-- 联系表单卡片 -->
+            <div class="contact-form-card fade-in delay-2">
+                <h2><i class="fas fa-paper-plane"></i> 发送消息</h2>
+                
+                <!-- 添加了Formspree表单ID和状态提示 -->
+                <form id="contactForm" action="https://formspree.io/f/mpwrbqyv" method="POST">
+                    <div class="form-group">
+                        <label for="name">您的姓名</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="请输入您的姓名" required>
                     </div>
                     
-                    <div class="responsibilities">
-                        <h4><i class="fas fa-tasks"></i> 主要职责</h4>
-                        <ul>
-                            <li>职责描述1</li>
-                            <li>职责描述2</li>
-                            <li>职责描述3</li>
-                        </ul>
+                    <div class="form-group">
+                        <label for="email">电子邮箱</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="请输入您的邮箱" required>
                     </div>
                     
-                    <-- 未来经历成就部分 -->
-                    <!-- 
-                    <div class="achievements">
-                        <h4><i class="fas fa-trophy"></i> 主要成就</h4>
-                        <p>成就描述...</p>
+                    <div class="form-group">
+                        <label for="subject">主题</label>
+                        <input type="text" id="subject" name="subject" class="form-control" placeholder="请输入主题" required>
                     </div>
                     
-                </div>
+                    <div class="form-group">
+                        <label for="message">留言内容</label>
+                        <textarea id="message" name="message" class="form-control" placeholder="请输入您的留言内容..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">发送消息</button>
+                    
+                    <!-- 提交状态提示 -->
+                    <div class="form-status" id="formStatus"></div>
+                </form>
             </div>
-			-->
-            
-            <!-- 预留未来经历位置 2 -->
-			<!--
-            <div class="timeline-item fade-in delay-3">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">未来日期</div>
-                <div class="timeline-content">
-                    <div class="company-info">
-                        <div class="company-logo">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <div class="company-details">
-                            <h2>未来公司名称</h2>
-                            <h3>未来职位</h3>
-                            <span class="period">未来时间段</span>
-                        </div>
-                    </div>
-                    
-                    <div class="responsibilities">
-                        <h4><i class="fas fa-tasks"></i> 主要职责</h4>
-                        <ul>
-                            <li>职责描述1</li>
-                            <li>职责描述2</li>
-                            <li>职责描述3</li>
-                        </ul>
-                    </div>
-                    
-                    <-- 未来经历成就部分 -->
-                    <!-- 
-                    <div class="achievements">
-                        <h4><i class="fas fa-trophy"></i> 主要成就</h4>
-                        <p>成就描述...</p>
-                    </div>
-                    
-                </div>
-            </div>
-			-->
-        </div>
-
-        <!-- 未来经历占位符 -->
-        <div class="future-experience fade-in delay-4">
-            <h2><i class="fas fa-rocket"></i> 未来规划</h2>
-            <p>我正积极拓展我的设计技能，学习UI/UX设计和产品设计，为未来在创意产业的全方位发展做准备。期待在不久的将来，能够将摄影艺术与数字设计完美结合，创造出更加丰富多元的视觉作品。</p>
         </div>
 
         <!-- 页脚 -->
-        <footer class="fade-in">
+        <footer class="fade-in delay-3">
             <p>© 2025 个人主页 | 设计开发: deepseek/刘焱</p>
             <div class="social-links">
                 <a href="https://github.com/steveliuyan" target="_blank"><i class="fab fa-github"></i></a>
@@ -892,6 +876,13 @@
                 <a href="https://dribbble.com/" target="_blank"><i class="fab fa-dribbble"></i></a>
             </div>
         </footer>
+    </div>
+    
+    <!-- 管理员入口 - 修改为直接跳转 -->
+    <div class="admin-entry">
+        <a href="admin.html" class="admin-button" id="adminButton">
+            <i class="fas fa-user-cog"></i>
+        </a>
     </div>
 
     <script>
@@ -972,11 +963,11 @@
             const navItems = document.querySelectorAll('nav a:not(.submenu-toggle)');
             const submenuToggles = document.querySelectorAll('.submenu-toggle');
             const submenuItems = document.querySelectorAll('.submenu a');
-            
-            // 开发提示模态框相关
             const devModal = document.getElementById('devModal');
             const closeDevModal = document.getElementById('closeDevModal');
             const devLinks = document.querySelectorAll('.dev-link');
+            const contactForm = document.getElementById('contactForm');
+            const formStatus = document.getElementById('formStatus');
 
             // 显示开发提示模态框
             function showDevModal() {
@@ -1004,11 +995,60 @@
 
             // 关闭开发提示模态框
             closeDevModal.addEventListener('click', hideDevModal);
-
+            
             // 点击模态框外部关闭
             devModal.addEventListener('click', function(e) {
                 if (e.target === devModal) {
                     hideDevModal();
+                }
+            });
+
+            // 表单提交处理 - 使用Formspree
+            contactForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                
+                // 显示加载状态
+                submitButton.disabled = true;
+                submitButton.textContent = '发送中...';
+                
+                try {
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        formStatus.textContent = '消息发送成功！我会尽快回复您。';
+                        formStatus.className = 'form-status success';
+                        this.reset();
+                    } else {
+                        const data = await response.json();
+                        if (data.errors) {
+                            formStatus.textContent = '发送失败：' + data.errors.map(error => error.message).join(', ');
+                        } else {
+                            formStatus.textContent = '发送失败，请重试。';
+                        }
+                        formStatus.className = 'form-status error';
+                    }
+                } catch (error) {
+                    formStatus.textContent = '网络错误，请检查连接后重试。';
+                    formStatus.className = 'form-status error';
+                } finally {
+                    // 恢复按钮状态
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                    
+                    // 5秒后隐藏状态消息
+                    setTimeout(() => {
+                        formStatus.style.display = 'none';
+                    }, 5000);
                 }
             });
 

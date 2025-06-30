@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>教育背景 - 产品设计专业</title>
+    <title>教育背景 - 刘焱的个人主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
+        /* 原有的样式保持不变 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
@@ -29,7 +30,7 @@
             top: 0;
             left: 0;
             z-index: 0;
-            opacity: 0.7;
+            opacity: 0.9;
         }
 
         .container {
@@ -51,7 +52,7 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 700;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             -webkit-background-clip: text;
@@ -119,6 +120,12 @@
             border: 1px solid transparent;
         }
 
+        nav a.active {
+            background: rgba(79, 172, 254, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.15);
+        }
+
         nav a:hover {
             background: rgba(79, 172, 254, 0.1);
             border: 1px solid rgba(79, 172, 254, 0.3);
@@ -128,13 +135,6 @@
 
         nav a i {
             margin-right: 8px;
-        }
-
-        /* 当前页面高亮 */
-        nav a.active {
-            background: rgba(79, 172, 254, 0.15);
-            border: 1px solid rgba(79, 172, 254, 0.4);
-            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
         }
 
         /* 二级菜单 */
@@ -151,14 +151,16 @@
             z-index: 100;
             border: 1px solid rgba(79, 172, 254, 0.3);
             transform: translateY(10px);
-            transition: all 0.3s ease;
-            opacity: 0;
+            transition: all 0.5s ease;
+            max-height: 0;
+            overflow: hidden;
         }
 
-        .has-submenu:hover .submenu {
+        /* 移除悬停效果，完全依赖点击事件 */
+        .has-submenu.active .submenu {
             display: block;
             transform: translateY(0);
-            opacity: 1;
+            max-height: 500px;
         }
 
         .submenu li {
@@ -174,231 +176,193 @@
             box-shadow: none;
         }
 
+        .submenu a.active {
+            color: #4facfe;
+            font-weight: 600;
+            background: rgba(79, 172, 254, 0.1);
+        }
+
         .submenu a:hover {
             color: #4facfe;
             transform: translateX(5px);
             box-shadow: none;
         }
 
+        /* 箭头旋转动画 */
+        .submenu-toggle i.fa-chevron-down {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .has-submenu.active .submenu-toggle i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
         /* 页面标题 */
         .page-title {
             text-align: center;
-            margin: 30px 0;
+            margin: 40px 0 30px;
             position: relative;
+            padding-bottom: 20px;
         }
 
         .page-title h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
-            padding: 0 20px;
+            margin-bottom: 15px;
         }
 
         .page-title::after {
-            content: "";
+            content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
+            width: 100px;
             height: 4px;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
             border-radius: 2px;
         }
 
-        /* 教育内容 */
-        .education-content {
-            max-width: 900px;
-            margin: 0 auto;
+        /* 教育信息卡片 */
+        .education-section {
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+
+        .education-card {
             background: rgba(255, 255, 255, 0.92);
             border-radius: 15px;
-            padding: 30px;
+            padding: 35px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(5px);
             border: 1px solid rgba(79, 172, 254, 0.3);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.4s ease;
         }
 
-        .education-content::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+        .education-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
 
-        .school-header {
+        .education-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #4facfe;
             display: flex;
             align-items: center;
+        }
+
+        .education-card h2 i {
+            margin-right: 12px;
+        }
+
+        .university-info {
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 1px solid rgba(79, 172, 254, 0.2);
         }
 
-        .school-logo {
-            width: 100px;
-            height: 100px;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border: 2px solid rgba(79, 172, 254, 0.3);
-            overflow: hidden;
-        }
-
-        .school-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .school-info h2 {
+        .university-info h3 {
             font-size: 1.8rem;
-            color: #4facfe;
-            margin-bottom: 5px;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .school-info h3 {
+        .university-info h4 {
             font-size: 1.3rem;
+            margin-bottom: 15px;
             color: #666;
             font-weight: 500;
-            margin-bottom: 8px;
         }
 
-        .school-info .date {
-            display: inline-block;
-            padding: 5px 15px;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
-        }
-
-        /* 学习经历 */
-        .education-details {
-            margin-top: 25px;
-        }
-
-        .education-section {
-            margin-bottom: 30px;
-        }
-
-        .education-section h3 {
-            font-size: 1.4rem;
-            color: #4facfe;
-            margin-bottom: 15px;
-            padding-left: 15px;
-            border-left: 4px solid #4facfe;
-        }
-
-        .education-section p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: #555;
-            margin-bottom: 15px;
-            padding-left: 20px;
-        }
-
-        .skills-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-            padding-left: 20px;
-        }
-
-        .skill-item {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(79, 172, 254, 0.2);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .skill-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(79, 172, 254, 0.2);
-            background: rgba(255, 255, 255, 1);
-        }
-
-        .skill-item i {
-            font-size: 2rem;
-            color: #4facfe;
-            margin-bottom: 10px;
-        }
-
-        .skill-item h4 {
-            font-size: 1.1rem;
-            color: #4facfe;
-            margin-bottom: 5px;
-        }
-
-        .skill-item p {
-            font-size: 0.95rem;
+        .university-info p {
             color: #666;
-            margin: 0;
+            line-height: 1.7;
+            margin-bottom: 15px;
         }
 
-        /* 作品展示 */
-        .portfolio-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .badges {
             margin-top: 20px;
-            padding-left: 20px;
         }
 
-        .portfolio-item {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            height: 250px;
+        .badge {
+            display: inline-block;
+            background: rgba(79, 172, 254, 0.1);
+            color: #4facfe;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(79, 172, 254, 0.2);
         }
 
-        .portfolio-item:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.3);
+        /* 课程学习部分 */
+        .courses-section {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 50px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
         }
 
-        .portfolio-image {
-            width: 100%;
-            height: 180px;
-            background: #f0f7ff;
+        .courses-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(79, 172, 254, 0.2);
+            color: #4facfe;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: #4facfe;
         }
 
-        .portfolio-info {
-            padding: 15px;
+        .courses-section h2 i {
+            margin-right: 12px;
         }
 
-        .portfolio-info h4 {
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .course-item {
+            padding: 20px;
+            background: rgba(79, 172, 254, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(79, 172, 254, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .course-item:hover {
+            background: rgba(79, 172, 254, 0.1);
+            transform: translateY(-5px);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
+        }
+
+        .course-item h4 {
             font-size: 1.1rem;
             color: #4facfe;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
 
-        .portfolio-info p {
-            font-size: 0.9rem;
+        .course-item h4 i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .course-item p {
             color: #666;
-            margin: 0;
+            line-height: 1.6;
         }
 
         /* 页脚 */
@@ -442,24 +406,8 @@
 
         /* 响应式设计 */
         @media (max-width: 900px) {
-            .school-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .school-logo {
-                margin: 0 auto 15px;
-            }
-            
-            nav ul {
-                flex-direction: column;
-            }
-            
-            .has-submenu .submenu {
-                position: static;
-                box-shadow: none;
-                background: rgba(255, 255, 255, 0.7);
-                transform: none;
+            .education-card, .courses-section {
+                padding: 25px;
             }
         }
 
@@ -467,7 +415,7 @@
             .menu-toggle {
                 display: block;
             }
-            
+
             nav {
                 position: fixed;
                 top: 0;
@@ -479,87 +427,200 @@
                 transition: right 0.4s ease;
                 z-index: 999;
             }
-            
+
             nav.active {
                 right: 0;
             }
-            
+
             nav ul {
                 flex-direction: column;
             }
-            
+
             nav li {
                 margin: 10px 0;
             }
-            
+
             .close-menu {
                 position: absolute;
                 top: 20px;
-                right: 20px;
+                left: 20px;
                 font-size: 1.8rem;
                 cursor: pointer;
                 color: #4facfe;
                 transition: transform 0.3s ease;
             }
-            
+
             .close-menu:hover {
                 transform: rotate(90deg);
             }
-            
+
+            .submenu {
+                position: static;
+                display: none;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+                margin-left: 20px;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-in-out;
+            }
+
+            .has-submenu.active .submenu {
+                max-height: 500px;
+            }
+
+            .submenu-toggle i.fa-chevron-down {
+                transition: transform 0.3s ease;
+            }
+
+            .has-submenu.active .submenu-toggle i.fa-chevron-down {
+                transform: rotate(180deg);
+            }
+
             .page-title h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
-            .education-content {
-                padding: 20px;
-            }
-            
-            .portfolio-gallery {
+            .course-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .social-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
             }
         }
 
         /* 动画效果 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .fade-in {
             animation: fadeIn 0.8s ease forwards;
             opacity: 0;
         }
-        
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-        .delay-4 { animation-delay: 0.8s; }
-        
-        /* 设计元素 */
-        .design-element {
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        /* 新增开发提示模态框样式 */
+        .dev-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        .dev-modal-content {
             position: absolute;
-            z-index: 1;
-            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
-        
-        .circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 8px solid #4facfe;
-            top: 10%;
-            right: 5%;
+
+        .dev-modal-icon {
+            font-size: 5rem;
+            color: #4facfe;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
         }
-        
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 80px solid transparent;
-            border-right: 80px solid transparent;
-            border-bottom: 140px solid #00f2fe;
-            bottom: 10%;
-            left: 5%;
-            transform: rotate(45deg);
+
+        .dev-modal h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #333;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dev-modal p {
+            font-size: 1.2rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .dev-modal-button {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .dev-modal-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.6);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -567,15 +628,23 @@
     <!-- 粒子背景 -->
     <div id="particles-js"></div>
     
-    <!-- 设计装饰元素 -->
-    <div class="design-element circle"></div>
-    <div class="design-element triangle"></div>
-    
+    <!-- 新增开发提示模态框 -->
+    <div id="devModal" class="dev-modal">
+        <div class="dev-modal-content">
+            <div class="dev-modal-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h2>页面开发中</h2>
+            <p>这个页面正在积极开发中，我正在努力为您打造更好的体验。请以后再来看看吧！</p>
+            <button class="dev-modal-button" id="closeDevModal">好的，我知道了</button>
+        </div>
+    </div>
+
     <div class="container">
         <!-- 头部导航 -->
         <header>
             <div class="logo fade-in">
-                <i class="fas fa-palette"></i>艺术设计
+                <i class="fas fa-user-astronaut"></i>刘焱的个人网站
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
@@ -585,7 +654,7 @@
                 <ul>
                     <li class="fade-in delay-1"><a href="index.html"><i class="fas fa-home"></i>首页</a></li>
                     <li class="has-submenu fade-in delay-2">
-                        <a href="#"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="submenu-toggle"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
                             <li><a href="personal_info.html"><i class="fas fa-id-card"></i>基本信息</a></li>
                             <li><a href="education.html" class="active"><i class="fas fa-graduation-cap"></i>教育背景</a></li>
@@ -593,158 +662,70 @@
                         </ul>
                     </li>
                     <li class="has-submenu fade-in delay-3">
-                        <a href="#"><i class="fas fa-project-diagram"></i>设计项目 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="submenu-toggle"><i class="fas fa-project-diagram"></i>我的项目 <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                             <li><a href="product_design.html"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
-                            <li><a href="ui_design.html"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
-                            <li><a href="industrial_design.html"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
                         </ul>
                     </li>
-                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-images"></i>作品集</a></li>
-                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a></li>
+                    <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
                 </ul>
             </nav>
         </header>
-        
+
         <!-- 页面标题 -->
         <div class="page-title fade-in">
-            <h1><i class="fas fa-graduation-cap"></i> 教育背景 - 产品设计专业</h1>
+            <h1><i class="fas fa-graduation-cap"></i> 教育背景</h1>
+            <p>我的学习经历与专业发展历程</p>
         </div>
-        
-        <!-- 教育内容 -->
-        <div class="education-content fade-in delay-1">
-            <div class="school-header">
-                <div class="school-logo">
-                    <i class="fas fa-university" style="font-size: 3rem; color: #4facfe;"></i>
-                </div>
-                <div class="school-info">
-                    <h2>广东科学技术职业学院</h2>
-                    <h3>艺术学院 | 产品设计专业</h3>
-                    <div class="date">2020年9月 - 2023年6月</div>
-                </div>
-            </div>
-            
-            <div class="education-details">
-                <div class="education-section">
-                    <h3><i class="fas fa-book-open"></i> 专业学习经历</h3>
-                    <p>在广东科学技术职业学院艺术学院产品设计专业学习期间，我系统学习了产品设计的基础理论和实践技能。通过理论课程与工作室实践相结合的方式，培养了创新思维和设计表达能力。</p>
-                    <p>在校期间积极参与各类设计工作坊和项目实践，掌握了从概念构思到产品原型制作的全流程设计方法。通过实习和校企合作项目，将设计理念转化为实际产品解决方案。</p>
-                </div>
-                
-                <div class="education-section">
-                    <h3><i class="fas fa-drafting-compass"></i> 专业技能</h3>
-                    <div class="skills-list">
-                        <div class="skill-item">
-                            <i class="fas fa-pencil-ruler"></i>
-                            <h4>设计手绘</h4>
-                            <p>快速表现与概念草图</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-cube"></i>
-                            <h4>3D建模</h4>
-                            <p>Rhino, Fusion 360</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-paint-brush"></i>
-                            <h4>视觉设计</h4>
-                            <p>Photoshop, Illustrator</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-mobile-alt"></i>
-                            <h4>UI/UX设计</h4>
-                            <p>Figma, Adobe XD</p>
-                        </div>
+
+        <!-- 教育信息卡片 -->
+        <div class="education-section fade-in">
+            <div class="education-card">
+                <div class="university-info">
+                    <h3>广东科学技术职业学校</h3>
+                    <h4>艺术学院产品设计专业</h4>
+                    <p>
+                        主修产品设计原理、设计表现技法、材料与工艺、人机工程学等专业课程。
+                        在校期间积极参与各类设计项目，不断提升专业技能和创意思维。
+                    </p>
+                    <div class="badges">
+                        <span class="badge">在校大学生</span>
+                        <span class="badge">足协社团负责人</span>
+                        <span class="badge">全勤学生</span>
                     </div>
                 </div>
                 
-                <div class="education-section">
-                    <h3><i class="fas fa-book"></i> 核心课程</h3>
-                    <div class="skills-list">
-                        <div class="skill-item">
-                            <i class="fas fa-lightbulb"></i>
-                            <h4>设计思维</h4>
-                            <p>创新方法与流程</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-shapes"></i>
-                            <h4>产品造型</h4>
-                            <p>形态研究与设计</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-users"></i>
-                            <h4>用户研究</h4>
-                            <p>用户需求分析</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-industry"></i>
-                            <h4>材料工艺</h4>
-                            <p>材料特性与应用</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-cogs"></i>
-                            <h4>人机工程</h4>
-                            <p>产品与人的关系</p>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fas fa-project-diagram"></i>
-                            <h4>设计管理</h4>
-                            <p>项目流程与协作</p>
-                        </div>
+                <h2><i class="fas fa-book-open"></i> 专业课程学习</h2>
+                
+                <div class="course-grid">
+                    <div class="course-item">
+                        <h4><i class="fas fa-pencil-ruler"></i> 设计基础</h4>
+                        <p>学习设计素描、色彩构成等基础课程</p>
                     </div>
-                </div>
-                
-                <div class="education-section">
-                    <h3><i class="fas fa-trophy"></i> 设计实践与荣誉</h3>
-                    <p>在校期间积极参与设计竞赛和展览活动：</p>
-                    <ul style="padding-left: 40px; margin-top: 15px; color: #555; line-height: 1.7;">
-                        <li>参与"粤港澳大湾区青年设计大赛"并获得入围奖</li>
-                        <li>设计作品入选学院年度优秀作品展</li>
-                        <li>参与校企合作项目 - 智能家居产品设计</li>
-                        <li>获得校级"创意设计新星"称号</li>
-                        <li>组织班级设计作品分享会</li>
-                    </ul>
-                </div>
-                
-                <div class="education-section">
-                    <h3><i class="fas fa-gem"></i> 代表作品</h3>
-                    <div class="portfolio-gallery">
-                        <div class="portfolio-item">
-                            <div class="portfolio-image">
-                                <i class="fas fa-mug-hot" style="color: #4facfe;"></i>
-                            </div>
-                            <div class="portfolio-info">
-                                <h4>智能保温杯</h4>
-                                <p>温度显示与提醒功能</p>
-                            </div>
-                        </div>
-                        <div class="portfolio-item">
-                            <div class="portfolio-image">
-                                <i class="fas fa-headphones" style="color: #00f2fe;"></i>
-                            </div>
-                            <div class="portfolio-info">
-                                <h4>蓝牙耳机设计</h4>
-                                <p>人体工学与时尚结合</p>
-                            </div>
-                        </div>
-                        <div class="portfolio-item">
-                            <div class="portfolio-image">
-                                <i class="fas fa-lamp" style="color: #4facfe;"></i>
-                            </div>
-                            <div class="portfolio-info">
-                                <h4>创意台灯</h4>
-                                <p>可调节氛围照明</p>
-                            </div>
-                        </div>
+                    <div class="course-item">
+                        <h4><i class="fas fa-laptop"></i> 设计软件</h4>
+                        <p>掌握Photoshop、Illustrator等工具</p>
+                    </div>
+                    <div class="course-item">
+                        <h4><i class="fas fa-users"></i> 人机工程学</h4>
+                        <p>研究产品设计中的人体工学和用户体验</p>
+                    </div>
+                    <div class="course-item">
+                        <h4><i class="fas fa-lightbulb"></i> 产品设计原理</h4>
+                        <p>学习产品设计的理论基础和方法论</p>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- 页脚 -->
-        <footer class="fade-in delay-2">
-            <p>© 2023 个人主页 | 广东科学技术职业学院艺术学院</p>
+        <footer class="fade-in delay-1">
+            <p>© 2025 刘焱的个人主页 | 设计开发: deepseek/刘焱</p>
             <div class="social-links">
-                <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://github.com/steveliuyan" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
                 <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -757,37 +738,37 @@
         // 粒子背景配置
         particlesJS("particles-js", {
             particles: {
-                number: { 
-                    value: 80, 
-                    density: { 
-                        enable: true, 
-                        value_area: 800 
-                    } 
+                number: {
+                    value: 60, 
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
                 },
-                color: { 
-                    value: "#4facfe" 
+                color: {
+                    value: "#4facfe"
                 },
-                shape: { 
-                    type: "circle" 
+                shape: {
+                    type: "circle"
                 },
-                opacity: { 
-                    value: 0.5, 
-                    random: true 
+                opacity: {
+                    value: 0.8,
+                    random: true
                 },
-                size: { 
-                    value: 4, 
-                    random: true 
+                size: {
+                    value: 6,
+                    random: true
                 },
                 line_linked: {
                     enable: true,
-                    distance: 150,
+                    distance: 200, 
                     color: "#4facfe",
-                    opacity: 0.3,
-                    width: 1
+                    opacity: 0.5,
+                    width: 2
                 },
                 move: {
                     enable: true,
-                    speed: 1.5,
+                    speed: 1,
                     direction: "none",
                     random: true,
                     straight: false,
@@ -798,89 +779,195 @@
             interactivity: {
                 detect_on: "canvas",
                 events: {
-                    onhover: { 
-                        enable: true, 
-                        mode: "grab" 
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
                     },
-                    onclick: { 
-                        enable: true, 
-                        mode: "push" 
+                    onclick: {
+                        enable: true,
+                        mode: "push"
                     },
                     resize: true
                 },
                 modes: {
-                    grab: { 
-                        distance: 140, 
-                        line_linked: { 
-                            opacity: 0.5  
-                        } 
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.8
+                        }
                     },
-                    push: { 
-                        particles_nb: 4 
+                    push: {
+                        particles_nb: 4
                     }
                 }
             },
             retina_detect: true
         });
 
-        // 菜单交互
-        document.addEventListener('DOMContentLoaded', function() {
+        // 菜单交互 (确保在电脑端也能点击展开/收起)
+        document.addEventListener('DOMContentLoaded', function () {
             const menuToggle = document.getElementById('menuToggle');
             const closeMenu = document.getElementById('closeMenu');
             const mainNav = document.getElementById('mainNav');
+            const navItems = document.querySelectorAll('nav a:not(.submenu-toggle)');
+            const submenuToggles = document.querySelectorAll('.submenu-toggle');
+            const submenuItems = document.querySelectorAll('.submenu a');
             
-            menuToggle.addEventListener('click', function() {
-                mainNav.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            // 开发提示模态框相关
+            const devModal = document.getElementById('devModal');
+            const closeDevModal = document.getElementById('closeDevModal');
+            const devLinks = document.querySelectorAll('.dev-link');
+
+            // 显示开发提示模态框
+            function showDevModal() {
+                devModal.style.display = "block";
+                setTimeout(() => {
+                    devModal.style.opacity = "1";
+                }, 10);
+            }
+
+            // 隐藏开发提示模态框
+            function hideDevModal() {
+                devModal.style.opacity = "0";
+                setTimeout(() => {
+                    devModal.style.display = "none";
+                }, 300);
+            }
+
+            // 为开发中链接添加事件
+            devLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showDevModal();
+                });
             });
-            
-            closeMenu.addEventListener('click', function() {
-                mainNav.classList.remove('active');
-                document.body.style.overflow = '';
+
+            // 关闭开发提示模态框
+            closeDevModal.addEventListener('click', hideDevModal);
+
+            // 点击模态框外部关闭
+            devModal.addEventListener('click', function(e) {
+                if (e.target === devModal) {
+                    hideDevModal();
+                }
             });
-            
-            // 点击菜单项关闭移动菜单（排除二级菜单项）
-            const navItems = document.querySelectorAll('nav a');
+
+            // 切换菜单显示状态
+            function toggleMenu() {
+                mainNav.classList.toggle('active');
+                document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+
+                // 控制菜单键的显示和隐藏
+                if (window.innerWidth <= 768) {
+                    menuToggle.style.display = mainNav.classList.contains('active') ? 'none' : 'block';
+                } else {
+                    menuToggle.style.display = 'none';
+                }
+            }
+
+            // 打开菜单
+            menuToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 关闭菜单
+            closeMenu.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 点击菜单项关闭移动菜单
             navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    // 如果是二级菜单项，不关闭菜单
-                    if (this.closest('.submenu')) {
-                        return;
+                item.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 768) {
+                        toggleMenu();
                     }
-                    
+                });
+            });
+
+            // 二级菜单展开控制 (电脑和移动端通用)
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const parent = this.parentElement;
+                    const isActive = parent.classList.contains('active');
+
+                    // 切换当前二级菜单
+                    if (isActive) {
+                        parent.classList.remove('active');
+                    } else {
+                        // 关闭所有二级菜单
+                        document.querySelectorAll('.has-submenu').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // 打开当前菜单
+                        parent.classList.add('active');
+                    }
+                });
+            });
+
+            // 阻止二级菜单项冒泡到父级菜单
+            submenuItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 768) {
+                        e.stopPropagation();
+                        // 在移动端点击二级菜单项后关闭整个菜单
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 点击菜单外部关闭菜单
+            document.addEventListener('click', function (e) {
+                // 检查点击的是否是菜单内部
+                const isClickInsideMenu = mainNav.contains(e.target) || 
+                                        menuToggle.contains(e.target) || 
+                                        e.target.classList.contains('submenu-toggle');
+                
+                // 如果点击在菜单外部，关闭所有菜单
+                if (!isClickInsideMenu) {
+                    // 关闭主菜单（移动端）
                     if (window.innerWidth <= 768) {
                         mainNav.classList.remove('active');
-                        document.body.style.overflow = '';
                     }
-                });
-            });
-            
-            // 移动端二级菜单展开控制
-            const hasSubmenuItems = document.querySelectorAll('.has-submenu > a');
-            hasSubmenuItems.forEach(item => {
-                item.addEventListener('click', function(e) {
+                    
+                    // 关闭所有二级菜单
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // 重置滚动状态
+                    document.body.style.overflow = '';
+                    
+                    // 显示菜单按钮（移动端）
                     if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                        const parent = this.parentElement;
-                        
-                        // 关闭其他二级菜单
-                        document.querySelectorAll('.has-submenu').forEach(el => {
-                            if (el !== parent) {
-                                el.classList.remove('active');
-                            }
-                        });
-                        
-                        // 切换当前二级菜单
-                        parent.classList.toggle('active');
+                        menuToggle.style.display = 'block';
                     }
-                });
+                }
             });
-            
+
+            // 窗口大小改变时重置菜单状态
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    mainNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    menuToggle.style.display = 'none';
+                } else {
+                    menuToggle.style.display = 'block';
+                }
+            });
+
             // 自动应用淡入效果
             document.querySelectorAll('.fade-in').forEach(el => {
                 el.style.opacity = 0;
             });
-            
+
             setTimeout(() => {
                 document.querySelectorAll('.fade-in').forEach(el => {
                     el.style.animationPlayState = 'running';

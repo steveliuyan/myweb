@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>基本信息 - 张明的个人主页</title>
+    <title>基本信息 - 刘焱的个人主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
@@ -119,6 +119,12 @@
             border: 1px solid transparent;
         }
 
+        nav a.active {
+            background: rgba(79, 172, 254, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.15);
+        }
+
         nav a:hover {
             background: rgba(79, 172, 254, 0.1);
             border: 1px solid rgba(79, 172, 254, 0.3);
@@ -128,13 +134,6 @@
 
         nav a i {
             margin-right: 8px;
-        }
-
-        /* 当前页面高亮 */
-        nav a.active {
-            background: rgba(79, 172, 254, 0.15);
-            border: 1px solid rgba(79, 172, 254, 0.4);
-            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
         }
 
         /* 二级菜单 */
@@ -151,14 +150,15 @@
             z-index: 100;
             border: 1px solid rgba(79, 172, 254, 0.3);
             transform: translateY(10px);
-            transition: all 0.3s ease;
-            opacity: 0;
+            transition: all 0.5s ease;
+            max-height: 0;
+            overflow: hidden;
         }
 
-        .has-submenu:hover .submenu {
+        .has-submenu.active .submenu {
             display: block;
             transform: translateY(0);
-            opacity: 1;
+            max-height: 500px;
         }
 
         .submenu li {
@@ -174,10 +174,26 @@
             box-shadow: none;
         }
 
+        .submenu a.active {
+            color: #4facfe;
+            font-weight: 600;
+            background: rgba(79, 172, 254, 0.1);
+        }
+
         .submenu a:hover {
             color: #4facfe;
             transform: translateX(5px);
             box-shadow: none;
+        }
+
+        /* 箭头旋转动画 */
+        .submenu-toggle i.fa-chevron-down {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .has-submenu.active .submenu-toggle i.fa-chevron-down {
+            transform: rotate(180deg);
         }
 
         /* 页面标题 */
@@ -185,78 +201,161 @@
             text-align: center;
             margin: 40px 0 30px;
             position: relative;
-            perspective: 1000px;
+            padding-bottom: 20px;
         }
 
         .page-title h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            display: inline-block;
-            padding: 0 20px;
-            transform: rotateX(10deg);
-            transition: all 0.5s ease;
-        }
-
-        .page-title:hover h1 {
-            transform: rotateX(0) scale(1.05);
+            margin-bottom: 15px;
         }
 
         .page-title::after {
-            content: "";
+            content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
+            width: 100px;
             height: 4px;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
             border-radius: 2px;
-            transition: all 0.5s ease;
         }
 
-        .page-title:hover::after {
-            width: 120px;
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
+        /* 基本信息区域 */
+        .info-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 50px;
         }
 
-        /* 基本信息卡片 */
-        .info-card {
+        @media (max-width: 768px) {
+            .info-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-card {
             background: rgba(255, 255, 255, 0.92);
             border-radius: 15px;
-            padding: 40px;
+            padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(79, 172, 254, 0.3);
             transition: all 0.3s ease;
-            max-width: 900px;
-            margin: 0 auto;
-            animation: float 6s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        .info-card:hover {
+        .profile-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             border: 1px solid rgba(79, 172, 254, 0.5);
         }
 
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #4facfe;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+            overflow: hidden;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(79, 172, 254, 0.4);
+        }
+
+        .profile-info h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-info h2 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        /* 详细信息 */
+        .info-details {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .info-details:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.5);
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-section h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-section h3 i {
+            margin-right: 12px;
+        }
+
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .info-item {
-            display: flex;
-            align-items: flex-start;
             padding: 20px;
             background: rgba(79, 172, 254, 0.05);
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            border-radius: 10px;
             border: 1px solid rgba(79, 172, 254, 0.1);
-            animation: fadeInUp 0.8s ease-out;
+            transition: all 0.3s ease;
         }
 
         .info-item:hover {
@@ -266,93 +365,105 @@
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
         }
 
-        .info-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #4facfe, #00f2fe);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            font-size: 1.5rem;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            flex-shrink: 0;
-            transition: transform 0.3s ease;
-        }
-
-        .info-item:hover .info-icon {
-            transform: scale(1.1) rotate(10deg);
-        }
-
-        .info-content h3 {
-            font-size: 1.2rem;
+        .info-item h4 {
+            font-size: 1.1rem;
             color: #4facfe;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
         }
 
-        .info-content p {
-            font-size: 1.1rem;
+        .info-item h4 i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .info-item p {
             color: #555;
             line-height: 1.6;
+            font-size: 1.05rem;
         }
 
-        /* 个人简介区域 */
-        .bio-section {
-            margin-top: 40px;
-            padding: 30px;
+        .info-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: rgba(79, 172, 254, 0.1);
+            color: #4facfe;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: rgba(79, 172, 254, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* 设计理念部分 */
+        .design-philosophy {
             background: rgba(255, 255, 255, 0.85);
             border-radius: 15px;
-            border: 1px solid rgba(79, 172, 254, 0.2);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            animation: fadeInUp 1s ease-out;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
             position: relative;
             overflow: hidden;
         }
 
-        .bio-section::before {
+        .design-philosophy::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
-            width: 5px;
+            width: 8px;
             height: 100%;
             background: linear-gradient(to bottom, #4facfe, #00f2fe);
-            transition: width 0.5s ease;
         }
 
-        .bio-section:hover::before {
-            width: 8px;
-        }
-
-        .bio-section h2 {
-            font-size: 1.8rem;
+        .design-philosophy h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
             color: #4facfe;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(79, 172, 254, 0.2);
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
         }
 
-        .bio-section:hover h2 {
-            letter-spacing: 0.5px;
-            color: #00a6ff;
+        .design-philosophy h3 i {
+            margin-right: 12px;
         }
 
-        .bio-section p {
-            font-size: 1.1rem;
+        .philosophy-content {
+            padding-left: 20px;
+        }
+
+        .philosophy-content p {
+            color: #555;
             line-height: 1.8;
-            color: #444;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            position: relative;
+            padding-left: 25px;
         }
 
-        .bio-section:hover p {
-            color: #333;
+        .philosophy-content p::before {
+            content: "•";
+            color: #4facfe;
+            font-weight: bold;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
         }
 
-        /* 页脚 */
+        /* 页脚 - 与主页完全一致 */
         footer {
             text-align: center;
             padding: 25px;
@@ -363,7 +474,6 @@
             background: rgba(255, 255, 255, 0.8);
             border-radius: 15px;
             backdrop-filter: blur(5px);
-            animation: fadeInUp 1.2s ease-out;
         }
 
         .social-links {
@@ -393,28 +503,11 @@
         }
 
         /* 响应式设计 */
-        @media (max-width: 900px) {
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            nav ul {
-                flex-direction: column;
-            }
-            
-            .has-submenu .submenu {
-                position: static;
-                box-shadow: none;
-                background: rgba(255, 255, 255, 0.7);
-                transform: none;
-            }
-        }
-
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
             }
-            
+
             nav {
                 position: fixed;
                 top: 0;
@@ -426,68 +519,106 @@
                 transition: right 0.4s ease;
                 z-index: 999;
             }
-            
+
             nav.active {
                 right: 0;
             }
-            
+
             nav ul {
                 flex-direction: column;
             }
-            
+
             nav li {
                 margin: 10px 0;
             }
-            
+
             .close-menu {
                 position: absolute;
                 top: 20px;
-                right: 20px;
+                left: 20px;
                 font-size: 1.8rem;
                 cursor: pointer;
                 color: #4facfe;
                 transition: transform 0.3s ease;
             }
-            
+
             .close-menu:hover {
                 transform: rotate(90deg);
             }
-            
+
+            .submenu {
+                position: static;
+                display: none;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+                margin-left: 20px;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-in-out;
+            }
+
+            .has-submenu.active .submenu {
+                max-height: 500px;
+            }
+
+            .submenu-toggle i.fas.fa-chevron-down {
+                transition: transform 0.3s ease;
+            }
+
+            .has-submenu.active .submenu-toggle i.fas.fa-chevron-down {
+                transform: rotate(180deg);
+            }
+
             .page-title h1 {
                 font-size: 2.2rem;
             }
-            
-            .info-card {
-                padding: 25px;
+
+            .profile-img {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-info h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .social-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-item {
+                padding: 15px;
             }
         }
 
         /* 动画效果 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
-            }
-        }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
             }
         }
 
@@ -495,22 +626,128 @@
             animation: fadeIn 0.8s ease forwards;
             opacity: 0;
         }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
         
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-        .delay-4 { animation-delay: 0.8s; }
+        /* 开发提示模态框样式 */
+        .dev-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        .dev-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .dev-modal-icon {
+            font-size: 5rem;
+            color: #4facfe;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .dev-modal h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #333;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dev-modal p {
+            font-size: 1.2rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .dev-modal-button {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .dev-modal-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.6);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body>
     <!-- 粒子背景 -->
     <div id="particles-js"></div>
     
+    <!-- 开发提示模态框 -->
+    <div id="devModal" class="dev-modal">
+        <div class="dev-modal-content">
+            <div class="dev-modal-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h2>页面开发中</h2>
+            <p>这个页面正在积极开发中，我们正在努力为您打造更好的体验。请稍后再来看看吧！</p>
+            <button class="dev-modal-button" id="closeDevModal">好的，我知道了</button>
+        </div>
+    </div>
+
     <div class="container">
         <!-- 头部导航 -->
         <header>
             <div class="logo fade-in">
-                <i class="fas fa-user-astronaut"></i>个人空间
+                <i class="fas fa-user-astronaut"></i>刘焱的个人网站
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
@@ -520,7 +757,7 @@
                 <ul>
                     <li class="fade-in delay-1"><a href="index.html"><i class="fas fa-home"></i>首页</a></li>
                     <li class="has-submenu fade-in delay-2">
-                        <a href="#" class="active"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="submenu-toggle"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
                             <li><a href="personal_info.html" class="active"><i class="fas fa-id-card"></i>基本信息</a></li>
                             <li><a href="education.html"><i class="fas fa-graduation-cap"></i>教育背景</a></li>
@@ -528,103 +765,145 @@
                         </ul>
                     </li>
                     <li class="has-submenu fade-in delay-3">
-                        <a href="#"><i class="fas fa-project-diagram"></i>我的项目 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="submenu-toggle"><i class="fas fa-project-diagram"></i>我的项目 <i class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                             <li><a href="product_design.html"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
-                            <li><a href="ui_design.html"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
-                            <li><a href="industrial_design.html"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
                         </ul>
                     </li>
-                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-images"></i>作品集</a></li>
-                    <li class="fade-in delay-4"><a href="#"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a></li>
+                    <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
                 </ul>
             </nav>
         </header>
-        
+
         <!-- 页面标题 -->
         <div class="page-title fade-in">
-            <h1><i class="fas fa-id-card"></i> 基本信息</h1>
+            <h1><i class="fas fa-user-circle"></i> 基本信息</h1>
+            <p>探索我的个人背景与专业能力</p>
         </div>
-        
-        <!-- 基本信息卡片 -->
-        <div class="info-card fade-in delay-1">
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-user"></i>
+
+        <!-- 基本信息区域 - 等高布局 -->
+        <div class="info-container">
+            <!-- 个人资料卡片 -->
+            <div class="profile-card fade-in">
+                <div class="profile-header">
+                    <div class="profile-img">
+						<!--头像-->
+						<img src="https://img.picui.cn/free/2025/06/30/6862614dc6020.png" alt="头像200px.jpg" title="头像200px.jpg" />
+                        <i class="#"></i>
                     </div>
-                    <div class="info-content">
-                        <h3>姓名</h3>
-                        <p>张明</p>
+                    <div class="profile-info">
+                        <h1>刘焱</h1>
+                        <h2>产品设计师</h2>
+                        <p>广东科学技术职业学校</p>
+                        <p>艺术学院产品专业</p>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3><i class="fas fa-lightbulb"></i> 关于我</h3>
+                    <div class="info-item">
+                        <p>
+                            这里可以不用看
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <!--此处写内容-->
+                        </p>
                     </div>
                 </div>
                 
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-birthday-cake"></i>
-                    </div>
-                    <div class="info-content">
-                        <h3>年龄</h3>
-                        <p>32岁</p>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="info-content">
-                        <h3>所在地</h3>
-                        <p>北京市海淀区</p>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <div class="info-content">
-                        <h3>职业</h3>
-                        <p>高级全栈开发工程师</p>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="info-content">
-                        <h3>公司</h3>
-                        <p>科技创新有限公司</p>
-                    </div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-language"></i>
-                    </div>
-                    <div class="info-content">
-                        <h3>语言</h3>
-                        <p>中文（母语）、英语（流利）</p>
+                <div class="info-section">
+                    <h3><i class="fas fa-trophy"></i> 个人成就</h3>
+                    <div class="info-item">
+                        <p>
+                            • 2022年南城街道第七届阳光少年
+                        </p>
+                        <p style="margin-top: 10px;">
+                            • 2023年校优秀毕业生
+                        </p>
+                        <p style="margin-top: 10px;">
+                            <!--• 参与设计中国公共设施改造项目-->
+                        </p>
                     </div>
                 </div>
             </div>
-            
-            <!-- 个人简介 -->
-            <div class="bio-section fade-in delay-2">
-                <h2><i class="fas fa-user-circle"></i> 个人简介</h2>
-                <p>我是一名拥有8年经验的高级全栈开发工程师，专注于创建高性能、用户友好的Web应用。在科技创新有限公司担任技术主管，负责领导开发团队实现产品创新和技术突破。</p>
-                <p>我的技术专长涵盖前端框架（React、Vue）和后端技术（Node.js、Python），同时具备优秀的UI/UX设计能力。擅长解决复杂技术问题，优化系统性能，并确保代码质量和可维护性。</p>
-                <p>在职业生涯中，我成功主导了多个大型项目，包括电商平台重构、企业级管理系统开发以及移动应用后端架构设计。这些项目不仅提升了用户体验，也为公司带来了显著的业务增长。</p>
-                <p>我始终保持着对新技术的好奇心和学习的热情，积极参与技术社区，定期在技术博客分享开发经验。我相信通过技术创新可以解决实际问题，创造更大的社会价值。</p>
+
+            <!-- 详细信息 -->
+            <div class="info-details fade-in delay-1">
+                <div class="info-section">
+                    <h3><i class="fas fa-star"></i> 专业技能</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <h4><i class="fas fa-drafting-compass"></i> 设计软件</h4>
+                            <p>熟练掌握 Photoshop, 基础等设计工具</p>
+                        </div>
+                        <div class="info-item">
+                            <h4><i class="fas fa-cube"></i> 3D建模</h4>
+                            <p>精通 Rhino基础等3D建模软件</p>
+                        </div>
+                        <div class="info-item">
+                            <h4><i class="fas fa-paint-brush"></i> 手绘能力</h4>
+                            <p>具备基础的手绘功底和正常表达能力</p>
+                        </div>
+                        <div class="info-item">
+                            <h4><i class="fas fa-users"></i> 用户研究</h4>
+                            <p>熟练掌握被用户调研、被用户画像、被用户体验地图等方法</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-tags">
+                        <span class="tag">产品造型设计</span>
+                        <span class="tag">用户体验设计</span>
+                        <span class="tag">材料与工艺</span>
+                        <span class="tag">设计思维</span>
+                        <span class="tag">模型制作</span>
+                        <span class="tag">设计称述</span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h3><i class="fas fa-heart"></i> 兴趣爱好</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <h4><i class="fas fa-futbol"></i> 足球</h4>
+                            <p>课余时间休闲运动</p>
+                        </div>
+                        <div class="info-item">
+                            <h4><i class="fas fa-camera"></i> 摄影</h4>
+                            <p>人物自然摄影</p>
+                        </div>
+                        <div class="info-item">
+                            <h4><i class="fas fa-book"></i> 阅读</h4>
+                            <p>通读番茄小说</p>
+                        </div>
+                        <div class="info-item">
+                            <h4><i class="fas fa-music"></i> 音乐</h4>
+                            <p>applemusic忠实用户</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <!-- 页脚 -->
+
+        <!-- 设计理念 -->
+        <div class="design-philosophy fade-in delay-2">
+            <h3><i class="fas fa-quote-left"></i> 我的设计理念</h3>
+            <div class="philosophy-content">
+                <p>设计是解决问题的艺术，形式追随功能，但也不应忽视美学的力量。</p>
+                <p>每一个产品都应该是用户需求的完美表达，同时带给用户愉悦的体验。</p>
+                <p>好的设计应当兼顾实用性和艺术性，在满足功能需求的同时提升生活品质。</p>
+                <p>创新源于对生活的细致观察和对用户需求的深入理解。</p>
+                <p>可持续性是现代设计不可或缺的重要考量因素。</p>
+            </div>
+        </div>
+
+        <!-- 页脚 - 与主页完全一致的社交媒体栏 -->
         <footer class="fade-in delay-3">
-            <p>© 2023 个人主页 | 设计开发: 张明</p>
+            <p>© 2025 刘焱的个人主页 | 设计开发: deepseek</p>
             <div class="social-links">
-                <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://github.com/steveliuyan" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
                 <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -634,33 +913,33 @@
     </div>
 
     <script>
-        // 增强粒子背景配置
+        // 粒子背景配置
         particlesJS("particles-js", {
             particles: {
-                number: { 
-                    value: 120, 
-                    density: { 
-                        enable: true, 
-                        value_area: 800 
-                    } 
+                number: {
+                    value: 60, 
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
                 },
-                color: { 
-                    value: "#4facfe" 
+                color: {
+                    value: "#4facfe"
                 },
-                shape: { 
-                    type: "circle" 
+                shape: {
+                    type: "circle"
                 },
-                opacity: { 
-                    value: 0.8, 
-                    random: true 
+                opacity: {
+                    value: 0.8,
+                    random: true
                 },
-                size: { 
-                    value: 6, 
-                    random: true 
+                size: {
+                    value: 6,
+                    random: true
                 },
                 line_linked: {
                     enable: true,
-                    distance: 150,
+                    distance: 200, 
                     color: "#4facfe",
                     opacity: 0.5,
                     width: 2
@@ -678,111 +957,193 @@
             interactivity: {
                 detect_on: "canvas",
                 events: {
-                    onhover: { 
-                        enable: true, 
-                        mode: "grab" 
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
                     },
-                    onclick: { 
-                        enable: true, 
-                        mode: "push" 
+                    onclick: {
+                        enable: true,
+                        mode: "push"
                     },
                     resize: true
                 },
                 modes: {
-                    grab: { 
-                        distance: 140, 
-                        line_linked: { 
-                            opacity: 0.8  
-                        } 
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.8
+                        }
                     },
-                    push: { 
-                        particles_nb: 4 
+                    push: {
+                        particles_nb: 4
                     }
                 }
             },
             retina_detect: true
         });
 
-        // 菜单交互
-        document.addEventListener('DOMContentLoaded', function() {
+        // 菜单交互 (确保在电脑端也能点击展开/收起)
+        document.addEventListener('DOMContentLoaded', function () {
             const menuToggle = document.getElementById('menuToggle');
             const closeMenu = document.getElementById('closeMenu');
             const mainNav = document.getElementById('mainNav');
-            
-            menuToggle.addEventListener('click', function() {
-                mainNav.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            const navItems = document.querySelectorAll('nav a:not(.submenu-toggle)');
+            const submenuToggles = document.querySelectorAll('.submenu-toggle');
+            const submenuItems = document.querySelectorAll('.submenu a');
+            const devModal = document.getElementById('devModal');
+            const closeDevModal = document.getElementById('closeDevModal');
+            const devLinks = document.querySelectorAll('.dev-link');
+
+            // 显示开发提示模态框
+            function showDevModal() {
+                devModal.style.display = "block";
+                setTimeout(() => {
+                    devModal.style.opacity = "1";
+                }, 10);
+            }
+
+            // 隐藏开发提示模态框
+            function hideDevModal() {
+                devModal.style.opacity = "0";
+                setTimeout(() => {
+                    devModal.style.display = "none";
+                }, 300);
+            }
+
+            // 为开发中链接添加事件
+            devLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showDevModal();
+                });
             });
+
+            // 关闭开发提示模态框
+            closeDevModal.addEventListener('click', hideDevModal);
             
-            closeMenu.addEventListener('click', function() {
-                mainNav.classList.remove('active');
-                document.body.style.overflow = '';
+            // 点击模态框外部关闭
+            devModal.addEventListener('click', function(e) {
+                if (e.target === devModal) {
+                    hideDevModal();
+                }
             });
-            
-           // 点击菜单项关闭移动菜单（排除二级菜单项）
-            const navItems = document.querySelectorAll('nav a');
+
+            // 切换菜单显示状态
+            function toggleMenu() {
+                mainNav.classList.toggle('active');
+                document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+
+                // 控制菜单键的显示和隐藏
+                if (window.innerWidth <= 768) {
+                    menuToggle.style.display = mainNav.classList.contains('active') ? 'none' : 'block';
+                } else {
+                    menuToggle.style.display = 'none';
+                }
+            }
+
+            // 打开菜单
+            menuToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 关闭菜单
+            closeMenu.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 点击菜单项关闭移动菜单
             navItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    // 如果是二级菜单项，不关闭菜单
-                    if (this.closest('.submenu')) {
-                        return;
+                item.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 768) {
+                        toggleMenu();
                     }
-                    
+                });
+            });
+
+            // 二级菜单展开控制 (电脑和移动端通用)
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const parent = this.parentElement;
+                    const isActive = parent.classList.contains('active');
+
+                    // 切换当前二级菜单
+                    if (isActive) {
+                        parent.classList.remove('active');
+                    } else {
+                        // 关闭所有二级菜单
+                        document.querySelectorAll('.has-submenu').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // 打开当前菜单
+                        parent.classList.add('active');
+                    }
+                });
+            });
+
+            // 阻止二级菜单项冒泡到父级菜单
+            submenuItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 768) {
+                        e.stopPropagation();
+                        // 在移动端点击二级菜单项后关闭整个菜单
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 点击菜单外部关闭菜单
+            document.addEventListener('click', function (e) {
+                // 检查点击的是否是菜单内部
+                const isClickInsideMenu = mainNav.contains(e.target) || 
+                                        menuToggle.contains(e.target) || 
+                                        e.target.classList.contains('submenu-toggle');
+                
+                // 如果点击在菜单外部，关闭所有菜单
+                if (!isClickInsideMenu) {
+                    // 关闭主菜单（移动端）
                     if (window.innerWidth <= 768) {
                         mainNav.classList.remove('active');
-                        document.body.style.overflow = '';
                     }
-                });
-            });
-            
-            // 移动端二级菜单展开控制
-            const hasSubmenuItems = document.querySelectorAll('.has-submenu > a');
-            hasSubmenuItems.forEach(item => {
-                item.addEventListener('click', function(e) {
+                    
+                    // 关闭所有二级菜单
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // 重置滚动状态
+                    document.body.style.overflow = '';
+                    
+                    // 显示菜单按钮（移动端）
                     if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                        const parent = this.parentElement;
-                        
-                        // 关闭其他二级菜单
-                        document.querySelectorAll('.has-submenu').forEach(el => {
-                            if (el !== parent) {
-                                el.classList.remove('active');
-                            }
-                        });
-                        
-                        // 切换当前二级菜单
-                        parent.classList.toggle('active');
+                        menuToggle.style.display = 'block';
                     }
-                });
+                }
             });
-            
-            // 二级菜单触摸支持
-            const hasSubmenu = document.querySelectorAll('.has-submenu');
-            hasSubmenu.forEach(item => {
-                item.addEventListener('touchstart', function(e) {
-                    if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                        const submenu = this.querySelector('.submenu');
-                        const isActive = submenu.style.display === 'block';
-                        
-                        // 关闭所有子菜单
-                        document.querySelectorAll('.submenu').forEach(sm => {
-                            sm.style.display = 'none';
-                        });
-                        
-                        // 切换当前子菜单
-                        if (!isActive) {
-                            submenu.style.display = 'block';
-                        }
-                    }
-                });
+
+            // 窗口大小改变时重置菜单状态
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    mainNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    menuToggle.style.display = 'none';
+                } else {
+                    menuToggle.style.display = 'block';
+                }
             });
-            
+
             // 自动应用淡入效果
             document.querySelectorAll('.fade-in').forEach(el => {
                 el.style.opacity = 0;
             });
-            
+
             setTimeout(() => {
                 document.querySelectorAll('.fade-in').forEach(el => {
                     el.style.animationPlayState = 'running';

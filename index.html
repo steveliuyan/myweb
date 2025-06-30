@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人主页 - 清新蓝专业版</title>
+    <title>刘焱的个人主页 </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
+        /* 原有的样式保持不变 */
         * {
             margin: 0;
             padding: 0;
@@ -144,12 +146,19 @@
             z-index: 100;
             border: 1px solid rgba(79, 172, 254, 0.3);
             transform: translateY(10px);
-            transition: transform 0.3s ease;
+            transition: all 0.5s ease;
+            /* 修改过渡时间 */
+            max-height: 0;
+            /* 添加最大高度 */
+            overflow: hidden;
+            /* 隐藏溢出内容 */
         }
 
-        .has-submenu:hover .submenu {
+        .has-submenu.active .submenu {
             display: block;
             transform: translateY(0);
+            max-height: 500px;
+            /* 设置最大高度 */
         }
 
         .submenu li {
@@ -169,6 +178,17 @@
             color: #4facfe;
             transform: translateX(5px);
             box-shadow: none;
+        }
+
+        /* 添加箭头旋转效果 */
+        .submenu-toggle i.fa-chevron-down {
+            transition: transform 0.3s ease;
+            margin-left: 8px;
+            font-size: 0.8em;
+        }
+
+        .has-submenu.active .submenu-toggle i.fa-chevron-down {
+            transform: rotate(180deg);
         }
 
         /* 主内容区域 */
@@ -302,6 +322,7 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.1);
+            cursor: pointer;
         }
 
         .qrcode-item::before {
@@ -444,11 +465,11 @@
             .main-content {
                 grid-template-columns: 1fr;
             }
-            
+
             nav ul {
                 flex-direction: column;
             }
-            
+
             .has-submenu .submenu {
                 position: static;
                 box-shadow: none;
@@ -461,7 +482,7 @@
             .menu-toggle {
                 display: block;
             }
-            
+
             nav {
                 position: fixed;
                 top: 0;
@@ -473,79 +494,349 @@
                 transition: right 0.4s ease;
                 z-index: 999;
             }
-            
+
             nav.active {
                 right: 0;
             }
-            
+
             nav ul {
                 flex-direction: column;
             }
-            
+
             nav li {
                 margin: 10px 0;
             }
-            
+
             .close-menu {
                 position: absolute;
                 top: 20px;
-                right: 20px;
+                left: 20px;
                 font-size: 1.8rem;
                 cursor: pointer;
                 color: #4facfe;
                 transition: transform 0.3s ease;
             }
-            
+
             .close-menu:hover {
                 transform: rotate(90deg);
             }
-            
+
             .profile-header {
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .profile-img {
                 margin: 0 auto 20px;
             }
-            
+
             .qrcode-section {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .qrcode-item {
                 width: 80%;
                 max-width: 250px;
+            }
+
+            /* 移动端二级菜单样式 */
+            .submenu {
+                position: static;
+                display: none;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+                margin-left: 20px;
+                /* 添加过渡效果 */
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-in-out;
+            }
+
+            .has-submenu.active .submenu {
+                /* 展开时设置最大高度 */
+                max-height: 500px;
+            }
+
+            /* 箭头样式 */
+            .submenu-toggle i.fas.fa-chevron-down {
+                transition: transform 0.3s ease;
+            }
+
+            .has-submenu.active .submenu-toggle i.fas.fa-chevron-down {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* 新增针对小屏幕设备底部社交媒体链接的媒体查询 */
+        @media (max-width: 480px) {
+            .social-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
             }
         }
 
         /* 动画效果 */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .fade-in {
             animation: fadeIn 0.8s ease forwards;
             opacity: 0;
         }
-        
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-        .delay-4 { animation-delay: 0.8s; }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        /* 自定义模态框样式 - 开发提示 */
+        .dev-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        .dev-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .dev-modal-icon {
+            font-size: 5rem;
+            color: #4facfe;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .dev-modal h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #333;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dev-modal p {
+            font-size: 1.2rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .dev-modal-button {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .dev-modal-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.6);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* 新增微信弹窗样式 */
+        .wechat-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .wechat-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 350px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: scaleIn 0.3s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-wechat {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-wechat:hover {
+            color: #ff0000;
+        }
+
+        .wechat-qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 1px solid #eee;
+        }
+
+        .wechat-modal h3 {
+            margin: 15px 0;
+            color: #4facfe;
+        }
+
+        .wechat-id {
+            background: #f0f8ff;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
     </style>
 </head>
+
 <body>
     <!-- 粒子背景 -->
     <div id="particles-js"></div>
-    
+
+    <!-- 开发提示模态框 -->
+    <div id="devModal" class="dev-modal">
+        <div class="dev-modal-content">
+            <div class="dev-modal-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h2>页面开发中</h2>
+            <p>这个页面正在积极开发中，我正在努力为您打造更好的体验。请以后再来看看吧！</p>
+            <button class="dev-modal-button" id="closeDevModal">好的，我知道了</button>
+        </div>
+    </div>
+
+    <!-- 微信弹窗 -->
+    <div id="wechatModal" class="wechat-modal">
+        <div class="wechat-modal-content">
+            <span class="close-wechat">&times;</span>
+            <h3>添加我的微信</h3>
+            <div class="wechat-qrcode">
+				<img src="https://img.picui.cn/free/2025/06/30/686255c498873.png" alt="微信二维码200px.png" title="微信二维码200px.png" />
+                <i class="#" style="font-size: 120px; color: #4facfe;"></i>
+            </div>
+            <p>扫描二维码或手动添加微信</p>
+            <div class="wechat-id">微信号: yan13268907139</div>
+            <button class="copy-btn" id="copyWechatBtn">复制微信号</button>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #888;">长按图片保存二维码</p>
+        </div>
+    </div>
+
     <div class="container">
         <!-- 头部导航 -->
         <header>
             <div class="logo fade-in">
-                <i class="fas fa-user-astronaut"></i>个人空间
+                <i class="fas fa-user-astronaut"></i>刘焱的个人网站
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
@@ -555,7 +846,8 @@
                 <ul>
                     <li class="fade-in delay-1"><a href="index.html"><i class="fas fa-home"></i>首页</a></li>
                     <li class="has-submenu fade-in delay-2">
-                        <a href="#"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="submenu-toggle"><i class="fas fa-user"></i>个人资料 <i
+                                class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
                             <li><a href="personal_info.html"><i class="fas fa-id-card"></i>基本信息</a></li>
                             <li><a href="education.html"><i class="fas fa-graduation-cap"></i>教育背景</a></li>
@@ -563,45 +855,50 @@
                         </ul>
                     </li>
                     <li class="has-submenu fade-in delay-3">
-                        <a href="#"><i class="fas fa-project-diagram"></i>我的项目 <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="submenu-toggle"><i class="fas fa-project-diagram"></i>我的项目 <i
+                                class="fas fa-chevron-down"></i></a>
                         <ul class="submenu">
-                            <li><a href="product_design.html"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
-                            <li><a href="ui_design.html"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
-                            <li><a href="industrial_design.html"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
+                            <li><a href="#" class="dev-link"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
                         </ul>
                     </li>
-                    <li class="fade-in delay-4"><a href="portfolio.html"><i class="fas fa-images"></i>作品集</a></li>
+                    <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a>
+                    </li>
                     <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
                 </ul>
             </nav>
         </header>
-        
+
         <!-- 主内容区域 -->
         <div class="main-content">
             <!-- 个人信息卡片 -->
             <div class="profile-card fade-in">
                 <div class="profile-header">
+                    <!-- 头像区域 -->
                     <div class="profile-img">
-                        <i class="fas fa-user"></i>
+                        <!-- 替换为您的头像图片 -->
+                        <img src="https://img.picui.cn/free/2025/06/30/6862578cd187c.png" alt="头像" class="avatar-img">
+                        <i class="#"></i>
                     </div>
                     <div class="profile-info">
-                        <h1>张明</h1>
-                        <h2>高级全栈开发工程师</h2>
+                        <h1>刘焱</h1>
+                        <h2>在校大学生</h2>
                     </div>
                 </div>
-                
+
                 <div class="contact-info">
                     <!-- 电话链接 -->
-                    <a href="tel:13888888888" class="contact-item" style="text-decoration: none; color: inherit;">
+                    <a href="tel:13268907139" class="contact-item" style="text-decoration: none; color: inherit;">
                         <div class="contact-icon">
                             <i class="fas fa-phone-alt"></i>
                         </div>
                         <div>
                             <h3>联系电话</h3>
-                            <p>138-8888-8888</p>
+                            <p>132-6890-7139</p>
                         </div>
                     </a>
-                    
+
                     <!-- 微信 -->
                     <div class="contact-item">
                         <div class="contact-icon">
@@ -609,10 +906,10 @@
                         </div>
                         <div>
                             <h3>微信</h3>
-                            <p>ZhangMing-Tech</p>
+                            <p>yan13268907139</p>
                         </div>
                     </div>
-                    
+
                     <!-- QQ -->
                     <div class="contact-item">
                         <div class="contact-icon">
@@ -620,110 +917,112 @@
                         </div>
                         <div>
                             <h3>QQ</h3>
-                            <p>88888888</p>
+                            <p>2021250388</p>
                         </div>
                     </div>
-                    
+
                     <!-- 邮箱链接 -->
-                    <a href="mailto:zhangming@example.com" class="contact-item" style="text-decoration: none; color: inherit;">
+                    <a href="mailto:2021250388@qq.com" class="contact-item"
+                        style="text-decoration: none; color: inherit;">
                         <div class="contact-icon">
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div>
                             <h3>电子邮箱</h3>
-                            <p>zhangming@example.com</p>
+                            <p>2021250388@qq.com</p>
                         </div>
                     </a>
-                    
+
                     <!-- 二维码区域 -->
                     <div class="qrcode-section">
                         <!-- 微信二维码 -->
-                        <div class="qrcode-item">
+                        <div class="qrcode-item" id="wechatQrcodeModule">
                             <div class="qrcode-placeholder">
-                                <i class="fab fa-weixin"></i>
+								<img src="https://img.picui.cn/free/2025/06/30/686252cdbf56b.png" alt="微信二维码120px.png" title="微信二维码120px.png" />
+                                <i class="#"></i>
                             </div>
-                            <p>微信二维码</p>
+                            <p id="wechatQrcodeText">点击加微信</p>
                         </div>
-                        
+
                         <!-- QQ二维码 -->
-                        <div class="qrcode-item">
+                        <div class="qrcode-item" id="qqQrcodeImg">
                             <div class="qrcode-placeholder">
-                                <i class="fab fa-qq"></i>
+								<img src="https://img.picui.cn/free/2025/06/30/6862577f1930f.png" alt="QQ二维码120px.png" title="QQ二维码120px.png" />
+                                <i class="#"></i>
                             </div>
-                            <p>QQ二维码</p>
+                            <p id ="qqQrcodeImg">点击加QQ</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- 技能部分 -->
             <div class="profile-card fade-in delay-1">
-                <h2 style="font-size: 1.8rem;"><i class="fas fa-laptop-code"></i> 专业技能</h2>
-                
+                <h2 style="font-size: 1.8rem;"><i class="fas fa-laptop-code"></i> 五维属性</h2>
+
                 <div class="skills-section">
                     <div class="skill">
                         <div class="skill-title">
-                            <span>HTML5/CSS3</span>
-                            <span>95%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" data-width="95"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill">
-                        <div class="skill-title">
-                            <span>JavaScript</span>
+                            <span>颜值</span>
                             <span>90%</span>
                         </div>
                         <div class="skill-bar">
                             <div class="skill-progress" data-width="90"></div>
                         </div>
                     </div>
-                    
+
                     <div class="skill">
                         <div class="skill-title">
-                            <span>React/Vue</span>
+                            <span>尽责</span>
                             <span>88%</span>
                         </div>
                         <div class="skill-bar">
                             <div class="skill-progress" data-width="88"></div>
                         </div>
                     </div>
-                    
+
                     <div class="skill">
                         <div class="skill-title">
-                            <span>Node.js</span>
+                            <span>外向</span>
                             <span>85%</span>
                         </div>
                         <div class="skill-bar">
                             <div class="skill-progress" data-width="85"></div>
                         </div>
                     </div>
-                    
+
                     <div class="skill">
                         <div class="skill-title">
-                            <span>UI/UX设计</span>
-                            <span>82%</span>
+                            <span>诚实</span>
+                            <span>45%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-progress" data-width="82"></div>
+                            <div class="skill-progress" data-width="45"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill">
+                        <div class="skill-title">
+                            <span>体型</span>
+                            <span>40%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="40"></div>
                         </div>
                     </div>
                 </div>
-                
+
                 <h2 style="margin-top: 35px; font-size: 1.8rem;"><i class="fas fa-heart"></i> 关于我</h2>
                 <p style="margin-top: 18px; line-height: 1.7;">
-                    我是一名充满激情的全栈开发工程师，拥有8年行业经验。专注于创建高性能、用户友好的Web应用。
-                    热爱学习新技术，喜欢解决复杂问题，追求代码的优雅和高效。
+                    我是广东科学技术职业学院的普通学生，日常穿梭于课堂与校园角落，在平凡日子里踏实学习、享受生活。
                 </p>
                 <p style="margin-top: 18px; line-height: 1.7;">
-                    业余时间喜欢参与开源项目、撰写技术博客，并热衷于参加各类技术交流活动。
-                    我相信技术改变世界，希望通过我的工作让互联网变得更加美好。
+                    业余时间喜欢参与社团活动、观影活动，有时候跑跑步，踢踢球。
+                    用脚丈量世界，享受生活。
                 </p>
-                
+
                 <div style="margin-top: 30px; text-align: center;">
-                    <a href="resume.pdf" download="张明-简历.pdf" style="text-decoration: none;">
+                    <a href="https://123-184-221-24.pd1.cjjd19.com:30443/download-cdn.123295.com/123-842/a4441b53/1813742028-0/a4441b532752924e4d7eec875ca82f4a/c-m2?v=5&t=1751363692&s=1751363692cca1689326dc2135012bce4d3b70eea6&r=7TGG47&bzc=2&bzs=313832343530343234383a38363337303031313a32353031333436393a31383234353034323438&bzp=0&bi=4256272339&filename=yezi-yezi.com-1.0.1.apk&x-mf-biz-cid=7853fd25-3450-491b-a720-e3176d2f2d92-6eaa77&auto_redirect=0&cache_type=1&ndcp=1&xmfcid=46fcd4f9-618f-4dd9-9810-dd3904e52b604784e9ceb9b" download="张明-简历.pdf" style="text-decoration: none;">
                         <button style="background: linear-gradient(45deg, #4facfe, #00f2fe); 
                                     border: none; 
                                     padding: 14px 40px; 
@@ -734,18 +1033,18 @@
                                     cursor: pointer;
                                     transition: all 0.3s ease;
                                     box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);">
-                            <i class="fas fa-download"></i> 下载完整简历
+                            <i class="fas fa-download"></i> 下载好东西
                         </button>
                     </a>
                 </div>
             </div>
         </div>
-        
+
         <!-- 页脚 -->
         <footer class="fade-in delay-2">
-            <p>© 2023 个人主页 | 设计开发: 张明</p>
+            <p>© 2025 个人主页 | 设计开发: deepseek/刘焱</p>
             <div class="social-links">
-                <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://github.com/steveliuyan" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
                 <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -758,30 +1057,32 @@
         // 增强粒子背景配置
         particlesJS("particles-js", {
             particles: {
-                number: { 
-                    value: 120, 
-                    density: { 
-                        enable: true, 
-                        value_area: 800 
-                    } 
+                number: {
+                    // 减少粒子数量
+                    value: 60,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
                 },
-                color: { 
-                    value: "#4facfe" 
+                color: {
+                    value: "#4facfe"
                 },
-                shape: { 
-                    type: "circle" 
+                shape: {
+                    type: "circle"
                 },
-                opacity: { 
-                    value: 0.8, 
-                    random: true 
+                opacity: {
+                    value: 0.8,
+                    random: true
                 },
-                size: { 
-                    value: 6, 
-                    random: true 
+                size: {
+                    value: 6,
+                    random: true
                 },
                 line_linked: {
                     enable: true,
-                    distance: 150,
+                    // 增加连接线距离
+                    distance: 200,
                     color: "#4facfe",
                     opacity: 0.5,
                     width: 2
@@ -799,25 +1100,25 @@
             interactivity: {
                 detect_on: "canvas",
                 events: {
-                    onhover: { 
-                        enable: true, 
-                        mode: "grab" 
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
                     },
-                    onclick: { 
-                        enable: true, 
-                        mode: "push" 
+                    onclick: {
+                        enable: true,
+                        mode: "push"
                     },
                     resize: true
                 },
                 modes: {
-                    grab: { 
-                        distance: 140, 
-                        line_linked: { 
-                            opacity: 0.8  
-                        } 
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.8
+                        }
                     },
-                    push: { 
-                        particles_nb: 4 
+                    push: {
+                        particles_nb: 4
                     }
                 }
             },
@@ -829,54 +1130,209 @@
             const menuToggle = document.getElementById('menuToggle');
             const closeMenu = document.getElementById('closeMenu');
             const mainNav = document.getElementById('mainNav');
-            
-            menuToggle.addEventListener('click', function() {
-                mainNav.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            const navItems = document.querySelectorAll('nav a:not(.submenu-toggle)');
+            const submenuToggles = document.querySelectorAll('.submenu-toggle');
+            const submenuItems = document.querySelectorAll('.submenu a');
+            const devModal = document.getElementById('devModal');
+            const closeDevModal = document.getElementById('closeDevModal');
+            const devLinks = document.querySelectorAll('.dev-link');
+            const wechatModal = document.getElementById('wechatModal');
+            const closeWechat = document.querySelector('.close-wechat');
+            const copyWechatBtn = document.getElementById('copyWechatBtn');
+            const wechatQrcodeModule = document.getElementById('wechatQrcodeModule');
+
+            // 显示微信弹窗
+            function showWechatModal() {
+                wechatModal.style.display = "block";
+            }
+
+            // 隐藏微信弹窗
+            function hideWechatModal() {
+                wechatModal.style.display = "none";
+            }
+
+            // 绑定微信二维码点击事件
+            wechatQrcodeModule.addEventListener('click', showWechatModal);
+
+            // 关闭微信弹窗
+            closeWechat.addEventListener('click', hideWechatModal);
+
+            // 点击弹窗外部关闭
+            wechatModal.addEventListener('click', function(e) {
+                if (e.target === wechatModal) {
+                    hideWechatModal();
+                }
             });
-            
-            closeMenu.addEventListener('click', function() {
-                mainNav.classList.remove('active');
-                document.body.style.overflow = '';
+
+            // 复制微信号功能
+            copyWechatBtn.addEventListener('click', function() {
+                const wechatId = 'yan13268907139';
+                const tempInput = document.createElement('input');
+                document.body.appendChild(tempInput);
+                tempInput.value = wechatId;
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                
+                // 显示复制成功提示
+                const originalText = copyWechatBtn.textContent;
+                copyWechatBtn.textContent = '✓ 已复制';
+                copyWechatBtn.style.background = 'linear-gradient(45deg, #4caf50, #8bc34a)';
+                
+                setTimeout(() => {
+                    copyWechatBtn.textContent = originalText;
+                    copyWechatBtn.style.background = 'linear-gradient(45deg, #4facfe, #00f2fe)';
+                }, 2000);
             });
-            
-           // 点击菜单项关闭移动菜单（排除二级菜单项）
-            const navItems = document.querySelectorAll('nav a');
+
+            // 显示开发提示模态框
+            function showDevModal() {
+                devModal.style.display = "block";
+                setTimeout(() => {
+                    devModal.style.opacity = "1";
+                }, 10);
+            }
+
+            // 隐藏开发提示模态框
+            function hideDevModal() {
+                devModal.style.opacity = "0";
+                setTimeout(() => {
+                    devModal.style.display = "none";
+                }, 300);
+            }
+
+            // 为开发中链接添加事件
+            devLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showDevModal();
+                });
+            });
+
+            // 关闭开发提示模态框
+            closeDevModal.addEventListener('click', hideDevModal);
+
+            // 点击模态框外部关闭
+            devModal.addEventListener('click', function(e) {
+                if (e.target === devModal) {
+                    hideDevModal();
+                }
+            });
+
+            // 切换菜单显示状态
+            function toggleMenu() {
+                mainNav.classList.toggle('active');
+                document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+
+                // 重置所有二级菜单状态
+                document.querySelectorAll('.has-submenu').forEach(el => {
+                    el.classList.remove('active');
+                });
+
+                // 控制菜单键的显示和隐藏
+                if (window.innerWidth <= 768) {
+                    menuToggle.style.display = mainNav.classList.contains('active') ? 'none' : 'block';
+                } else {
+                    menuToggle.style.display = 'none';
+                }
+            }
+
+            // 打开菜单
+            menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 关闭菜单
+            closeMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 点击菜单项关闭移动菜单
             navItems.forEach(item => {
                 item.addEventListener('click', function(e) {
-                    // 如果是二级菜单项，不关闭菜单
-                    if (this.closest('.submenu')) {
-                        return;
-                    }
-                    
                     if (window.innerWidth <= 768) {
-                        mainNav.classList.remove('active');
-                        document.body.style.overflow = '';
+                        toggleMenu();
                     }
                 });
             });
-            
-            // 移动端二级菜单展开控制
-            const hasSubmenuItems = document.querySelectorAll('.has-submenu > a');
-            hasSubmenuItems.forEach(item => {
+
+            // 二级菜单展开控制 - 更新为更智能的切换
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const parent = this.parentElement;
+                    const isActive = parent.classList.contains('active');
+
+                    // 关闭其他二级菜单
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        if (el !== parent) {
+                            el.classList.remove('active');
+                        }
+                    });
+
+                    // 切换当前二级菜单
+                    parent.classList.toggle('active');
+                });
+            });
+
+            // 阻止二级菜单项冒泡到父级菜单
+            submenuItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     if (window.innerWidth <= 768) {
-                        e.preventDefault();
-                        const parent = this.parentElement;
-                        
-                        // 关闭其他二级菜单
-                        document.querySelectorAll('.has-submenu').forEach(el => {
-                            if (el !== parent) {
-                                el.classList.remove('active');
-                            }
-                        });
-                        
-                        // 切换当前二级菜单
-                        parent.classList.toggle('active');
+                        e.stopPropagation();
+                        // 在移动端点击二级菜单项后关闭整个菜单
+                        toggleMenu();
                     }
                 });
             });
-            
+
+            // 点击菜单外部关闭菜单
+            document.addEventListener('click', function(e) {
+                // 检查点击的是否是菜单内部
+                const isClickInsideMenu = mainNav.contains(e.target) ||
+                    menuToggle.contains(e.target) ||
+                    e.target.classList.contains('submenu-toggle');
+
+                // 如果点击在菜单外部，关闭所有菜单
+                if (!isClickInsideMenu) {
+                    // 关闭主菜单（移动端）
+                    if (window.innerWidth <= 768) {
+                        mainNav.classList.remove('active');
+                    }
+
+                    // 关闭所有二级菜单
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+
+                    // 重置滚动状态
+                    document.body.style.overflow = '';
+
+                    // 显示菜单按钮（移动端）
+                    if (window.innerWidth <= 768) {
+                        menuToggle.style.display = 'block';
+                    }
+                }
+            });
+
+            // 窗口大小改变时重置菜单状态
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    mainNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    menuToggle.style.display = 'none'; // 大屏幕隐藏菜单按钮
+                } else {
+                    menuToggle.style.display = 'block'; // 小屏幕显示菜单按钮
+                }
+            });
+
             // 技能进度条动画
             const skillBars = document.querySelectorAll('.skill-progress');
             skillBars.forEach(bar => {
@@ -885,18 +1341,51 @@
                     bar.style.width = width + '%';
                 }, 500);
             });
-            
+
             // 自动应用淡入效果
             document.querySelectorAll('.fade-in').forEach(el => {
                 el.style.opacity = 0;
             });
-            
+
             setTimeout(() => {
                 document.querySelectorAll('.fade-in').forEach(el => {
                     el.style.animationPlayState = 'running';
                 });
             }, 300);
+
+            // 获取设备信息
+            const uagent = navigator.userAgent;
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(uagent);
+
+            // 替换为你的真实QQ号码
+            const qqNumber = "2021250388"; // 重要：此处必须替换！
+
+            // 生成PC和手机端链接
+            const pcLink = `tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=${qqNumber}`;
+            const mobileLink =
+                `mqqapi://card/show_pslcard?src_type=internal&version=1&uin=${qqNumber}&card_type=person&source=sharecard`;
+
+            // 获取图片元素并绑定点击事件
+            const qqQrcodeImg = document.getElementById("qqQrcodeImg");
+
+            qqQrcodeImg.addEventListener("click", function() {
+                if (isMobile) {
+                    // 手机端直接跳转
+                    window.location.href = mobileLink;
+                } else {
+                    // PC端通过创建a标签触发协议
+                    const link = document.createElement("a");
+                    link.href = pcLink;
+                    link.style.display = "none";
+                    document.body.appendChild(link);
+                    link.click();
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                    }, 100);
+                }
+            });
         });
     </script>
 </body>
+
 </html>
