@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>联系我 - 刘焱的个人主页</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
         * {
@@ -487,6 +487,10 @@
             }
         }
 
+        .close-menu {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -517,6 +521,7 @@
             }
 
             .close-menu {
+                display: block;
                 position: absolute;
                 top: 20px;
                 left: 20px;
@@ -732,7 +737,7 @@
         <!-- 头部导航 -->
         <header>
             <div class="logo fade-in">
-                <i class="fas fa-user-astronaut"></i>刘焱的个人网站
+                刘焱的个人网站
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
@@ -886,14 +891,17 @@
     </div>
 
     <script>
-        // 增强粒子背景配置
+        // 检测是否为移动设备
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
+        // 粒子背景配置 - 移动端优化
         particlesJS("particles-js", {
             particles: {
                 number: {
-                    value: 60, 
+                    value: isMobile ? 30 : 60,
                     density: {
                         enable: true,
-                        value_area: 800
+                        value_area: isMobile ? 1200 : 800
                     }
                 },
                 color: {
@@ -903,23 +911,23 @@
                     type: "circle"
                 },
                 opacity: {
-                    value: 0.8,
+                    value: 0.6,
                     random: true
                 },
                 size: {
-                    value: 6,
+                    value: isMobile ? 4 : 6,
                     random: true
                 },
                 line_linked: {
                     enable: true,
-                    distance: 200, 
+                    distance: isMobile ? 120 : 200,
                     color: "#4facfe",
-                    opacity: 0.5,
-                    width: 2
+                    opacity: 0.4,
+                    width: 1.5
                 },
                 move: {
                     enable: true,
-                    speed: 1,
+                    speed: isMobile ? 0.5 : 1,
                     direction: "none",
                     random: true,
                     straight: false,
@@ -931,7 +939,7 @@
                 detect_on: "canvas",
                 events: {
                     onhover: {
-                        enable: true,
+                        enable: !isMobile,
                         mode: "grab"
                     },
                     onclick: {
@@ -944,15 +952,15 @@
                     grab: {
                         distance: 140,
                         line_linked: {
-                            opacity: 0.8
+                            opacity: 0.6
                         }
                     },
                     push: {
-                        particles_nb: 4
+                        particles_nb: isMobile ? 2 : 4
                     }
                 }
             },
-            retina_detect: true
+            retina_detect: !isMobile
         });
 
         // 菜单交互

@@ -478,6 +478,10 @@
             }
         }
 
+        .close-menu {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .menu-toggle {
                 display: block;
@@ -508,6 +512,7 @@
             }
 
             .close-menu {
+                display: block;
                 position: absolute;
                 top: 20px;
                 left: 20px;
@@ -822,7 +827,7 @@
             <span class="close-wechat">&times;</span>
             <h3>添加我的微信</h3>
             <div class="wechat-qrcode">
-				<img src="https://free.picui.cn/free/2025/06/30/686255c498873.png" alt="微信二维码200px.png" title="微信二维码200px.png" />
+				<img src="微信二维码200px.png" alt="微信二维码200px.png" title="微信二维码200px.png" />
                 <i class="#" style="font-size: 120px; color: #4facfe;"></i>
             </div>
             <p>扫描二维码或手动添加微信</p>
@@ -836,7 +841,7 @@
         <!-- 头部导航 -->
         <header>
             <div class="logo fade-in">
-                <i class="fas fa-user-astronaut"></i>刘焱的个人网站
+                刘焱的个人网站
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
@@ -878,7 +883,7 @@
                     <!-- 头像区域 -->
                     <div class="profile-img">
                         <!-- 替换为您的头像图片 -->
-                        <img src="https://free.picui.cn/free/2025/06/30/6862578cd187c.png" alt="头像" class="avatar-img">
+                        <img src="头像120px.jpg" alt="头像" class="avatar-img">
                         <i class="#"></i>
                     </div>
                     <div class="profile-info">
@@ -938,7 +943,7 @@
                         <!-- 微信二维码 -->
                         <div class="qrcode-item" id="wechatQrcodeModule">
                             <div class="qrcode-placeholder">
-								<img src="https://free.picui.cn/free/2025/06/30/686252cdbf56b.png" alt="微信二维码120px.png" title="微信二维码120px.png" />
+								<img src="微信二维码120px.png" alt="微信二维码120px.png" title="微信二维码120px.png" />
                                 <i class="#"></i>
                             </div>
                             <p id="wechatQrcodeText">点击加微信</p>
@@ -947,7 +952,7 @@
                         <!-- QQ二维码 -->
                         <div class="qrcode-item" id="qqQrcodeImg">
                             <div class="qrcode-placeholder">
-								<img src="https://free.picui.cn/free/2025/06/30/6862577f1930f.png" alt="QQ二维码120px.png" title="QQ二维码120px.png" />
+								<img src="qq二维码120px.png" alt="QQ二维码120px.png" title="QQ二维码120px.png" />
                                 <i class="#"></i>
                             </div>
                             <p id ="qqQrcodeImg">点击加QQ</p>
@@ -1022,7 +1027,7 @@
                 </p>
 
                 <div style="margin-top: 30px; text-align: center;">
-                    <a href="https://123-184-221-24.pd1.cjjd19.com:30443/download-cdn.123295.com/123-842/a4441b53/1813742028-0/a4441b532752924e4d7eec875ca82f4a/c-m2?v=5&t=1751363692&s=1751363692cca1689326dc2135012bce4d3b70eea6&r=7TGG47&bzc=2&bzs=313832343530343234383a38363337303031313a32353031333436393a31383234353034323438&bzp=0&bi=4256272339&filename=yezi-yezi.com-1.0.1.apk&x-mf-biz-cid=7853fd25-3450-491b-a720-e3176d2f2d92-6eaa77&auto_redirect=0&cache_type=1&ndcp=1&xmfcid=46fcd4f9-618f-4dd9-9810-dd3904e52b604784e9ceb9b" download="张明-简历.pdf" style="text-decoration: none;">
+                    <a href="https://github.com/user-attachments/files/29205117/resume_20251113.pdf" download="resume_20251113.pdf" style="text-decoration: none;">
                         <button style="background: linear-gradient(45deg, #4facfe, #00f2fe); 
                                     border: none; 
                                     padding: 14px 40px; 
@@ -1033,7 +1038,7 @@
                                     cursor: pointer;
                                     transition: all 0.3s ease;
                                     box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);">
-                            <i class="fas fa-download"></i> 下载好东西
+                            <i class="fas fa-download"></i> 下载简历
                         </button>
                     </a>
                 </div>
@@ -1054,15 +1059,17 @@
     </div>
 
     <script>
-        // 增强粒子背景配置
+        // 检测是否为移动设备
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
+        // 粒子背景配置 - 移动端优化
         particlesJS("particles-js", {
             particles: {
                 number: {
-                    // 减少粒子数量
-                    value: 60,
+                    value: isMobile ? 30 : 60,
                     density: {
                         enable: true,
-                        value_area: 800
+                        value_area: isMobile ? 1200 : 800
                     }
                 },
                 color: {
@@ -1072,24 +1079,23 @@
                     type: "circle"
                 },
                 opacity: {
-                    value: 0.8,
+                    value: 0.6,
                     random: true
                 },
                 size: {
-                    value: 6,
+                    value: isMobile ? 4 : 6,
                     random: true
                 },
                 line_linked: {
                     enable: true,
-                    // 增加连接线距离
-                    distance: 200,
+                    distance: isMobile ? 120 : 200,
                     color: "#4facfe",
-                    opacity: 0.5,
-                    width: 2
+                    opacity: 0.4,
+                    width: 1.5
                 },
                 move: {
                     enable: true,
-                    speed: 1,
+                    speed: isMobile ? 0.5 : 1,
                     direction: "none",
                     random: true,
                     straight: false,
@@ -1101,7 +1107,7 @@
                 detect_on: "canvas",
                 events: {
                     onhover: {
-                        enable: true,
+                        enable: !isMobile,
                         mode: "grab"
                     },
                     onclick: {
@@ -1114,15 +1120,15 @@
                     grab: {
                         distance: 140,
                         line_linked: {
-                            opacity: 0.8
+                            opacity: 0.6
                         }
                     },
                     push: {
-                        particles_nb: 4
+                        particles_nb: isMobile ? 2 : 4
                     }
                 }
             },
-            retina_detect: true
+            retina_detect: !isMobile
         });
 
         // 菜单交互
