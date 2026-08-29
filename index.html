@@ -85,6 +85,13 @@
             transform: scale(1.1);
         }
 
+        .menu-toggle.menu-open {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(0.92);
+        }
+
         nav {
             display: flex;
             background: rgba(255, 255, 255, 0.95);
@@ -134,7 +141,10 @@
 
         /* 二级菜单 */
         .submenu {
-            display: none;
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
             position: absolute;
             top: 100%;
             left: 0;
@@ -146,7 +156,7 @@
             z-index: 100;
             border: 1px solid rgba(79, 172, 254, 0.3);
             transform: translateY(10px);
-            transition: all 0.5s ease;
+            transition: max-height 0.32s ease, opacity 0.24s ease, transform 0.32s ease, visibility 0.32s ease;
             /* 修改过渡时间 */
             max-height: 0;
             /* 添加最大高度 */
@@ -155,7 +165,9 @@
         }
 
         .has-submenu.active .submenu {
-            display: block;
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
             transform: translateY(0);
             max-height: 500px;
             /* 设置最大高度 */
@@ -302,6 +314,25 @@
             transform: scale(1.1) rotate(10deg);
         }
 
+        .copy-mini {
+            margin-top: 8px;
+            border: none;
+            border-radius: 18px;
+            padding: 7px 14px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.24);
+            transition: all 0.3s ease;
+        }
+
+        .copy-mini:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(79, 172, 254, 0.34);
+        }
+
         /* 二维码区域 */
         .qrcode-section {
             display: flex;
@@ -318,7 +349,7 @@
             flex: 1;
             min-width: 150px;
             border: 1px solid rgba(79, 172, 254, 0.2);
-            transition: all 0.5s ease;
+            transition: max-height 0.32s ease, opacity 0.24s ease, transform 0.32s ease, visibility 0.32s ease;
             position: relative;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.1);
@@ -362,7 +393,7 @@
             border: 1px dashed rgba(79, 172, 254, 0.3);
             position: relative;
             z-index: 2;
-            transition: all 0.5s ease;
+            transition: max-height 0.32s ease, opacity 0.24s ease, transform 0.32s ease, visibility 0.32s ease;
             overflow: hidden;
         }
 
@@ -490,17 +521,20 @@
             nav {
                 position: fixed;
                 top: 0;
-                right: -300px;
+                right: 0;
+                transform: translate3d(110%, 0, 0);
+                will-change: transform;
+                backface-visibility: hidden;
                 height: 100vh;
                 width: 280px;
                 flex-direction: column;
                 padding-top: 70px;
-                transition: right 0.4s ease;
+                transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease;
                 z-index: 999;
             }
 
             nav.active {
-                right: 0;
+                transform: translate3d(0, 0, 0);
             }
 
             nav ul {
@@ -548,18 +582,26 @@
             /* 移动端二级菜单样式 */
             .submenu {
                 position: static;
-                display: none;
+                display: block;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
                 padding: 0;
                 box-shadow: none;
                 border: none;
                 margin-left: 20px;
+                transform: translateY(-4px);
                 /* 添加过渡效果 */
                 max-height: 0;
                 overflow: hidden;
-                transition: max-height 0.5s ease-in-out;
+                transition: max-height 0.32s ease, opacity 0.24s ease, transform 0.32s ease, visibility 0.32s ease;
             }
 
             .has-submenu.active .submenu {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0);
                 /* 展开时设置最大高度 */
                 max-height: 500px;
             }
@@ -802,6 +844,52 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
         }
+
+        .back-to-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 998;
+            box-shadow: 0 6px 18px rgba(79, 172, 254, 0.38);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(14px) scale(0.94);
+            transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 10px 24px rgba(79, 172, 254, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                right: 18px;
+                bottom: 18px;
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 
@@ -894,13 +982,33 @@
 
                 <div class="contact-info">
                     <!-- 电话链接 -->
-                    <a href="tel:13268907139" class="contact-item" style="text-decoration: none; color: inherit;">
+                    <a href="tel:+8613268907139" class="contact-item" style="text-decoration: none; color: inherit;">
                         <div class="contact-icon">
                             <i class="fas fa-phone-alt"></i>
                         </div>
                         <div>
-                            <h3>联系电话</h3>
-                            <p>132-6890-7139</p>
+                            <h3>联系电话（中国）</h3>
+                            <p>+86 132-6890-7139</p>
+                        </div>
+                    </a>
+
+                    <a href="tel:+8618963045164" class="contact-item" style="text-decoration: none; color: inherit;">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <h3>备用电话（中国）</h3>
+                            <p>+86 189-6304-5164</p>
+                        </div>
+                    </a>
+
+                    <a href="tel:+447561528299" class="contact-item" style="text-decoration: none; color: inherit;">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <h3>联系电话（英国）</h3>
+                            <p>+44 7561 528299</p>
                         </div>
                     </a>
 
@@ -912,6 +1020,7 @@
                         <div>
                             <h3>微信</h3>
                             <p>yan13268907139</p>
+                            <button class="copy-mini" type="button" data-copy="yan13268907139">复制微信号</button>
                         </div>
                     </div>
 
@@ -923,6 +1032,7 @@
                         <div>
                             <h3>QQ</h3>
                             <p>2021250388</p>
+                            <button class="copy-mini" type="button" data-copy="2021250388">复制 QQ 号</button>
                         </div>
                     </div>
 
@@ -955,7 +1065,7 @@
 								<img src="qq二维码120px.png" alt="QQ二维码120px.png" title="QQ二维码120px.png" />
                                 <i class="#"></i>
                             </div>
-                            <p id ="qqQrcodeImg">点击加QQ</p>
+                            <p>点击加QQ</p>
                         </div>
                     </div>
                 </div>
@@ -1019,7 +1129,7 @@
 
                 <h2 style="margin-top: 35px; font-size: 1.8rem;"><i class="fas fa-heart"></i> 关于我</h2>
                 <p style="margin-top: 18px; line-height: 1.7;">
-                    我是广东科学技术职业学院的普通学生，日常穿梭于课堂与校园角落，在平凡日子里踏实学习、享受生活。
+                    我是一名就读于广州科技职业技术大学的普通学生，日常穿梭于课堂与校园角落，在平凡日子里踏实学习、享受生活。
                 </p>
                 <p style="margin-top: 18px; line-height: 1.7;">
                     业余时间喜欢参与社团活动、观影活动，有时候跑跑步，踢踢球。
@@ -1027,7 +1137,7 @@
                 </p>
 
                 <div style="margin-top: 30px; text-align: center;">
-                    <a href="https://gitee.com/steveliuyan/myweb/releases/download/Document/%E7%AE%80%E5%8E%86.pdf" download="resume.pdf" style="text-decoration: none;">
+                    <a href="图片/简历.pdf" download="resume.pdf" style="text-decoration: none;">
                         <button style="background: linear-gradient(45deg, #4facfe, #00f2fe);
                                     border: none;
                                     padding: 14px 40px;
@@ -1047,7 +1157,7 @@
 
         <!-- 页脚 -->
         <footer class="fade-in delay-2">
-            <p>© 2026 个人主页 | 设计开发: deepseek、刘焱、Trae</p>
+            <p>© 2026 个人主页 | 设计开发: deepseek、刘焱、Trae、Codex</p>
             <div class="social-links">
                 <a href="https://github.com/steveliuyan" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
@@ -1057,6 +1167,10 @@
             </div>
         </footer>
     </div>
+
+    <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部" title="回到顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script>
         // 检测是否为移动设备
@@ -1146,6 +1260,27 @@
             const closeWechat = document.querySelector('.close-wechat');
             const copyWechatBtn = document.getElementById('copyWechatBtn');
             const wechatQrcodeModule = document.getElementById('wechatQrcodeModule');
+            const qqQrcodeImg = document.getElementById('qqQrcodeImg');
+            const copyButtons = document.querySelectorAll('[data-copy]');
+
+            function copyText(text, button) {
+                const originalText = button ? button.textContent : '';
+                const tempInput = document.createElement('input');
+                document.body.appendChild(tempInput);
+                tempInput.value = text;
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+
+                if (button) {
+                    button.textContent = '✓ 已复制';
+                    button.style.background = 'linear-gradient(45deg, #4caf50, #8bc34a)';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = 'linear-gradient(45deg, #4facfe, #00f2fe)';
+                    }, 1800);
+                }
+            }
 
             // 显示微信弹窗
             function showWechatModal() {
@@ -1160,6 +1295,33 @@
             // 绑定微信二维码点击事件
             wechatQrcodeModule.addEventListener('click', showWechatModal);
 
+            const qqNumber = "2021250388";
+            const pcLink = `tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=${qqNumber}`;
+            const mobileLink =
+                `mqqapi://card/show_pslcard?src_type=internal&version=1&uin=${qqNumber}&card_type=person&source=sharecard`;
+
+            qqQrcodeImg.addEventListener("click", function() {
+                if (isMobile) {
+                    window.location.href = mobileLink;
+                } else {
+                    const link = document.createElement("a");
+                    link.href = pcLink;
+                    link.style.display = "none";
+                    document.body.appendChild(link);
+                    link.click();
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                    }, 100);
+                }
+            });
+
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    copyText(this.dataset.copy, this);
+                });
+            });
+
             // 关闭微信弹窗
             closeWechat.addEventListener('click', hideWechatModal);
 
@@ -1173,22 +1335,7 @@
             // 复制微信号功能
             copyWechatBtn.addEventListener('click', function() {
                 const wechatId = 'yan13268907139';
-                const tempInput = document.createElement('input');
-                document.body.appendChild(tempInput);
-                tempInput.value = wechatId;
-                tempInput.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempInput);
-                
-                // 显示复制成功提示
-                const originalText = copyWechatBtn.textContent;
-                copyWechatBtn.textContent = '✓ 已复制';
-                copyWechatBtn.style.background = 'linear-gradient(45deg, #4caf50, #8bc34a)';
-                
-                setTimeout(() => {
-                    copyWechatBtn.textContent = originalText;
-                    copyWechatBtn.style.background = 'linear-gradient(45deg, #4facfe, #00f2fe)';
-                }, 2000);
+                copyText(wechatId, copyWechatBtn);
             });
 
             // 显示开发提示模态框
@@ -1228,7 +1375,10 @@
             // 切换菜单显示状态
             function toggleMenu() {
                 mainNav.classList.toggle('active');
-                document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
+                const isMenuActive = mainNav.classList.contains('active');
+                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+                document.body.style.overflow = isMenuActive ? 'hidden' : '';
+                document.body.style.paddingRight = isMenuActive && scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
 
                 // 重置所有二级菜单状态
                 document.querySelectorAll('.has-submenu').forEach(el => {
@@ -1237,8 +1387,10 @@
 
                 // 控制菜单键的显示和隐藏
                 if (window.innerWidth <= 768) {
-                    menuToggle.style.display = mainNav.classList.contains('active') ? 'none' : 'block';
+                    menuToggle.style.display = 'block';
+                    menuToggle.classList.toggle('menu-open', isMenuActive);
                 } else {
+                    menuToggle.classList.remove('menu-open');
                     menuToggle.style.display = 'none';
                 }
             }
@@ -1317,9 +1469,11 @@
 
                     // 重置滚动状态
                     document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
 
                     // 显示菜单按钮（移动端）
                     if (window.innerWidth <= 768) {
+                        menuToggle.classList.remove('menu-open');
                         menuToggle.style.display = 'block';
                     }
                 }
@@ -1330,11 +1484,14 @@
                 if (window.innerWidth > 768) {
                     mainNav.classList.remove('active');
                     document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
                     document.querySelectorAll('.has-submenu').forEach(el => {
                         el.classList.remove('active');
                     });
+                    menuToggle.classList.remove('menu-open');
                     menuToggle.style.display = 'none'; // 大屏幕隐藏菜单按钮
                 } else {
+                    menuToggle.classList.remove('menu-open');
                     menuToggle.style.display = 'block'; // 小屏幕显示菜单按钮
                 }
             });
@@ -1348,6 +1505,23 @@
                 }, 500);
             });
 
+            const backToTopBtn = document.getElementById('backToTop');
+            function updateBackToTopButton() {
+                if (!backToTopBtn) return;
+                backToTopBtn.classList.toggle('show', window.scrollY > 240);
+            }
+
+            if (backToTopBtn) {
+                window.addEventListener('scroll', updateBackToTopButton, { passive: true });
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                updateBackToTopButton();
+            }
+
             // 自动应用淡入效果
             document.querySelectorAll('.fade-in').forEach(el => {
                 el.style.opacity = 0;
@@ -1359,39 +1533,9 @@
                 });
             }, 300);
 
-            // 获取设备信息
-            const uagent = navigator.userAgent;
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(uagent);
-
-            // 替换为你的真实QQ号码
-            const qqNumber = "2021250388"; // 重要：此处必须替换！
-
-            // 生成PC和手机端链接
-            const pcLink = `tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=${qqNumber}`;
-            const mobileLink =
-                `mqqapi://card/show_pslcard?src_type=internal&version=1&uin=${qqNumber}&card_type=person&source=sharecard`;
-
-            // 获取图片元素并绑定点击事件
-            const qqQrcodeImg = document.getElementById("qqQrcodeImg");
-
-            qqQrcodeImg.addEventListener("click", function() {
-                if (isMobile) {
-                    // 手机端直接跳转
-                    window.location.href = mobileLink;
-                } else {
-                    // PC端通过创建a标签触发协议
-                    const link = document.createElement("a");
-                    link.href = pcLink;
-                    link.style.display = "none";
-                    document.body.appendChild(link);
-                    link.click();
-                    setTimeout(() => {
-                        document.body.removeChild(link);
-                    }, 100);
-                }
-            });
         });
     </script>
 </body>
 
 </html>
+
