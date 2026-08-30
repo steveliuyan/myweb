@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#a1c4fd" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     <title>工作经历 - 刘焱的个人主页</title>
+    <script src="theme.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
@@ -19,6 +20,7 @@
 
         html {
             color-scheme: light dark;
+            scrollbar-gutter: stable;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -253,7 +255,6 @@
         nav a:hover {
             background: rgba(79, 172, 254, 0.1);
             border: 1px solid rgba(79, 172, 254, 0.3);
-            transform: translateY(-3px);
             box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
         }
 
@@ -265,7 +266,6 @@
         nav a.active {
             background: rgba(79, 172, 254, 0.2);
             border: 1px solid rgba(79, 172, 254, 0.5);
-            transform: translateY(-3px);
             box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
         }
 
@@ -314,7 +314,6 @@
 
         .submenu a:hover {
             color: #4facfe;
-            transform: translateX(5px);
             box-shadow: none;
         }
 
@@ -908,6 +907,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <!-- 粒子背景 -->
@@ -956,6 +956,14 @@
                     </li>
                     <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a></li>
                     <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="has-submenu fade-in delay-4">
+                        <a href="#" class="submenu-toggle"><i class="fas fa-circle-half-stroke"></i>主题 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <li><a href="#" data-theme-option="auto"><i class="fas fa-circle-half-stroke"></i>自动</a></li>
+                            <li><a href="#" data-theme-option="light"><i class="fas fa-sun"></i>浅色</a></li>
+                            <li><a href="#" data-theme-option="dark"><i class="fas fa-moon"></i>深色</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -1175,7 +1183,7 @@
             const menuToggle = document.getElementById('menuToggle');
             const closeMenu = document.getElementById('closeMenu');
             const mainNav = document.getElementById('mainNav');
-            const navItems = document.querySelectorAll('nav a:not(.submenu-toggle)');
+            const navItems = document.querySelectorAll('nav > ul > li > a:not(.submenu-toggle)');
             const submenuToggles = document.querySelectorAll('.submenu-toggle');
             const submenuItems = document.querySelectorAll('.submenu a');
             
@@ -1183,10 +1191,41 @@
             const devModal = document.getElementById('devModal');
             const closeDevModal = document.getElementById('closeDevModal');
             const devLinks = document.querySelectorAll('.dev-link');
+            let devModalScrollState = null;
+            const preventModalScroll = event => event.preventDefault();
+            const preventModalKeys = event => {
+                if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '].includes(event.key)) {
+                    event.preventDefault();
+                }
+            };
+
+            function closeAllSubmenus() {
+                document.querySelectorAll('.has-submenu').forEach(el => {
+                    el.classList.remove('active');
+                });
+            }
+
+            function lockPageScroll() {
+                if (devModalScrollState) return;
+                devModalScrollState = true;
+                document.addEventListener('wheel', preventModalScroll, { passive: false });
+                document.addEventListener('touchmove', preventModalScroll, { passive: false });
+                document.addEventListener('keydown', preventModalKeys, { passive: false });
+            }
+
+            function unlockPageScroll() {
+                if (!devModalScrollState) return;
+                document.removeEventListener('wheel', preventModalScroll, { passive: false });
+                document.removeEventListener('touchmove', preventModalScroll, { passive: false });
+                document.removeEventListener('keydown', preventModalKeys, { passive: false });
+                devModalScrollState = null;
+            }
 
             // 显示开发提示模态框
             function showDevModal() {
-                devModal.style.display = "block";
+                closeAllSubmenus();
+                devModal.style.display = "flex";
+                lockPageScroll();
                 setTimeout(() => {
                     devModal.style.opacity = "1";
                 }, 10);
@@ -1197,6 +1236,7 @@
                 devModal.style.opacity = "0";
                 setTimeout(() => {
                     devModal.style.display = "none";
+                    unlockPageScroll();
                 }, 300);
             }
 

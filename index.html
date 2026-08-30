@@ -8,6 +8,7 @@
     <meta name="theme-color" content="#a1c4fd" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     <title>刘焱的个人主页 </title>
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
@@ -21,6 +22,7 @@
 
         html {
             color-scheme: light dark;
+            scrollbar-gutter: stable;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -255,7 +257,6 @@
         nav a:hover {
             background: rgba(79, 172, 254, 0.1);
             border: 1px solid rgba(79, 172, 254, 0.3);
-            transform: translateY(-3px);
             box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
         }
 
@@ -312,7 +313,6 @@
 
         .submenu a:hover {
             color: #4facfe;
-            transform: translateX(5px);
             box-shadow: none;
         }
 
@@ -1015,6 +1015,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="theme.css">
 </head>
 
 <body>
@@ -1045,7 +1046,7 @@
             <p>扫描二维码或手动添加微信</p>
             <div class="wechat-id">微信号: yan13268907139</div>
             <button class="copy-btn" id="copyWechatBtn">复制微信号</button>
-            <p style="margin-top: 15px; font-size: 0.9rem; color: #888;">长按图片保存二维码</p>
+            <p class="muted-tip" style="margin-top: 15px; font-size: 0.9rem;">长按图片保存二维码</p>
         </div>
     </div>
 
@@ -1083,6 +1084,14 @@
                     <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a>
                     </li>
                     <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="has-submenu fade-in delay-4">
+                        <a href="#" class="submenu-toggle"><i class="fas fa-circle-half-stroke"></i>主题 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <li><a href="#" data-theme-option="auto"><i class="fas fa-circle-half-stroke"></i>自动</a></li>
+                            <li><a href="#" data-theme-option="light"><i class="fas fa-sun"></i>浅色</a></li>
+                            <li><a href="#" data-theme-option="dark"><i class="fas fa-moon"></i>深色</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -1262,16 +1271,7 @@
 
                 <div style="margin-top: 30px; text-align: center;">
                     <a href="https://gitee.com/steveliuyan/myweb/releases/download/Document/%E7%AE%80%E5%8E%86.pdf" target="_blank" rel="noopener" style="text-decoration: none;">
-                        <button style="background: linear-gradient(45deg, #4facfe, #00f2fe);
-                                    border: none;
-                                    padding: 14px 40px;
-                                    border-radius: 30px;
-                                    color: white;
-                                    font-size: 1.1rem;
-                                    font-weight: 500;
-                                    cursor: pointer;
-                                    transition: all 0.3s ease;
-                                    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);">
+                        <button class="resume-download-btn" type="button">
                             <i class="fas fa-download"></i> 下载简历
                         </button>
                     </a>
@@ -1375,12 +1375,41 @@
             const menuToggle = document.getElementById('menuToggle');
             const closeMenu = document.getElementById('closeMenu');
             const mainNav = document.getElementById('mainNav');
-            const navItems = document.querySelectorAll('nav a:not(.submenu-toggle)');
+            const navItems = document.querySelectorAll('nav > ul > li > a:not(.submenu-toggle)');
             const submenuToggles = document.querySelectorAll('.submenu-toggle');
             const submenuItems = document.querySelectorAll('.submenu a');
             const devModal = document.getElementById('devModal');
             const closeDevModal = document.getElementById('closeDevModal');
             const devLinks = document.querySelectorAll('.dev-link');
+            let devModalScrollState = null;
+            const preventModalScroll = event => event.preventDefault();
+            const preventModalKeys = event => {
+                if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '].includes(event.key)) {
+                    event.preventDefault();
+                }
+            };
+
+            function closeAllSubmenus() {
+                document.querySelectorAll('.has-submenu').forEach(el => {
+                    el.classList.remove('active');
+                });
+            }
+
+            function lockPageScroll() {
+                if (devModalScrollState) return;
+                devModalScrollState = true;
+                document.addEventListener('wheel', preventModalScroll, { passive: false });
+                document.addEventListener('touchmove', preventModalScroll, { passive: false });
+                document.addEventListener('keydown', preventModalKeys, { passive: false });
+            }
+
+            function unlockPageScroll() {
+                if (!devModalScrollState) return;
+                document.removeEventListener('wheel', preventModalScroll, { passive: false });
+                document.removeEventListener('touchmove', preventModalScroll, { passive: false });
+                document.removeEventListener('keydown', preventModalKeys, { passive: false });
+                devModalScrollState = null;
+            }
             const wechatModal = document.getElementById('wechatModal');
             const closeWechat = document.querySelector('.close-wechat');
             const copyWechatBtn = document.getElementById('copyWechatBtn');
@@ -1465,7 +1494,9 @@
 
             // 显示开发提示模态框
             function showDevModal() {
-                devModal.style.display = "block";
+                closeAllSubmenus();
+                devModal.style.display = "flex";
+                lockPageScroll();
                 setTimeout(() => {
                     devModal.style.opacity = "1";
                 }, 10);
@@ -1476,6 +1507,7 @@
                 devModal.style.opacity = "0";
                 setTimeout(() => {
                     devModal.style.display = "none";
+                    unlockPageScroll();
                 }, 300);
             }
 

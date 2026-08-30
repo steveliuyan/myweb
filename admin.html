@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#a1c4fd" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     <title>消息管理 - 刘焱的个人主页</title>
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -432,13 +436,27 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="theme.css">
 </head>
 <body>
     <div class="container">
         <!-- 头部导航 -->
         <header>
-            <div class="logo fade-in">
-                刘焱的个人网站
+            <div class="brand-group">
+                <div class="logo fade-in">
+                    刘焱的个人网站
+                </div>
+                <div class="theme-switcher" role="group" aria-label="主题切换">
+                    <button type="button" data-theme-option="auto" title="自动" aria-label="自动">
+                        <i class="fas fa-circle-half-stroke"></i><span class="theme-label">自动</span>
+                    </button>
+                    <button type="button" data-theme-option="light" title="浅色" aria-label="浅色">
+                        <i class="fas fa-sun"></i><span class="theme-label">浅色</span>
+                    </button>
+                    <button type="button" data-theme-option="dark" title="深色" aria-label="深色">
+                        <i class="fas fa-moon"></i><span class="theme-label">深色</span>
+                    </button>
+                </div>
             </div>
             <a href="index.html" class="btn fade-in">
                 <i class="fas fa-arrow-left"></i> 返回主页
