@@ -375,11 +375,23 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
             overflow: hidden;
+            cursor: pointer;
+            touch-action: manipulation;
         }
 
         .profile-img:hover {
             transform: scale(1.1);
             box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .celebration-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            pointer-events: none;
+            z-index: 1800;
         }
 
         .profile-info h1 {
@@ -1416,6 +1428,299 @@
             const wechatQrcodeModule = document.getElementById('wechatQrcodeModule');
             const qqQrcodeImg = document.getElementById('qqQrcodeImg');
             const copyButtons = document.querySelectorAll('[data-copy]');
+            const avatarTrigger = document.querySelector('.profile-img');
+            let avatarTapCount = 0;
+            let avatarTapTimer = null;
+            let celebrationState = null;
+            let celebrationRunId = 0;
+
+            function stopAvatarCelebration() {
+                if (!celebrationState) return;
+                cancelAnimationFrame(celebrationState.rafId);
+                window.removeEventListener('resize', celebrationState.resizeHandler);
+                celebrationState.canvas.remove();
+                celebrationState = null;
+                celebrationRunId += 1;
+            }
+
+            function launchAvatarCelebration(originX, originY) {
+                stopAvatarCelebration();
+
+                const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const canvas = document.createElement('canvas');
+                canvas.className = 'celebration-canvas';
+                canvas.setAttribute('aria-hidden', 'true');
+                document.body.appendChild(canvas);
+
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    canvas.remove();
+                    return;
+                }
+
+                const fireworkColors = ['#7dd3fc', '#38bdf8', '#60a5fa', '#f472b6', '#facc15', '#c084fc'];
+                const confettiColors = ['#fef08a', '#fda4af', '#93c5fd', '#86efac', '#f9a8d4', '#fde68a'];
+                const state = {
+                    id: celebrationRunId,
+                    canvas,
+                    ctx,
+                    rafId: 0,
+                    active: true,
+                    particles: [],
+                    confetti: [],
+                    rings: [],
+                    originX,
+                    originY,
+                    topX: window.innerWidth * 0.5,
+                    topY: Math.max(72, window.innerHeight * 0.08),
+                    start: performance.now(),
+                    last: performance.now(),
+                    duration: reducedMotion ? 2200 : 3800,
+                    nextEvent: 0,
+                    events: reducedMotion
+                        ? [
+                            { time: 0, type: 'launch' },
+                            { time: 120, type: 'avatarBurst' },
+                            { time: 360, type: 'topBurst', spread: 0 },
+                            { time: 560, type: 'rain' },
+                            { time: 980, type: 'topBurst', spread: -180 },
+                            { time: 1200, type: 'rain' }
+                        ]
+                        : [
+                            { time: 0, type: 'launch' },
+                            { time: 120, type: 'avatarBurst' },
+                            { time: 360, type: 'topBurst', spread: 0 },
+                            { time: 560, type: 'rain' },
+                            { time: 820, type: 'topBurst', spread: -220 },
+                            { time: 1040, type: 'rain' },
+                            { time: 1280, type: 'topBurst', spread: 220 },
+                            { time: 1520, type: 'rain' }
+                        ]
+                };
+
+                function resizeCanvas() {
+                    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    state.canvas.width = Math.floor(window.innerWidth * dpr);
+                    state.canvas.height = Math.floor(window.innerHeight * dpr);
+                    state.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                }
+
+                function addRing(x, y, radius, life) {
+                    state.rings.push({
+                        x,
+                        y,
+                        radius,
+                        life,
+                        ttl: life
+                    });
+                }
+
+                function addSparkBurst(cx, cy, scale, verticalBias) {
+                    const count = reducedMotion ? Math.round(18 * scale) : Math.round(42 * scale);
+                    for (let i = 0; i < count; i += 1) {
+                        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.18;
+                        const speed = (180 + Math.random() * 260) * (0.75 + Math.random() * 0.35) * scale;
+                        state.particles.push({
+                            x: cx,
+                            y: cy,
+                            vx: Math.cos(angle) * speed,
+                            vy: Math.sin(angle) * speed + (verticalBias || 0),
+                            life: 1.05 + Math.random() * 0.45,
+                            ttl: 1.05 + Math.random() * 0.45,
+                            size: 1.4 + Math.random() * 1.8,
+                            color: fireworkColors[i % fireworkColors.length],
+                            gravity: 300 + Math.random() * 130,
+                            drag: 0.985 - Math.random() * 0.01
+                        });
+                    }
+                    addRing(cx, cy, 12, 0.8);
+                }
+
+                function addConfettiRain(centerX, spread, density) {
+                    const count = reducedMotion ? 18 : density;
+                    for (let i = 0; i < count; i += 1) {
+                        const x = centerX + (Math.random() - 0.5) * spread + (Math.random() - 0.5) * 40;
+                        state.confetti.push({
+                            x,
+                            y: -20 - Math.random() * window.innerHeight * 0.35,
+                            vx: (Math.random() - 0.5) * 90,
+                            vy: 120 + Math.random() * 180,
+                            life: 2.8 + Math.random() * 1.2,
+                            ttl: 2.8 + Math.random() * 1.2,
+                            w: 5 + Math.random() * 4,
+                            h: 9 + Math.random() * 9,
+                            rotation: Math.random() * Math.PI,
+                            spin: (Math.random() - 0.5) * 8,
+                            wobble: Math.random() * Math.PI * 2,
+                            wobbleSpeed: 2.5 + Math.random() * 2,
+                            color: confettiColors[i % confettiColors.length],
+                            gravity: 190 + Math.random() * 100
+                        });
+                    }
+                }
+
+                function triggerEvent(event) {
+                    if (event.type === 'launch') {
+                        addSparkBurst(originX, originY, reducedMotion ? 1 : 1.35, -280);
+                        addSparkBurst(originX, originY - 8, reducedMotion ? 0.75 : 1, -380);
+                        addSparkBurst(originX + 10, originY + 4, reducedMotion ? 0.55 : 0.75, -180);
+                        addRing(originX, originY, 18, 0.65);
+                        return;
+                    }
+
+                    if (event.type === 'avatarBurst') {
+                        addSparkBurst(originX, originY, reducedMotion ? 0.85 : 1.15, -120);
+                        addSparkBurst(originX - 8, originY - 4, reducedMotion ? 0.55 : 0.75, -160);
+                        return;
+                    }
+
+                    if (event.type === 'topBurst') {
+                        const burstX = Math.max(40, Math.min(window.innerWidth - 40, state.topX + event.spread));
+                        const burstY = state.topY + (Math.random() - 0.5) * 24;
+                        addSparkBurst(burstX, burstY, reducedMotion ? 0.8 : 1, -20);
+                        addConfettiRain(burstX, 280, reducedMotion ? 12 : 32);
+                        return;
+                    }
+
+                    if (event.type === 'rain') {
+                        addConfettiRain(window.innerWidth * 0.5, window.innerWidth, reducedMotion ? 24 : 42);
+                        addConfettiRain(window.innerWidth * 0.25, window.innerWidth * 0.45, reducedMotion ? 10 : 18);
+                        addConfettiRain(window.innerWidth * 0.75, window.innerWidth * 0.45, reducedMotion ? 10 : 18);
+                    }
+                }
+
+                function updateParticles(delta) {
+                    state.particles = state.particles.filter(p => {
+                        p.life -= delta;
+                        if (p.life <= 0) return false;
+                        p.vx *= Math.pow(p.drag, delta * 60);
+                        p.vy = p.vy * Math.pow(p.drag, delta * 60) + p.gravity * delta;
+                        p.x += p.vx * delta;
+                        p.y += p.vy * delta;
+                        return true;
+                    });
+                }
+
+                function updateConfetti(delta) {
+                    state.confetti = state.confetti.filter(p => {
+                        p.life -= delta;
+                        if (p.life <= 0) return false;
+                        p.vy += p.gravity * delta;
+                        p.vx *= Math.pow(0.992, delta * 60);
+                        p.rotation += p.spin * delta;
+                        p.wobble += p.wobbleSpeed * delta;
+                        p.x += (p.vx + Math.sin(p.wobble) * 18) * delta;
+                        p.y += p.vy * delta;
+                        return true;
+                    });
+                }
+
+                function updateRings(delta) {
+                    state.rings = state.rings.filter(ring => {
+                        ring.life -= delta;
+                        return ring.life > 0;
+                    });
+                }
+
+                function drawScene(elapsed) {
+                    const ctx = state.ctx;
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    ctx.clearRect(0, 0, width, height);
+
+                    state.rings.forEach(ring => {
+                        const progress = 1 - ring.life / ring.ttl;
+                        ctx.save();
+                        ctx.strokeStyle = `rgba(125, 211, 252, ${0.45 * (1 - progress)})`;
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(ring.x, ring.y, ring.radius + progress * 120, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.restore();
+                    });
+
+                    state.particles.forEach(p => {
+                        const alpha = p.life / p.ttl;
+                        ctx.save();
+                        ctx.globalAlpha = alpha;
+                        ctx.strokeStyle = p.color;
+                        ctx.fillStyle = p.color;
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = p.color;
+                        ctx.lineWidth = p.size;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p.x - p.vx * 0.03, p.y - p.vy * 0.03);
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, Math.max(1.2, p.size), 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+                    });
+
+                    state.confetti.forEach(p => {
+                        const alpha = p.life / p.ttl;
+                        ctx.save();
+                        ctx.globalAlpha = alpha;
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rotation);
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                        ctx.restore();
+                    });
+                }
+
+                function frame(now) {
+                    if (!celebrationState || celebrationState.id !== state.id) {
+                        return;
+                    }
+
+                    const delta = Math.min((now - state.last) / 1000, 0.05);
+                    state.last = now;
+                    const elapsed = now - state.start;
+
+                    while (state.nextEvent < state.events.length && elapsed >= state.events[state.nextEvent].time) {
+                        triggerEvent(state.events[state.nextEvent]);
+                        state.nextEvent += 1;
+                    }
+
+                    drawScene(elapsed);
+                    updateParticles(delta);
+                    updateConfetti(delta);
+                    updateRings(delta);
+
+                    if (elapsed < state.duration || state.particles.length || state.confetti.length || state.rings.length) {
+                        state.rafId = requestAnimationFrame(frame);
+                    } else {
+                        stopAvatarCelebration();
+                    }
+                }
+
+                state.resizeHandler = resizeCanvas;
+                resizeCanvas();
+                window.addEventListener('resize', state.resizeHandler);
+
+                celebrationState = state;
+                state.rafId = requestAnimationFrame(frame);
+            }
+
+            if (avatarTrigger) {
+                avatarTrigger.setAttribute('title', '连续点击三次触发彩蛋');
+                avatarTrigger.addEventListener('click', function() {
+                    avatarTapCount += 1;
+                    clearTimeout(avatarTapTimer);
+                    avatarTapTimer = setTimeout(() => {
+                        avatarTapCount = 0;
+                    }, 650);
+
+                    if (avatarTapCount >= 3) {
+                        avatarTapCount = 0;
+                        clearTimeout(avatarTapTimer);
+                        const rect = avatarTrigger.getBoundingClientRect();
+                        launchAvatarCelebration(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    }
+                });
+            }
 
             function copyText(text, button) {
                 const originalText = button ? button.textContent : '';
