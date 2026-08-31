@@ -566,4 +566,17 @@ footer {
     .theme-switcher .theme-label {
         display: none;
     }
+
+    html[data-theme="dark"] .submenu {
+        background: rgba(15, 23, 42, 0.98);
+    }
+
+    html[data-theme="dark"] .submenu a {
+        background: rgba(15, 23, 42, 0.88);
+    }
+
+    html[data-theme="dark"] .submenu a:hover,
+    html[data-theme="dark"] .submenu a.active {
+        background: rgba(56, 189, 248, 0.16);
+    }
 }
