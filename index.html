@@ -23,6 +23,7 @@
         html {
             color-scheme: light dark;
             scrollbar-gutter: stable;
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
         }
 
         @media (prefers-color-scheme: dark) {
@@ -1393,13 +1394,17 @@
             const devModal = document.getElementById('devModal');
             const closeDevModal = document.getElementById('closeDevModal');
             const devLinks = document.querySelectorAll('.dev-link');
-            let devModalScrollState = null;
+            let pageScrollLockState = null;
             const preventModalScroll = event => event.preventDefault();
             const preventModalKeys = event => {
                 if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '].includes(event.key)) {
                     event.preventDefault();
                 }
             };
+
+            function clearMenuBodyStyles() {
+                document.body.style.overflow = '';
+            }
 
             function closeAllSubmenus() {
                 document.querySelectorAll('.has-submenu').forEach(el => {
@@ -1408,19 +1413,38 @@
             }
 
             function lockPageScroll() {
-                if (devModalScrollState) return;
-                devModalScrollState = true;
+                if (pageScrollLockState) {
+                    pageScrollLockState.count += 1;
+                    return;
+                }
+
+                pageScrollLockState = {
+                    count: 1,
+                    bodyTouchAction: document.body.style.touchAction,
+                    bodyOverscrollBehavior: document.body.style.overscrollBehavior,
+                    htmlOverscrollBehavior: document.documentElement.style.overscrollBehavior
+                };
                 document.addEventListener('wheel', preventModalScroll, { passive: false });
                 document.addEventListener('touchmove', preventModalScroll, { passive: false });
                 document.addEventListener('keydown', preventModalKeys, { passive: false });
+                document.body.style.touchAction = 'none';
+                document.body.style.overscrollBehavior = 'none';
+                document.documentElement.style.overscrollBehavior = 'none';
             }
 
             function unlockPageScroll() {
-                if (!devModalScrollState) return;
+                if (!pageScrollLockState) return;
+                pageScrollLockState.count -= 1;
+                if (pageScrollLockState.count > 0) return;
+
+                const lockedState = pageScrollLockState;
+                pageScrollLockState = null;
                 document.removeEventListener('wheel', preventModalScroll, { passive: false });
                 document.removeEventListener('touchmove', preventModalScroll, { passive: false });
                 document.removeEventListener('keydown', preventModalKeys, { passive: false });
-                devModalScrollState = null;
+                document.body.style.touchAction = lockedState.bodyTouchAction || '';
+                document.body.style.overscrollBehavior = lockedState.bodyOverscrollBehavior || '';
+                document.documentElement.style.overscrollBehavior = lockedState.htmlOverscrollBehavior || '';
             }
             const wechatModal = document.getElementById('wechatModal');
             const closeWechat = document.querySelector('.close-wechat');
@@ -1744,11 +1768,13 @@
             // 显示微信弹窗
             function showWechatModal() {
                 wechatModal.style.display = "block";
+                lockPageScroll();
             }
 
             // 隐藏微信弹窗
             function hideWechatModal() {
                 wechatModal.style.display = "none";
+                unlockPageScroll();
             }
 
             // 绑定微信二维码点击事件
@@ -1800,26 +1826,37 @@
             // 显示开发提示模态框
             function showDevModal() {
                 closeAllSubmenus();
-                devModal.style.display = "flex";
+                if (mainNav.classList.contains('active') || menuToggle.classList.contains('menu-open')) {
+                    clearMenuBodyStyles();
+                }
+                mainNav.classList.remove('active');
+                menuToggle.classList.remove('menu-open');
+                if (window.innerWidth <= 768) {
+                    menuToggle.style.display = 'block';
+                } else {
+                    menuToggle.style.display = 'none';
+                }
                 lockPageScroll();
-                setTimeout(() => {
-                    devModal.style.opacity = "1";
-                }, 10);
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        devModal.classList.add('is-open');
+                    });
+                });
             }
 
             // 隐藏开发提示模态框
             function hideDevModal() {
-                devModal.style.opacity = "0";
+                devModal.classList.remove('is-open');
                 setTimeout(() => {
-                    devModal.style.display = "none";
                     unlockPageScroll();
-                }, 300);
+                }, 260);
             }
 
             // 为开发中链接添加事件
             devLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopImmediatePropagation();
                     showDevModal();
                 });
             });
@@ -1838,9 +1875,6 @@
             function toggleMenu() {
                 mainNav.classList.toggle('active');
                 const isMenuActive = mainNav.classList.contains('active');
-                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-                document.body.style.overflow = isMenuActive ? 'hidden' : '';
-                document.body.style.paddingRight = isMenuActive && scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
 
                 // 重置所有二级菜单状态
                 document.querySelectorAll('.has-submenu').forEach(el => {
@@ -1902,6 +1936,9 @@
             // 阻止二级菜单项冒泡到父级菜单
             submenuItems.forEach(item => {
                 item.addEventListener('click', function(e) {
+                    if (this.classList.contains('dev-link')) {
+                        return;
+                    }
                     if (window.innerWidth <= 768) {
                         e.stopPropagation();
                         // 在移动端点击二级菜单项后关闭整个菜单
@@ -1931,7 +1968,6 @@
 
                     // 重置滚动状态
                     document.body.style.overflow = '';
-                    document.body.style.paddingRight = '';
 
                     // 显示菜单按钮（移动端）
                     if (window.innerWidth <= 768) {
@@ -1946,7 +1982,6 @@
                 if (window.innerWidth > 768) {
                     mainNav.classList.remove('active');
                     document.body.style.overflow = '';
-                    document.body.style.paddingRight = '';
                     document.querySelectorAll('.has-submenu').forEach(el => {
                         el.classList.remove('active');
                     });
