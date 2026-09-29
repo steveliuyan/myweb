@@ -1,0 +1,517 @@
+/* ==========================================================
+   effects.css —— 全站动效层（配合 effects.js 使用）
+   注意：类名统一用 fx- 前缀，且不含 card / item / modal，
+   避免命中 theme.css 里的 [class*="card"] 等通配选择器。
+   ========================================================== */
+
+html {
+    --fx-accent-rgb: 79, 172, 254;
+    --fx-accent2-rgb: 0, 242, 254;
+    --fx-shine-mid: #7c8cff;
+    --fx-blob-1: rgba(79, 172, 254, 0.42);
+    --fx-blob-2: rgba(0, 242, 254, 0.32);
+    --fx-blob-3: rgba(167, 139, 250, 0.28);
+}
+
+html[data-theme="dark"] {
+    --fx-accent-rgb: 56, 189, 248;
+    --fx-accent2-rgb: 37, 99, 235;
+    --fx-shine-mid: #a5b4fc;
+    --fx-blob-1: rgba(56, 189, 248, 0.2);
+    --fx-blob-2: rgba(37, 99, 235, 0.26);
+    --fx-blob-3: rgba(139, 92, 246, 0.18);
+}
+
+/* ---------- 跨页面切换过渡（Chrome / Edge 126+，其他浏览器自动忽略） ---------- */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-old(root) {
+    animation: fxPageOut 0.26s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+    animation: fxPageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fxPageOut {
+    to {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.99);
+    }
+}
+
+@keyframes fxPageIn {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.99);
+    }
+}
+
+/* 主题切换：从点击处圆形扩散 */
+html.fx-theme-switching::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+html.fx-theme-switching::view-transition-new(root) {
+    animation: fxThemeReveal 0.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+    mix-blend-mode: normal;
+}
+
+@keyframes fxThemeReveal {
+    from {
+        clip-path: circle(0 at var(--fx-vt-x, 50%) var(--fx-vt-y, 50%));
+    }
+    to {
+        clip-path: circle(var(--fx-vt-r, 150vmax) at var(--fx-vt-x, 50%) var(--fx-vt-y, 50%));
+    }
+}
+
+/* ---------- 极光背景 ---------- */
+.fx-aurora {
+    position: fixed;
+    inset: 0;
+    /* body 自带渐变背景且是定位元素，负 z-index 会被盖住；DOM 顺序排在粒子层前面即可 */
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.fx-aurora span {
+    position: absolute;
+    width: 60vmax;
+    height: 60vmax;
+    border-radius: 50%;
+    will-change: transform;
+}
+
+.fx-aurora span:nth-child(1) {
+    top: -22vmax;
+    left: -14vmax;
+    background: radial-gradient(circle, var(--fx-blob-1), transparent 65%);
+    animation: fxDrift1 26s ease-in-out infinite alternate;
+}
+
+.fx-aurora span:nth-child(2) {
+    top: 30%;
+    right: -22vmax;
+    background: radial-gradient(circle, var(--fx-blob-2), transparent 65%);
+    animation: fxDrift2 32s ease-in-out infinite alternate;
+}
+
+.fx-aurora span:nth-child(3) {
+    bottom: -28vmax;
+    left: 18%;
+    background: radial-gradient(circle, var(--fx-blob-3), transparent 65%);
+    animation: fxDrift3 38s ease-in-out infinite alternate;
+}
+
+@keyframes fxDrift1 {
+    to { transform: translate(18vw, 22vh) scale(1.15); }
+}
+
+@keyframes fxDrift2 {
+    to { transform: translate(-24vw, -16vh) scale(0.9); }
+}
+
+@keyframes fxDrift3 {
+    to { transform: translate(14vw, -24vh) scale(1.2); }
+}
+
+/* ---------- 顶部阅读进度条 ---------- */
+.fx-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 3000;
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--page-accent), var(--fx-shine-mid), var(--page-accent-2));
+    box-shadow: 0 0 12px rgba(var(--fx-accent-rgb), 0.6);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+}
+
+/* ---------- 鼠标光晕（在粒子层与内容层之间） ---------- */
+.fx-cursor-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 520px;
+    height: 520px;
+    margin: -260px 0 0 -260px;
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(var(--fx-accent-rgb), 0.2), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    will-change: transform;
+}
+
+.fx-cursor-glow.is-on {
+    opacity: 1;
+}
+
+/* ---------- 标题流光渐变 ---------- */
+.logo,
+.page-header h1,
+.page-title h1,
+.profile-info h1 {
+    background-image: linear-gradient(90deg,
+            var(--page-grad-start),
+            var(--fx-shine-mid),
+            var(--page-grad-end),
+            var(--fx-shine-mid),
+            var(--page-grad-start));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fxShine 6s linear infinite;
+}
+
+/* logo 同时还有入场 fadeIn，两个动画要写在一起，否则会互相覆盖 */
+.logo.fade-in {
+    animation: fadeIn 0.8s ease forwards, fxShine 6s linear infinite;
+}
+
+@keyframes fxShine {
+    to { background-position: -200% 0; }
+}
+
+/* ---------- 头像呼吸光环 ---------- */
+.profile-img {
+    animation: fxAvatarPulse 3s ease-out infinite;
+}
+
+@keyframes fxAvatarPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--fx-accent-rgb), 0.5), 0 5px 15px rgba(var(--fx-accent-rgb), 0.3);
+    }
+    70%,
+    100% {
+        box-shadow: 0 0 0 16px rgba(var(--fx-accent-rgb), 0), 0 5px 15px rgba(var(--fx-accent-rgb), 0.3);
+    }
+}
+
+/* ---------- 打字机 ---------- */
+.fx-typing {
+    min-height: 1.5em;
+}
+
+.fx-typing::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 4px;
+    vertical-align: -0.12em;
+    background: currentColor;
+    animation: fxCaret 1s steps(1) infinite;
+}
+
+@keyframes fxCaret {
+    50% { opacity: 0; }
+}
+
+/* ---------- 滚动进场 ---------- */
+.fx-reveal {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0) scale(0.98);
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--fx-delay, 0ms),
+        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--fx-delay, 0ms) !important;
+}
+
+.fx-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* 时间线：竖线从上往下画出来，圆点向外扩散 */
+.timeline-line.fx-line {
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.timeline-line.fx-line.is-visible {
+    transform: scaleY(1);
+}
+
+.timeline-dot::after {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    border: 2px solid rgba(var(--fx-accent-rgb), 0.6);
+    pointer-events: none;
+    animation: fxDotPulse 2.4s ease-out infinite;
+}
+
+@keyframes fxDotPulse {
+    from {
+        transform: scale(0.6);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1.7);
+        opacity: 0;
+    }
+}
+
+/* 页面标题下划线展开 */
+.page-title::after {
+    animation: fxUnderline 1s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+@keyframes fxUnderline {
+    from { width: 0; }
+}
+
+/* ---------- 卡片：跟随鼠标的光斑 + 发光描边 ---------- */
+.fx-spot {
+    isolation: isolate;
+}
+
+.fx-spot.fx-spot-pos {
+    position: relative;
+}
+
+/* 发光描边：用 mask 只保留 1.5px 的边框区域 */
+.fx-spot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    pointer-events: none;
+    background: radial-gradient(260px circle at var(--fx-x, 50%) var(--fx-y, 50%),
+            rgba(var(--fx-accent-rgb), 0.95), rgba(var(--fx-accent2-rgb), 0.35) 40%, transparent 70%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: 2;
+}
+
+/* 内部柔光：放在内容后面（z-index:-1 + isolation） */
+.fx-spot.fx-spot-fill::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(420px circle at var(--fx-x, 50%) var(--fx-y, 50%),
+            rgba(var(--fx-accent-rgb), 0.12), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: -1;
+}
+
+.fx-spot:hover::after,
+.fx-spot.fx-spot-fill:hover::before {
+    opacity: 1;
+}
+
+/* 3D 倾斜：跟随时用短过渡，离开后回到卡片自身的过渡 */
+.fx-tilting {
+    transition: transform 0.12s linear, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* ---------- 点击水波纹 ---------- */
+.fx-ripple-host {
+    overflow: hidden;
+}
+
+.fx-ripple {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    background: var(--fx-ripple-color, rgba(var(--fx-accent-rgb), 0.3));
+    transform: scale(0);
+    animation: fxRipple 0.65s ease-out forwards;
+    z-index: 3;
+}
+
+.copy-mini,
+.copy-btn,
+.submit-btn,
+.resume-download-btn,
+.dev-modal-button,
+.social-links a,
+.back-to-top,
+.btn {
+    --fx-ripple-color: rgba(255, 255, 255, 0.45);
+}
+
+@keyframes fxRipple {
+    to {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* ---------- 点击火花画布 ---------- */
+.fx-sparks {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 2500;
+}
+
+/* ---------- 导航 / 社交图标微动效 ---------- */
+nav a > i:first-child {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover > i:first-child {
+    animation: fxIconPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.social-links a i {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.social-links a:hover i {
+    transform: scale(1.15) rotate(-8deg);
+}
+
+@keyframes fxIconPop {
+    40% { transform: translateY(-4px) scale(1.25) rotate(-10deg); }
+    70% { transform: translateY(1px) scale(0.95) rotate(4deg); }
+}
+
+/* ---------- 技能条流光 ---------- */
+.skill-bar .skill-progress {
+    position: relative;
+    overflow: hidden;
+    transition: width 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.skill-progress::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.55) 50%, transparent 80%);
+    transform: translateX(-100%);
+    animation: fxSweep 2.6s ease-in-out 1.6s infinite;
+}
+
+@keyframes fxSweep {
+    60%,
+    100% { transform: translateX(100%); }
+}
+
+/* ---------- 触屏：按压反馈 ---------- */
+/* 不改 transition，沿用元素自身的过渡，避免和滚动进场的过渡冲突 */
+.fx-press.is-pressed {
+    transform: scale(0.965) !important;
+}
+
+/* 卡片被按住时，手指位置亮起（复用 fx-spot 的光斑） */
+.fx-spot.is-touched::after,
+.fx-spot.fx-spot-fill.is-touched::before {
+    opacity: 1;
+}
+
+/* ---------- 触屏：陀螺仪视差（只移动背景层） ---------- */
+.fx-aurora,
+#particles-js {
+    translate: var(--fx-tilt-x, 0px) var(--fx-tilt-y, 0px);
+}
+
+/* ---------- 手机菜单：遮罩 + 菜单项依次滑入 ---------- */
+.fx-nav-backdrop {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .fx-nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 998;
+        background: rgba(2, 6, 23, 0.35);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .fx-nav-backdrop.is-on {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    #mainNav > ul > li {
+        opacity: 0;
+        transform: translateX(28px);
+        transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #mainNav.active > ul > li {
+        opacity: 1;
+        transform: none;
+    }
+
+    #mainNav.active > ul > li:nth-child(1) { transition-delay: 0.08s; }
+    #mainNav.active > ul > li:nth-child(2) { transition-delay: 0.13s; }
+    #mainNav.active > ul > li:nth-child(3) { transition-delay: 0.18s; }
+    #mainNav.active > ul > li:nth-child(4) { transition-delay: 0.23s; }
+    #mainNav.active > ul > li:nth-child(5) { transition-delay: 0.28s; }
+    #mainNav.active > ul > li:nth-child(6) { transition-delay: 0.33s; }
+    #mainNav.active > ul > li:nth-child(7) { transition-delay: 0.38s; }
+}
+
+/* ---------- 减少动态效果：尊重系统设置 ---------- */
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none !important;
+    }
+
+    .fx-aurora span,
+    .profile-img,
+    .timeline-dot::after,
+    .skill-progress::after,
+    .fx-typing::after,
+    .page-title::after,
+    nav a:hover > i:first-child {
+        animation: none !important;
+    }
+
+    .logo,
+    .page-header h1,
+    .page-title h1,
+    .profile-info h1 {
+        animation: none;
+    }
+
+    .logo.fade-in {
+        animation: fadeIn 0.8s ease forwards;
+    }
+
+    .skill-bar .skill-progress {
+        transition: none;
+    }
+
+    .fx-press.is-pressed {
+        transform: none !important;
+    }
+
+    #mainNav > ul > li {
+        transform: none !important;
+        transition: opacity 0.2s ease !important;
+    }
+}

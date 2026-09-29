@@ -691,3 +691,51 @@ footer {
         background: rgba(56, 189, 248, 0.16);
     }
 }
+
+/* ---------- 主题补漏：这些区块在页面里写死了白底 / 深色字，统一改用主题变量 ----------
+   用 html 前缀提高优先级；不限定 dark，避免"系统深色 + 网站选浅色"时反向出错 */
+html .info-details,
+html .design-philosophy,
+html .courses-section {
+    background: var(--page-surface);
+    border-color: var(--page-border);
+    box-shadow: var(--page-shadow);
+    color: var(--page-text);
+}
+
+html .info-details:hover {
+    border-color: var(--page-border-stronger);
+    box-shadow: var(--page-shadow-strong);
+}
+
+/* 工作经历的日期胶囊 */
+html[data-theme="dark"] .timeline-date {
+    background: rgba(15, 23, 42, 0.96);
+    color: var(--page-accent);
+    box-shadow: 0 0 0 1px var(--page-border-strong), 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* 主标题类文字 */
+html .company-details h2,
+html .contact-details h3,
+html .wechat-id {
+    color: var(--page-text);
+}
+
+/* 正文 / 次要文字 */
+html .info-item p,
+html .philosophy-content p,
+html .profile-info h2,
+html .university-info h4,
+html .university-info p,
+html .course-item p,
+html .company-details .period,
+html .responsibilities li,
+html .future-experience p,
+html .page-header p,
+html .contact-details p,
+html .form-group label,
+html .qrcode-item p {
+    color: var(--page-text-soft);
+}
+

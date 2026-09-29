@@ -1029,6 +1029,8 @@
         }
     </style>
     <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="effects.css">
+    <script src="effects.js" defer></script>
 </head>
 
 <body>
@@ -1122,7 +1124,8 @@
                     </div>
                     <div class="profile-info">
                         <h1>刘焱</h1>
-                        <h2>在校大学生</h2>
+                        <!-- 打字机轮换的文字，用 | 分隔，可自行修改 -->
+                        <h2 data-fx-typing="在校大学生|兼职赛事摄影师|用脚丈量世界|专业情感陪伴">在校大学生</h2>
                     </div>
                 </div>
 
@@ -1728,6 +1731,9 @@
                 state.rafId = requestAnimationFrame(frame);
             }
 
+            // 供 effects.js 的"摇一摇"调用
+            window.FXCelebrate = launchAvatarCelebration;
+
             if (avatarTrigger) {
                 avatarTrigger.setAttribute('title', '连续点击三次触发彩蛋');
                 avatarTrigger.addEventListener('click', function() {
@@ -1994,7 +2000,8 @@
             });
 
             // 技能进度条动画
-            const skillBars = document.querySelectorAll('.skill-progress');
+            // effects.js 加载成功时由它负责（进入视口再播放 + 数字计数）
+            const skillBars = window.FX_SKILLS ? [] : document.querySelectorAll('.skill-progress');
             skillBars.forEach(bar => {
                 const width = bar.getAttribute('data-width');
                 setTimeout(() => {

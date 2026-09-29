@@ -62,7 +62,17 @@
                 const mode = button.dataset.themeOption;
                 if (mode === 'light' || mode === 'dark' || mode === 'auto') {
                     writeMode(mode);
-                    applyTheme(mode);
+                    const willChange = resolveTheme(mode) !== root.dataset.theme;
+                    // effects.js 提供圆形扩散过渡；没加载时直接切换
+                    if (willChange && typeof window.FXThemeTransition === 'function') {
+                        // 键盘触发时没有鼠标坐标，改用按钮中心
+                        const rect = button.getBoundingClientRect();
+                        const x = event.detail ? event.clientX : rect.left + rect.width / 2;
+                        const y = event.detail ? event.clientY : rect.top + rect.height / 2;
+                        window.FXThemeTransition(() => applyTheme(mode), x, y);
+                    } else {
+                        applyTheme(mode);
+                    }
                 }
             });
         });
