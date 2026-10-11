@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#a1c4fd" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <title>3D 打印成本计算器 - 刘焱的个人主页</title>
+    <script src="theme.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        /* 原有的样式保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            color-scheme: light dark;
+            scrollbar-gutter: stable;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            html {
+                color-scheme: dark;
+            }
+
+            body {
+                background: linear-gradient(135deg, #0f172a, #111827);
+                color: #e5eefb;
+            }
+
+            #particles-js {
+                opacity: 0.55;
+            }
+
+            nav,
+            .submenu,
+            [class*="card"],
+            [class*="modal"],
+            [class*="item"],
+            .timeline-content,
+            .future-experience,
+            .qrcode-placeholder,
+            .skill-bar,
+            .skill-progress,
+            .form-control,
+            footer,
+            .back-to-top {
+                background: rgba(15, 23, 42, 0.92);
+                border-color: rgba(125, 211, 252, 0.18);
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+                color: #e5eefb;
+            }
+
+            nav a,
+            .submenu a,
+            .menu-toggle,
+            .page-header p,
+            .page-title p,
+            .profile-info,
+            .contact-info,
+            .contact-details,
+            .info-section,
+            .info-item,
+            .info-details,
+            .info-tags,
+            .tag,
+            .design-philosophy,
+            .philosophy-content,
+            .contact-item,
+            .timeline-date,
+            .period,
+            .responsibilities,
+            .achievements,
+            .company-details,
+            .course-item,
+            .badge,
+            .copy-mini,
+            .wechat-id,
+            .form-status,
+            .social-links a,
+            footer {
+                color: #c7d2e5;
+            }
+
+            nav a:hover,
+            nav a.active,
+            .submenu a:hover,
+            .submenu a.active {
+                background: rgba(56, 189, 248, 0.14);
+                border-color: rgba(125, 211, 252, 0.26);
+                color: #ffffff;
+            }
+
+            .logo,
+            .page-header h1,
+            .page-title h1 {
+                background: linear-gradient(45deg, #7dd3fc, #38bdf8);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .profile-img,
+            .contact-icon,
+            .dev-modal-icon,
+            .timeline-dot,
+            .company-logo {
+                background: linear-gradient(135deg, #0ea5e9, #2563eb);
+                color: #fff;
+                border-color: rgba(125, 211, 252, 0.4);
+            }
+
+            .skill-bar,
+            .timeline-line {
+                background: rgba(125, 211, 252, 0.18);
+            }
+
+            .skill-progress,
+            .copy-btn,
+            .submit-btn,
+            .admin-button,
+            .back-to-top {
+                background: linear-gradient(135deg, #38bdf8, #2563eb);
+                color: #fff;
+                border-color: transparent;
+            }
+
+            .form-control::placeholder,
+            .qrcode-placeholder p {
+                color: #94a3b8 !important;
+            }
+
+            .form-control:focus {
+                border-color: #38bdf8;
+                box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+            }
+        }
+
+        body {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 头部样式 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        /* 导航菜单 */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #4facfe;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .menu-toggle.menu-open {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(0.92);
+        }
+
+        nav {
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        nav:hover {
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            position: relative;
+            margin: 0 10px;
+        }
+
+        nav a {
+            color: #4facfe;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        nav a.active {
+            background: rgba(79, 172, 254, 0.15);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.15);
+        }
+
+        nav a:hover {
+            background: rgba(79, 172, 254, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.2);
+        }
+
+        nav a i {
+            margin-right: 8px;
+        }
+
+        /* 二级菜单 */
+        .submenu {
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 5px;
+            padding: 10px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            transform: translateY(10px);
+            transition: max-height 0.32s ease, opacity 0.24s ease, transform 0.32s ease, visibility 0.32s ease;
+            max-height: 0;
+            overflow: hidden;
+        }
+
+        /* 移除悬停效果，完全依赖点击事件 */
+        .has-submenu.active .submenu {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+            max-height: 500px;
+        }
+
+        .submenu li {
+            margin: 0;
+            width: 100%;
+        }
+
+        .submenu a {
+            padding: 10px 20px;
+            white-space: nowrap;
+            color: #555;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .submenu a.active {
+            color: #4facfe;
+            background: rgba(79, 172, 254, 0.1);
+        }
+
+        .submenu a:hover {
+            color: #4facfe;
+            box-shadow: none;
+        }
+
+        /* 箭头旋转动画 */
+        .submenu-toggle i.fa-chevron-down {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .has-submenu.active .submenu-toggle i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .page-title h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+
+        /* 教育信息卡片 */
+        .education-section {
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+
+        .education-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            transition: all 0.4s ease;
+        }
+
+        .education-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .education-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #4facfe;
+            display: flex;
+            align-items: center;
+        }
+
+        .education-card h2 i {
+            margin-right: 12px;
+        }
+
+        .university-info {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(79, 172, 254, 0.2);
+        }
+
+        .university-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .university-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .university-info p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .badges {
+            margin-top: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(79, 172, 254, 0.1);
+            color: #4facfe;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(79, 172, 254, 0.2);
+        }
+
+        /* 课程学习部分 */
+        .courses-section {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 50px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+        }
+
+        .courses-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+            display: flex;
+            align-items: center;
+        }
+
+        .courses-section h2 i {
+            margin-right: 12px;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .course-item {
+            padding: 20px;
+            background: rgba(79, 172, 254, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(79, 172, 254, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .course-item:hover {
+            background: rgba(79, 172, 254, 0.1);
+            transform: translateY(-5px);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
+        }
+
+        .course-item h4 {
+            font-size: 1.1rem;
+            color: #4facfe;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .course-item h4 i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .course-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(79, 172, 254, 0.2);
+            font-size: 1rem;
+            color: #666;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.5);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .education-card, .courses-section {
+                padding: 25px;
+            }
+        }
+
+        .close-menu {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: 0;
+                transform: translate3d(110%, 0, 0);
+                will-change: transform;
+                backface-visibility: hidden;
+                height: 100vh;
+                width: 280px;
+                flex-direction: column;
+                padding-top: 70px;
+                transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s ease;
+                z-index: 999;
+            }
+
+            nav.active {
+                transform: translate3d(0, 0, 0);
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav li {
+                margin: 10px 0;
+            }
+
+            .close-menu {
+                display: block;
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                font-size: 1.8rem;
+                cursor: pointer;
+                color: #4facfe;
+                transition: transform 0.3s ease;
+            }
+
+            .close-menu:hover {
+                transform: rotate(90deg);
+            }
+
+            .submenu {
+                position: static;
+                display: block;
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+                margin-left: 20px;
+                transform: translateY(-4px);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.32s ease, opacity 0.24s ease, transform 0.32s ease, visibility 0.32s ease;
+            }
+
+            .has-submenu.active .submenu {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+                transform: translateY(0);
+                max-height: 500px;
+            }
+
+            .submenu-toggle i.fa-chevron-down {
+                transition: transform 0.3s ease;
+            }
+
+            .has-submenu.active .submenu-toggle i.fa-chevron-down {
+                transform: rotate(180deg);
+            }
+
+            .page-title h1 {
+                font-size: 2.2rem;
+            }
+            
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .social-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        /* 新增开发提示模态框样式 */
+        .dev-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease forwards;
+            opacity: 0;
+        }
+
+        .dev-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .dev-modal-icon {
+            font-size: 5rem;
+            color: #4facfe;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .dev-modal h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #333;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dev-modal p {
+            font-size: 1.2rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .dev-modal-button {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .dev-modal-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(79, 172, 254, 0.6);
+        }
+
+        .back-to-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 998;
+            box-shadow: 0 6px 18px rgba(79, 172, 254, 0.38);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(14px) scale(0.94);
+            transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 10px 24px rgba(79, 172, 254, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                right: 18px;
+                bottom: 18px;
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* ===== 应用详情页（应用商城风格） ===== */
+        .app-hero {
+            display: flex;
+            gap: 28px;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 22px;
+            padding: 34px 32px;
+            box-shadow: 0 16px 40px rgba(31, 41, 55, 0.1);
+            margin-bottom: 26px;
+        }
+
+        .app-icon {
+            width: 108px;
+            height: 108px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 3rem;
+            flex-shrink: 0;
+            box-shadow: 0 14px 34px rgba(99, 102, 241, 0.4);
+        }
+
+        .app-meta { flex: 1; min-width: 0; }
+
+        .app-meta h1 {
+            font-size: 1.9rem;
+            margin: 0;
+        }
+
+        .app-tagline {
+            color: #64748b;
+            margin: 8px 0 14px;
+        }
+
+        .app-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .app-badges span {
+            font-size: 0.8rem;
+            padding: 5px 13px;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+        }
+
+        .app-badges span i { margin-right: 5px; }
+
+        .app-dl {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .app-dl a { text-decoration: none; }
+
+        .app-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .app-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(79, 70, 229, 0.45);
+        }
+
+        .app-btn i { font-size: 1.5rem; }
+
+        .app-btn b { display: block; font-size: 0.95rem; }
+
+        .app-btn small {
+            display: block;
+            font-size: 0.72rem;
+            opacity: 0.85;
+        }
+
+        .app-src {
+            margin-top: 18px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .app-src a { color: #6366f1; }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 22px;
+            padding: 30px 32px;
+            box-shadow: 0 16px 40px rgba(31, 41, 55, 0.1);
+            margin-bottom: 26px;
+        }
+
+        .app-card h2 {
+            font-size: 1.4rem;
+            margin: 0 0 20px;
+        }
+
+        /* 浏览器窗口样机（桌面截图） */
+        .dpc-browser {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(100, 116, 139, 0.35);
+            box-shadow: 0 14px 36px rgba(15, 23, 42, 0.16);
+            background: #f1f5f9;
+        }
+
+        .dpc-browser-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 14px;
+            background: linear-gradient(#f8fafc, #eef2f7);
+            border-bottom: 1px solid rgba(100, 116, 139, 0.22);
+        }
+
+        .dpc-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%; flex-shrink: 0;
+        }
+
+        .dpc-dot.r { background: #ff5f57; }
+        .dpc-dot.y { background: #febc2e; }
+        .dpc-dot.g { background: #28c840; }
+
+        .dpc-url {
+            flex: 1;
+            text-align: center;
+            font-size: 0.72rem;
+            color: #64748b;
+            background: #ffffff;
+            border: 1px solid rgba(100, 116, 139, 0.18);
+            border-radius: 999px;
+            padding: 3px 12px;
+            margin: 0 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dpc-browser img {
+            width: 100%; height: auto;
+            display: block; border: 0;
+            border-radius: 0; box-shadow: none;
+        }
+
+        /* 真机样机（手机截图） */
+        .dpc-phone-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .dpc-phone {
+            width: 252px;
+            max-width: 88%;
+            background: linear-gradient(160deg, #1e293b, #0f172a);
+            border-radius: 38px;
+            padding: 10px;
+            box-shadow:
+                inset 0 0 0 2px rgba(148, 163, 184, 0.25),
+                0 18px 44px rgba(15, 23, 42, 0.4);
+        }
+
+        .dpc-speaker {
+            width: 86px; height: 6px;
+            border-radius: 999px;
+            background: #334155;
+            margin: 4px auto 9px;
+        }
+
+        .dpc-screen {
+            border-radius: 28px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .dpc-screen img {
+            width: 100%; height: auto;
+            display: block; border: 0;
+            border-radius: 0; box-shadow: none;
+        }
+
+        .dpc-homebar {
+            width: 96px; height: 5px;
+            border-radius: 999px;
+            background: #cbd5e1;
+            margin: 8px auto;
+        }
+
+        /* 功能亮点网格 */
+        .app-feats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .app-feat {
+            background: rgba(99, 102, 241, 0.06);
+            border: 1px solid rgba(99, 102, 241, 0.16);
+            border-radius: 16px;
+            padding: 18px 20px;
+        }
+
+        .app-feat h4 {
+            margin: 0 0 8px;
+            font-size: 1.02rem;
+            color: #4f46e5;
+        }
+
+        .app-feat h4 i { margin-right: 8px; }
+
+        .app-feat p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            color: #475569;
+        }
+
+        /* 版本信息 */
+        .app-version {
+            display: grid;
+            gap: 10px;
+        }
+
+        .app-version .row {
+            display: flex;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: rgba(100, 116, 139, 0.07);
+            font-size: 0.93rem;
+        }
+
+        .app-version .row .k {
+            width: 96px;
+            flex-shrink: 0;
+            color: #64748b;
+        }
+
+        .app-note {
+            margin-top: 18px;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .app-hero {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 26px 20px;
+            }
+
+            .app-badges, .app-dl { justify-content: center; }
+
+            .app-card { padding: 24px 18px; }
+        }
+
+        /* 深色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            .app-hero, .app-card {
+                background: rgba(15, 23, 42, 0.92);
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+            }
+
+            .app-tagline, .app-src, .app-note { color: #94a3b8; }
+
+            .app-feat p { color: #cbd5e1; }
+
+            .app-badges span,
+            .app-feat {
+                background: rgba(125, 211, 252, 0.08);
+                color: #7dd3fc;
+                border-color: rgba(125, 211, 252, 0.25);
+            }
+
+            .app-feat h4 { color: #7dd3fc; }
+
+            .app-version .row { background: rgba(148, 163, 184, 0.1); }
+
+            .app-version .row .k { color: #94a3b8; }
+
+            .app-src a { color: #7dd3fc; }
+        }
+    </style>
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="effects.css">
+    <script src="effects.js" defer></script>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <!-- 新增开发提示模态框 -->
+    <div id="devModal" class="dev-modal">
+        <div class="dev-modal-content">
+            <div class="dev-modal-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h2>页面开发中</h2>
+            <p>这个页面正在积极开发中，我正在努力为您打造更好的体验。请以后再来看看吧！</p>
+            <button class="dev-modal-button" id="closeDevModal">好的，我知道了</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 头部导航 -->
+        <header>
+            <div class="logo fade-in">
+                刘焱的个人网站
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav id="mainNav">
+                <span class="close-menu" id="closeMenu"><i class="fas fa-times"></i></span>
+                <ul>
+                    <li class="fade-in delay-1"><a href="index.html"><i class="fas fa-home"></i>首页</a></li>
+                    <li class="has-submenu fade-in delay-2">
+                        <a href="#" class="submenu-toggle"><i class="fas fa-user"></i>个人资料 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <li><a href="personal_info.html"><i class="fas fa-id-card"></i>基本信息</a></li>
+                            <li><a href="education.html" class="active"><i class="fas fa-graduation-cap"></i>教育背景</a></li>
+                            <li><a href="experience.html"><i class="fas fa-briefcase"></i>工作经历</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu fade-in delay-3">
+                        <a href="#" class="submenu-toggle"><i class="fas fa-project-diagram"></i>我的项目 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <li><a href="project-dpc.html" class="active"><i class="fas fa-cube"></i>3D打印成本计算器</a></li>
+                        </ul>
+                    </li>
+                    <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a></li>
+                    <li class="fade-in delay-4"><a href="contact.html"><i class="fas fa-envelope"></i>联系我</a></li>
+                    <li class="has-submenu fade-in delay-4">
+                        <a href="#" class="submenu-toggle"><i class="fas fa-circle-half-stroke"></i>主题 <i class="fas fa-chevron-down"></i></a>
+                        <ul class="submenu">
+                            <li><a href="#" data-theme-option="auto"><i class="fas fa-circle-half-stroke"></i>自动</a></li>
+                            <li><a href="#" data-theme-option="light"><i class="fas fa-sun"></i>浅色</a></li>
+                            <li><a href="#" data-theme-option="dark"><i class="fas fa-moon"></i>深色</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- 应用详情（应用商城风格） -->
+        <div class="app-hero fade-in">
+            <div class="app-icon"><i class="fas fa-cube"></i></div>
+            <div class="app-meta">
+                <h1>3D 打印成本计算器</h1>
+                <p class="app-tagline">离线单文件报价工具 · 网页 / Windows / Android 三端</p>
+                <div class="app-badges">
+                    <span><i class="fas fa-wifi"></i>完全离线</span>
+                    <span><i class="fas fa-lock"></i>数据不出设备</span>
+                    <span><i class="fas fa-file-code"></i>单文件 · 零依赖</span>
+                    <span><i class="fas fa-scale-balanced"></i>MIT 开源</span>
+                </div>
+                <div class="app-dl">
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.0.0/3d-print-cost-cn-1.0.0-web.html" download>
+                        <button class="app-btn" type="button"><i class="fas fa-globe"></i><span><b>网页版</b><small>103 KB · 双击即用</small></span></button>
+                    </a>
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.0.0/3d-print-cost-cn-1.0.0-portable.exe" download>
+                        <button class="app-btn" type="button"><i class="fab fa-windows"></i><span><b>Windows 便携版</b><small>70.8 MB · 免安装</small></span></button>
+                    </a>
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.0.0/3d-print-cost-cn-1.0.0.apk" download>
+                        <button class="app-btn" type="button"><i class="fab fa-android"></i><span><b>Android APK</b><small>0.97 MB · v1.0.0</small></span></button>
+                    </a>
+                </div>
+                <p class="app-src">
+                    <i class="fab fa-github"></i> 源码与更新：
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn" target="_blank" rel="noopener">github.com/steveliuyan/3d-print-cost-cn</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="app-card fade-in delay-1">
+            <h2><i class="fas fa-images"></i> 应用预览</h2>
+            <div class="dpc-browser">
+                <div class="dpc-browser-bar">
+                    <span class="dpc-dot r"></span>
+                    <span class="dpc-dot y"></span>
+                    <span class="dpc-dot g"></span>
+                    <span class="dpc-url">3D 打印成本计算器 · 本地离线运行</span>
+                </div>
+                <img src="screenshots/dpc-desktop.png" alt="3D打印成本计算器 — 桌面版界面" loading="lazy">
+            </div>
+            <div class="dpc-phone-row">
+                <div class="dpc-phone">
+                    <div class="dpc-speaker"></div>
+                    <div class="dpc-screen">
+                        <img src="screenshots/dpc-mobile.png" alt="3D打印成本计算器 — 手机版界面" loading="lazy">
+                    </div>
+                    <div class="dpc-homebar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-card fade-in delay-2">
+            <h2><i class="fas fa-star"></i> 功能亮点</h2>
+            <div class="app-feats">
+                <div class="app-feat">
+                    <h4><i class="fas fa-calculator"></i>成本核算</h4>
+                    <p>材料、设备折旧、电费、人工后处理、失败率摊销，一笔笔算清单件成本。</p>
+                </div>
+                <div class="app-feat">
+                    <h4><i class="fas fa-tags"></i>定价反推</h4>
+                    <p>按平台佣金率反推挂牌价，目标毛利率、单件利润一目了然。</p>
+                </div>
+                <div class="app-feat">
+                    <h4><i class="fas fa-database"></i>内置预设</h4>
+                    <p>11 个设备 + 54 个材料预设（拓竹 / 大简 / 三慈 / 通用），支持自定义增删改。</p>
+                </div>
+                <div class="app-feat">
+                    <h4><i class="fas fa-shield-halved"></i>备份恢复</h4>
+                    <p>参数 / 预设 / 分类全量备份与恢复，数据永远在你自己手里。</p>
+                </div>
+                <div class="app-feat">
+                    <h4><i class="fas fa-file-invoice"></i>报价单输出</h4>
+                    <p>一键打印 / 另存 PDF 报价页，导出 CSV 明细（Excel 直开）。</p>
+                </div>
+                <div class="app-feat">
+                    <h4><i class="fas fa-plane-up"></i>离线可用</h4>
+                    <p>不联网、不上传任何数据，单文件双击即用，随时随地报价。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-card fade-in delay-3">
+            <h2><i class="fas fa-tag"></i> 版本信息</h2>
+            <div class="app-version">
+                <div class="row"><span class="k">当前版本</span><span>v1.0.0（首个公开版本）</span></div>
+                <div class="row"><span class="k">发布日期</span><span>2026-10-11</span></div>
+                <div class="row"><span class="k">平台</span><span>网页（任意现代浏览器）/ Windows 10+ / Android 7.0+</span></div>
+                <div class="row"><span class="k">许可证</span><span>MIT（可自由使用、修改与分发）</span></div>
+            </div>
+            <p class="app-note">
+                说明：GitHub 下载附件名使用 ASCII 命名，内容与中文名版本完全一致；
+                Windows 版未做代码签名，首次运行如弹出 SmartScreen 提示，选择「仍要运行」即可；
+                Android 安装需在系统里允许「安装未知来源应用」。
+            </p>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="fade-in delay-1">
+            <p>© 2026 刘焱的个人主页 | 设计开发: deepseek、刘焱、Trae、Codex</p>
+            <div class="social-links">
+                <a href="https://github.com/steveliuyan" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://dribbble.com/" target="_blank"><i class="fab fa-dribbble"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部" title="回到顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // 检测是否为移动设备
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        // 粒子背景配置 - 移动端优化
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: isMobile ? 30 : 60,
+                    density: {
+                        enable: true,
+                        value_area: isMobile ? 1200 : 800
+                    }
+                },
+                color: {
+                    value: isDarkMode ? "#7dd3fc" : "#4facfe"
+                },
+                shape: {
+                    type: "circle"
+                },
+                opacity: {
+                    value: 0.6,
+                    random: true
+                },
+                size: {
+                    value: isMobile ? 4 : 6,
+                    random: true
+                },
+                line_linked: {
+                    enable: true,
+                    distance: isMobile ? 120 : 200,
+                    color: isDarkMode ? "#7dd3fc" : "#4facfe",
+                    opacity: 0.4,
+                    width: 1.5
+                },
+                move: {
+                    enable: true,
+                    speed: isMobile ? 0.5 : 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: !isMobile,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.6
+                        }
+                    },
+                    push: {
+                        particles_nb: isMobile ? 2 : 4
+                    }
+                }
+            },
+            retina_detect: !isMobile
+        });
+
+        // 菜单交互 (确保在电脑端也能点击展开/收起)
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mainNav = document.getElementById('mainNav');
+            const navItems = document.querySelectorAll('nav > ul > li > a:not(.submenu-toggle)');
+            const submenuToggles = document.querySelectorAll('.submenu-toggle');
+            const submenuItems = document.querySelectorAll('.submenu a');
+            
+            // 开发提示模态框相关
+            const devModal = document.getElementById('devModal');
+            const closeDevModal = document.getElementById('closeDevModal');
+            const devLinks = document.querySelectorAll('.dev-link');
+            let devModalScrollState = null;
+            const preventModalScroll = event => event.preventDefault();
+            const preventModalKeys = event => {
+                if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '].includes(event.key)) {
+                    event.preventDefault();
+                }
+            };
+
+            function closeAllSubmenus() {
+                document.querySelectorAll('.has-submenu').forEach(el => {
+                    el.classList.remove('active');
+                });
+            }
+
+            function lockPageScroll() {
+                if (devModalScrollState) return;
+                devModalScrollState = true;
+                document.addEventListener('wheel', preventModalScroll, { passive: false });
+                document.addEventListener('touchmove', preventModalScroll, { passive: false });
+                document.addEventListener('keydown', preventModalKeys, { passive: false });
+            }
+
+            function unlockPageScroll() {
+                if (!devModalScrollState) return;
+                document.removeEventListener('wheel', preventModalScroll, { passive: false });
+                document.removeEventListener('touchmove', preventModalScroll, { passive: false });
+                document.removeEventListener('keydown', preventModalKeys, { passive: false });
+                devModalScrollState = null;
+            }
+
+            // 显示开发提示模态框
+            function showDevModal() {
+                closeAllSubmenus();
+                devModal.style.display = "flex";
+                lockPageScroll();
+                setTimeout(() => {
+                    devModal.style.opacity = "1";
+                }, 10);
+            }
+
+            // 隐藏开发提示模态框
+            function hideDevModal() {
+                devModal.style.opacity = "0";
+                setTimeout(() => {
+                    devModal.style.display = "none";
+                    unlockPageScroll();
+                }, 300);
+            }
+
+            // 为开发中链接添加事件
+            devLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showDevModal();
+                });
+            });
+
+            // 关闭开发提示模态框
+            closeDevModal.addEventListener('click', hideDevModal);
+
+            // 点击模态框外部关闭
+            devModal.addEventListener('click', function(e) {
+                if (e.target === devModal) {
+                    hideDevModal();
+                }
+            });
+
+            // 切换菜单显示状态
+            function toggleMenu() {
+                mainNav.classList.toggle('active');
+                const isMenuActive = mainNav.classList.contains('active');
+                const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+                document.body.style.overflow = isMenuActive ? 'hidden' : '';
+                document.body.style.paddingRight = isMenuActive && scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
+
+                // 控制菜单键的显示和隐藏
+                if (window.innerWidth <= 768) {
+                    menuToggle.style.display = 'block';
+                    menuToggle.classList.toggle('menu-open', isMenuActive);
+                } else {
+                    menuToggle.classList.remove('menu-open');
+                    menuToggle.style.display = 'none';
+                }
+            }
+
+            // 打开菜单
+            menuToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 关闭菜单
+            closeMenu.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // 点击菜单项关闭移动菜单
+            navItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 768) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 二级菜单展开控制 (电脑和移动端通用)
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const parent = this.parentElement;
+                    const isActive = parent.classList.contains('active');
+
+                    // 切换当前二级菜单
+                    if (isActive) {
+                        parent.classList.remove('active');
+                    } else {
+                        // 关闭所有二级菜单
+                        document.querySelectorAll('.has-submenu').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        // 打开当前菜单
+                        parent.classList.add('active');
+                    }
+                });
+            });
+
+            // 阻止二级菜单项冒泡到父级菜单
+            submenuItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    if (window.innerWidth <= 768) {
+                        e.stopPropagation();
+                        // 在移动端点击二级菜单项后关闭整个菜单
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 点击菜单外部关闭菜单
+            document.addEventListener('click', function (e) {
+                // 检查点击的是否是菜单内部
+                const isClickInsideMenu = mainNav.contains(e.target) || 
+                                        menuToggle.contains(e.target) || 
+                                        e.target.classList.contains('submenu-toggle');
+                
+                // 如果点击在菜单外部，关闭所有菜单
+                if (!isClickInsideMenu) {
+                    // 关闭主菜单（移动端）
+                    if (window.innerWidth <= 768) {
+                        mainNav.classList.remove('active');
+                    }
+                    
+                    // 关闭所有二级菜单
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // 重置滚动状态
+                    document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
+                    
+                    // 显示菜单按钮（移动端）
+                    if (window.innerWidth <= 768) {
+                        menuToggle.classList.remove('menu-open');
+                        menuToggle.style.display = 'block';
+                    }
+                }
+            });
+
+            // 窗口大小改变时重置菜单状态
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    mainNav.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
+                    document.querySelectorAll('.has-submenu').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    menuToggle.classList.remove('menu-open');
+                    menuToggle.style.display = 'none';
+                } else {
+                    menuToggle.classList.remove('menu-open');
+                    menuToggle.style.display = 'block';
+                }
+            });
+
+            const backToTopBtn = document.getElementById('backToTop');
+            function updateBackToTopButton() {
+                if (!backToTopBtn) return;
+                backToTopBtn.classList.toggle('show', window.scrollY > 240);
+            }
+
+            if (backToTopBtn) {
+                window.addEventListener('scroll', updateBackToTopButton, { passive: true });
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+                updateBackToTopButton();
+            }
+
+            // 自动应用淡入效果
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.style.opacity = 0;
+            });
+
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    el.style.animationPlayState = 'running';
+                });
+            }, 300);
+        });
+    </script>
+</body>
+</html>
