@@ -1027,6 +1027,111 @@
                 font-size: 1.1rem;
             }
         }
+        /* ===== 项目展示卡片 ===== */
+        .proj-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 6px;
+        }
+
+        .proj-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+        }
+
+        .proj-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 4px;
+        }
+
+        .proj-badges span {
+            font-size: 0.78rem;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .proj-badges span {
+                background: rgba(125, 211, 252, 0.08);
+                color: #7dd3fc;
+                border-color: rgba(125, 211, 252, 0.25);
+            }
+        }
+
+        .proj-shots {
+            margin: 22px 0;
+        }
+
+        .proj-shots img {
+            border-radius: 12px;
+            border: 1px solid rgba(100, 116, 139, 0.25);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+            display: block;
+        }
+
+        .proj-shot-main img {
+            width: 100%;
+            height: auto;
+        }
+
+        .proj-shot-side {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .proj-shot-side img {
+            width: auto;
+            max-width: 100%;
+            max-height: 620px;
+            margin: 0 auto;
+        }
+
+        .proj-dl {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .proj-dl a {
+            text-decoration: none;
+        }
+
+        .proj-dl .resume-download-btn i {
+            margin-right: 6px;
+        }
+
+        .proj-src {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.88rem;
+        }
+
+        .proj-src a {
+            color: #6366f1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .proj-src a {
+                color: #7dd3fc;
+            }
+        }
     </style>
     <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="effects.css">
@@ -1094,6 +1199,7 @@
                             <li><a href="#" class="dev-link"><i class="fas fa-mobile-alt"></i>产品设计</a></li>
                             <li><a href="#" class="dev-link"><i class="fas fa-paint-brush"></i>UI/UX设计</a></li>
                             <li><a href="#" class="dev-link"><i class="fas fa-drafting-compass"></i>工业设计</a></li>
+                            <li><a href="#project-dpc"><i class="fas fa-cube"></i>3D打印成本计算器</a></li>
                         </ul>
                     </li>
                     <li class="fade-in delay-4"><a href="#" class="dev-link"><i class="fas fa-images"></i>作品集</a>
@@ -1292,6 +1398,55 @@
                         </button>
                     </a>
                 </div>
+            </div>
+
+            <!-- 项目：3D打印成本计算器 -->
+            <div class="profile-card fade-in delay-1" id="project-dpc">
+                <div class="proj-head">
+                    <div class="proj-icon"><i class="fas fa-cube"></i></div>
+                    <div>
+                        <h2 style="font-size: 1.8rem;">3D 打印成本计算器</h2>
+                        <p style="color: #64748b; margin-top: 4px;">离线单文件报价工具 · 网页 / Windows / Android 三端</p>
+                    </div>
+                </div>
+
+                <div class="proj-badges">
+                    <span><i class="fas fa-wifi" style="margin-right:4px;"></i>完全离线</span>
+                    <span><i class="fas fa-lock" style="margin-right:4px;"></i>数据不出设备</span>
+                    <span><i class="fas fa-file-code" style="margin-right:4px;"></i>单文件 · 零依赖</span>
+                    <span><i class="fas fa-scale-balanced" style="margin-right:4px;"></i>MIT 开源</span>
+                </div>
+
+                <p style="margin-top: 18px; line-height: 1.7;">
+                    一个把 3D 打印报价算明白的小工具：材料、设备折旧、电费、人工后处理、失败率摊销一笔笔算清，
+                    直接得出<strong>单件成本、建议售价与利润</strong>。内置 11 个设备 + 54 个材料预设（拓竹 / 大简 / 三慈 / 通用），
+                    支持按平台佣金反推挂牌价，所有参数与预设可自定义并一键备份恢复。不联网、不上传任何数据。
+                </p>
+
+                <div class="proj-shots">
+                    <div class="proj-shot-main">
+                        <img src="screenshots/dpc-desktop.png" alt="3D打印成本计算器 — 桌面版界面" loading="lazy">
+                    </div>
+                    <div class="proj-shot-side">
+                        <img src="screenshots/dpc-mobile.png" alt="3D打印成本计算器 — 手机版界面" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="proj-dl">
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.0.0/3d-print-cost-cn-1.0.0-web.html" download>
+                        <button class="resume-download-btn" type="button"><i class="fas fa-globe"></i>网页版（103 KB）</button>
+                    </a>
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.0.0/3d-print-cost-cn-1.0.0-portable.exe" download>
+                        <button class="resume-download-btn" type="button"><i class="fab fa-windows"></i>Windows 便携版</button>
+                    </a>
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.0.0/3d-print-cost-cn-1.0.0.apk" download>
+                        <button class="resume-download-btn" type="button"><i class="fab fa-android"></i>Android APK</button>
+                    </a>
+                </div>
+                <p class="proj-src">
+                    <i class="fab fa-github"></i> 源码与更新：
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn" target="_blank" rel="noopener">github.com/steveliuyan/3d-print-cost-cn</a>
+                </p>
             </div>
         </div>
 
