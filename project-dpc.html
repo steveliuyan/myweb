@@ -7,6 +7,8 @@
     <meta name="theme-color" content="#a1c4fd" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
     <title>3D 打印成本计算器 - 刘焱的个人主页</title>
+    <link rel="icon" type="image/png" href="dpc-icon.png">
+    <link rel="apple-touch-icon" href="dpc-icon.png">
     <script src="theme.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -835,15 +837,23 @@
         .app-icon {
             width: 108px;
             height: 108px;
-            border-radius: 26px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 24px;
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
             font-size: 3rem;
             flex-shrink: 0;
-            box-shadow: 0 14px 34px rgba(99, 102, 241, 0.4);
+            overflow: hidden;
+            box-shadow: 0 14px 34px rgba(79, 70, 229, 0.4);
+        }
+
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
         }
 
         .app-meta { flex: 1; min-width: 0; }
@@ -1245,7 +1255,7 @@
 
         <!-- 应用详情（应用商城风格） -->
         <div class="app-hero fade-in">
-            <div class="app-icon"><i class="fas fa-cube"></i></div>
+            <div class="app-icon"><img src="dpc-icon.png" alt="3D 打印成本计算器 应用图标" width="108" height="108"></div>
             <div class="app-meta">
                 <h1>3D 打印成本计算器</h1>
                 <p class="app-tagline">离线单文件报价工具 · 网页 / Windows / Android 三端</p>
@@ -1259,14 +1269,14 @@
                     <a href="https://3d.20050905.xyz/" target="_blank" rel="noopener">
                         <button class="app-btn primary" type="button"><i class="fas fa-cloud"></i><span><b>在线使用</b><small>免下载 · iOS 可添加到主屏幕</small></span></button>
                     </a>
-                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.4.2/web.html" download>
-                        <button class="app-btn" type="button"><i class="fas fa-globe"></i><span><b>网页版</b><small>137 KB · 双击即用</small></span></button>
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.8.2/3d-print-cost-cn-1.8.2-web.html" download>
+                        <button class="app-btn" type="button"><i class="fas fa-globe"></i><span><b>网页版</b><small>222 KB · 双击即用</small></span></button>
                     </a>
-                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.4.2/3d-print-cost-cn-1.4.2-portable.exe" download>
-                        <button class="app-btn" type="button"><i class="fab fa-windows"></i><span><b>Windows 便携版</b><small>70.8 MB · 免安装 · 检查更新（按平台下载）</small></span></button>
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.8.2/3d-print-cost-cn-1.8.2-portable.exe" download>
+                        <button class="app-btn" type="button"><i class="fab fa-windows"></i><span><b>Windows 便携版</b><small>71 MB · 免安装 · 检查更新（按平台下载）</small></span></button>
                     </a>
-                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.4.2/3d-print-cost-cn-1.4.2.apk" download>
-                        <button class="app-btn" type="button"><i class="fab fa-android"></i><span><b>Android APK</b><small>1.0 MB · v1.4.2 · 应用内升级</small></span></button>
+                    <a href="https://github.com/steveliuyan/3d-print-cost-cn/releases/download/v1.8.2/3d-print-cost-cn-1.8.2.apk" download>
+                        <button class="app-btn" type="button"><i class="fab fa-android"></i><span><b>Android APK</b><small>1.1 MB · v1.8.2 · 应用内升级</small></span></button>
                     </a>
                 </div>
                 <p class="app-src">
@@ -1306,6 +1316,18 @@
                     <p>材料、设备折旧、电费、人工后处理、失败率摊销，一笔笔算清单件成本。</p>
                 </div>
                 <div class="app-feat">
+                    <h4><i class="fas fa-file-invoice"></i>订单化报价</h4>
+                    <p>多品项订单行项管理，抬头编号 / 客户 / 报价有效期 / 订单状态，支持阶梯定价与整单折扣。</p>
+                </div>
+                <div class="app-feat">
+                    <h4><i class="fas fa-share-nodes"></i>客户版 / 内部版分享长图</h4>
+                    <p>一键生成报价长图：客户版自动隐藏成本与利润、仅呈现报价，内部版保留完整成本与毛利率。</p>
+                </div>
+                <div class="app-feat">
+                    <h4><i class="fas fa-cubes"></i>STL / 3MF 导入估算</h4>
+                    <p>导入模型文件自动估算耗材与打印时长，支持读取切片 3MF 中的实测用量。</p>
+                </div>
+                <div class="app-feat">
                     <h4><i class="fas fa-tags"></i>定价反推</h4>
                     <p>按平台佣金率反推挂牌价，目标毛利率、单件利润一目了然。</p>
                 </div>
@@ -1318,10 +1340,6 @@
                     <p>参数 / 预设 / 分类全量备份与恢复，数据永远在你自己手里。</p>
                 </div>
                 <div class="app-feat">
-                    <h4><i class="fas fa-file-invoice"></i>报价单输出</h4>
-                    <p>一键打印 / 另存 PDF 报价页，导出 CSV 明细（Excel 直开）。</p>
-                </div>
-                <div class="app-feat">
                     <h4><i class="fas fa-plane-up"></i>离线可用</h4>
                     <p>不联网、不上传任何数据，单文件双击即用，随时随地报价。</p>
                 </div>
@@ -1331,8 +1349,8 @@
         <div class="app-card fade-in delay-3">
             <h2><i class="fas fa-tag"></i> 版本信息</h2>
             <div class="app-version">
-                <div class="row"><span class="k">当前版本</span><span>v1.4.2（STL / 3MF 导入估算 · 打印修复）</span></div>
-                <div class="row"><span class="k">发布日期</span><span>2026-10-11</span></div>
+                <div class="row"><span class="k">当前版本</span><span>v1.8.2（订单化多品项报价 · 客户版/内部版分享长图 · 安卓图标修正）</span></div>
+                <div class="row"><span class="k">发布日期</span><span>2026-10-13</span></div>
                 <div class="row"><span class="k">平台</span><span>网页（任意现代浏览器）/ Windows 10+ / Android 7.0+</span></div>
                 <div class="row"><span class="k">许可证</span><span>MIT（可自由使用、修改与分发）</span></div>
             </div>
